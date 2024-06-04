@@ -36,7 +36,7 @@ const AccountsPayables = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/accountspayables/")
+      .get("https://enterprise-resource-planning.onrender.com/accountspayables/")
       .then((res) => {
         setAccountsPayablesForm(res.data.data);
       })

@@ -36,7 +36,7 @@ const recuitment = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/recruitment/")
+      .get("https://enterprise-resource-planning.onrender.com/recruitment/")
       .then((res) => {
         setRecruitmentForm(res.data.data);
       })
@@ -59,7 +59,7 @@ const recuitment = () => {
     };
     axios
       .post(
-        "http://localhost:3001/recruitment/create-newrecuitment",
+        "https://enterprise-resource-planning.onrender.com/recruitment/create-newrecuitment",
         recruitmentinsert
       )
       .then((res) => {
@@ -77,7 +77,7 @@ const recuitment = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3001/recruitment/update-recruitment/${recruitmentEdit._id}`,
+        `https://enterprise-resource-planning.onrender.com/recruitment/update-recruitment/${recruitmentEdit._id}`,
         recruitmentEdit
       )
       .then((res) => {
@@ -95,7 +95,7 @@ const recuitment = () => {
 
   const handleDelete = async (id) => {
     axios
-      .delete(`http://localhost:3001/recruitment/delete-recruitment/${id}`)
+      .delete(`https://enterprise-resource-planning.onrender.com/recruitment/delete-recruitment/${id}`)
       .then(() => {
         console.log("Data successfully deleted!");
 
@@ -111,7 +111,7 @@ const recuitment = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/recruitment/generate-csv",
+        "https://enterprise-resource-planning.onrender.com/recruitment/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }

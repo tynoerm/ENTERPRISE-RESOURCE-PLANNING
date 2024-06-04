@@ -38,7 +38,7 @@ const ExpenseAccount = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/expenseaccount/")
+      .get("https://enterprise-resource-planning.onrender.com/expenseaccount/")
       .then((res) => {
         setExpenseAccountForm(res.data.data);
       })

@@ -34,7 +34,7 @@ const AccountsPayables = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/accountspayables/")
+      .get("https://enterprise-resource-planning.onrender.com/accountspayables/")
       .then((res) => {
         setAccountsPayablesForm(res.data.data);
       })
@@ -59,7 +59,7 @@ const AccountsPayables = () => {
     };
     axios
       .post(
-        "http://localhost:3001/accountspayables/create-accountspayables",
+        "https://enterprise-resource-planning.onrender.com/accountspayables/create-accountspayables",
         accountspayableinsert
       )
       .then((res) => {
@@ -83,7 +83,7 @@ const AccountsPayables = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3001/accountspayables/update-accountspayable/${accountspayableEdit._id}`,
+        `https://enterprise-resource-planning.onrender.com/accountspayables/update-accountspayable/${accountspayableEdit._id}`,
         accountspayableEdit
       )
       .then((res) => {
@@ -103,7 +103,7 @@ const AccountsPayables = () => {
 
   const handleDelete = async (id) => {
     axios
-      .delete(`http://localhost:3001/accountspayables/delete-accountspayable/${id}`)
+      .delete(`https://enterprise-resource-planning.onrender.com/accountspayables/delete-accountspayable/${id}`)
       .then(() => {
         console.log("Data successfully deleted!");
         setAccountsPayablesForm((prevaccountsPayablesForm) =>
@@ -119,7 +119,7 @@ const AccountsPayables = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/accountspayables/generate-csv",
+        "https://enterprise-resource-planning.onrender.com/accountspayables/generate-csv",
         {
           responseType: "blob",
         }

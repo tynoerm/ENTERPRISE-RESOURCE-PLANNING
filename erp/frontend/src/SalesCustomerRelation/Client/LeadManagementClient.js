@@ -38,7 +38,7 @@ const LeadManagement = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/leadmanagement/")
+      .get("https://enterprise-resource-planning.onrender.com/leadmanagement/")
       .then((res) => {
         setLeadmanagementForm(res.data.data);
       })
@@ -62,7 +62,7 @@ const LeadManagement = () => {
     };
     axios
       .post(
-        "http://localhost:3001/leadmanagement/create-lead",
+        "https://enterprise-resource-planning.onrender.com/leadmanagement/create-lead",
         leadManagementinsert
       )
       .then((res) => {
@@ -78,7 +78,7 @@ const LeadManagement = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3001/leadmanagement/update-leadmanagement/${leadManagementEdit._id}`,
+        `https://enterprise-resource-planning.onrender.com/leadmanagement/update-leadmanagement/${leadManagementEdit._id}`,
         leadManagementEdit
       )
       .then((res) => {
@@ -96,7 +96,7 @@ const LeadManagement = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `http://localhost:3001/leadmanagement/delete-leadmanagement/${id}`
+        `https://enterprise-resource-planning.onrender.com/leadmanagement/delete-leadmanagement/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -113,7 +113,7 @@ const LeadManagement = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/leadmanagement/generate-csv",
+        "https://enterprise-resource-planning.onrender.com/leadmanagement/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }

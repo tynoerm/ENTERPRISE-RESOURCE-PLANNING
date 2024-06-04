@@ -45,7 +45,7 @@ const Procurement = () => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3001/procurement/")
+            .get("https://enterprise-resource-planning.onrender.com/procurement/")
             .then((res) => {
                 setProcurementForm(res.data.data);
             })
@@ -60,7 +60,7 @@ const Procurement = () => {
         e.preventDefault();
         const procurementinsert = { purchase_order_date, buyer_information, delivery_address, payment_terms, item_description, selling_price, quantity, unit_price, sub_total, delivery_date, warrant_information, approvals }
         axios
-            .post("http://localhost:3001/procurement/createpurchaseorder", procurementinsert)
+            .post("https://enterprise-resource-planning.onrender.com/procurement/createpurchaseorder", procurementinsert)
             .then((res) => {
                 console.log({ status: res.status });
                 setProcurementForm(prev => [...prev, procurementinsert])
@@ -74,7 +74,7 @@ const Procurement = () => {
         e.preventDefault();
         axios
           .put(
-            `http://localhost:3001/procurement/update-procurement/${procurementEdit._id}`,
+            `https://enterprise-resource-planning.onrender.com/procurement/update-procurement/${procurementEdit._id}`,
             procurementEdit
           )
           .then((res) => {
@@ -95,7 +95,7 @@ const Procurement = () => {
       const handleDelete = async (id) => {
         axios
           .delete(
-            `http://localhost:3001/procurement/delete-procurement/${id}`
+            `https://enterprise-resource-planning.onrender.com/procurement/delete-procurement/${id}`
           )
           .then(() => {
       
@@ -116,7 +116,7 @@ const Procurement = () => {
       const handleDownload = async () => {
         try {
           const response = await axios.get(
-            "http://localhost:3001/procurement/generate-csv",
+            "https://enterprise-resource-planning.onrender.com/procurement/generate-csv",
             {
               responseType: "blob", // Important to handle binary data
             }

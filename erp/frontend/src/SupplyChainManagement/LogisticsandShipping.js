@@ -41,7 +41,7 @@ const LogisticsandShipping = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/logisticsandShipping/")
+      .get("https://enterprise-resource-planning.onrender.com/logisticsandShipping/")
       .then((res) => {
         setlogisticsandShippingForm(res.data.data);
       })
@@ -64,7 +64,7 @@ const LogisticsandShipping = () => {
     };
     axios
       .post(
-        "http://localhost:3001/logisticsandShipping/create-logisticsactivity",
+        "https://enterprise-resource-planning.onrender.com/logisticsandShipping/create-logisticsactivity",
         logisticsandShippinginsert
       )
       .then((res) => {
@@ -82,7 +82,7 @@ const LogisticsandShipping = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `http://localhost:3001/logisticsandShipping/delete-logistics/${id}`
+        `https://enterprise-resource-planning.onrender.com/logisticsandShipping/delete-logistics/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -104,7 +104,7 @@ const LogisticsandShipping = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3001/logisticsandShipping/update-logistics/${logisticsandShippingEdit._id}`,
+        `https://enterprise-resource-planning.onrender.com/logisticsandShipping/update-logistics/${logisticsandShippingEdit._id}`,
         logisticsandShippingEdit
       )
       .then((res) => {
@@ -122,7 +122,7 @@ const LogisticsandShipping = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/logisticsandShipping/generate-csv",
+        "https://enterprise-resource-planning.onrender.com/logisticsandShipping/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }

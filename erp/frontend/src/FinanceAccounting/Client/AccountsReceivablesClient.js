@@ -38,7 +38,7 @@ const AccountsReceivables = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/accountsreceivables/")
+      .get("https://enterprise-resource-planning.onrender.com/accountsreceivables/")
       .then((res) => {
         setAccountsReceivablesForm(res.data.data);
       })

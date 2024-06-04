@@ -38,7 +38,7 @@ const QualityControl = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/qualitycontrol/")
+      .get("https://enterprise-resource-planning.onrender.com/qualitycontrol/")
       .then((res) => {
         setQualitycontrolForm(res.data.data);
       })
@@ -63,7 +63,7 @@ const QualityControl = () => {
     };
     axios
       .post(
-        "http://localhost:3001/qualitycontrol/create-qualitycontrol",
+        "https://enterprise-resource-planning.onrender.com/qualitycontrol/create-qualitycontrol",
         qualitycontrolInsert
       )
       .then((res) => {
@@ -80,7 +80,7 @@ const QualityControl = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3001/qualitycontrol//${qualitycontrolEdit._id}`,
+        `https://enterprise-resource-planning.onrender.com/qualitycontrol//${qualitycontrolEdit._id}`,
         qualitycontrolEdit
       )
       .then((res) => {
@@ -98,7 +98,7 @@ const QualityControl = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `http://localhost:3001/qualitycontrol/delete-qualitycontrol/${id}`
+        `https://enterprise-resource-planning.onrender.com/qualitycontrol/delete-qualitycontrol/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -115,7 +115,7 @@ const QualityControl = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/qualitycontrol/generate-csv",
+        "https://enterprise-resource-planning.onrender.com/qualitycontrol/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }

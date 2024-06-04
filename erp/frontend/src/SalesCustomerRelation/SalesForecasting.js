@@ -38,7 +38,7 @@ const salesForecasting = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/salesfocusting/")
+      .get("https://enterprise-resource-planning.onrender.com/salesfocusting/")
       .then((res) => {
         setSalesfocustingForm(res.data.data);
       })
@@ -63,7 +63,7 @@ const salesForecasting = () => {
     };
     axios
       .post(
-        "http://localhost:3001/salesfocusting/create-salesfocusting",
+        "https://enterprise-resource-planning.onrender.com/salesfocusting/create-salesfocusting",
         salesFocustinginsert
       )
       .then((res) => {
@@ -79,7 +79,7 @@ const salesForecasting = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3001/salesfocusting/update-salesfocusting/${salesFocustingEdit._id}`,
+        `https://enterprise-resource-planning.onrender.com/salesfocusting/update-salesfocusting/${salesFocustingEdit._id}`,
         salesFocustingEdit
       )
       .then((res) => {
@@ -98,7 +98,7 @@ const salesForecasting = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `http://localhost:3001/salesfocusting/delete-salesfocusting/${id}`
+        `https://enterprise-resource-planning.onrender.com/salesfocusting/delete-salesfocusting/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -117,7 +117,7 @@ const salesForecasting = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/salesfocusting/generate-csv",
+        "https://enterprise-resource-planning.onrender.com/salesfocusting/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }

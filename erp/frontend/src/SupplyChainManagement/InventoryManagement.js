@@ -37,7 +37,7 @@ const InventoryManagement = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/inventorymanagement/")
+      .get("https://enterprise-resource-planning.onrender.com/inventorymanagement/")
       .then((res) => {
         setUserForm(res.data.data);
       })
@@ -60,7 +60,7 @@ const InventoryManagement = () => {
     };
     axios
       .post(
-        "http://localhost:3001/inventorymanagement/create-inventory",
+        "https://enterprise-resource-planning.onrender.com/inventorymanagement/create-inventory",
         itemInsert
       )
       .then((res) => {
@@ -76,7 +76,7 @@ const InventoryManagement = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3001/inventorymanagement/update-inventory/${itemEdit._id}`,
+        `https://enterprise-resource-planning.onrender.com/inventorymanagement/update-inventory/${itemEdit._id}`,
         itemEdit
       )
       .then((res) => {
@@ -97,7 +97,7 @@ const InventoryManagement = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `http://localhost:3001/inventorymanagement/delete-inventory/${id}`
+        `https://enterprise-resource-planning.onrender.com/inventorymanagement/delete-inventory/${id}`
       )
       .then(() => {
   
@@ -118,7 +118,7 @@ const InventoryManagement = () => {
 
   const handleDownload = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/inventorymanagement/generate-csv', {
+      const response = await axios.get('https://enterprise-resource-planning.onrender.com/inventorymanagement/generate-csv', {
         responseType: 'blob', // Important to handle binary data
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));

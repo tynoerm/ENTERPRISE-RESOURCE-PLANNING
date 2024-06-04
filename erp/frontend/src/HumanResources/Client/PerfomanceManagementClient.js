@@ -43,7 +43,7 @@ const PerfomanceManagement = () => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3001/perfomancemanagement/")
+            .get("https://enterprise-resource-planning.onrender.com/perfomancemanagement/")
             .then((res) => {
                 setPerfomanceManagementForm(res.data.data);
             })
@@ -58,7 +58,7 @@ const PerfomanceManagement = () => {
         e.preventDefault();
         const newEntry = { employee_name, assesment_date, rating, plan_date, plan_description, goals, action_items, deadline };
         axios
-            .post("http://localhost:3001/perfomancemanagement/create-assesment", newEntry)
+            .post("https://enterprise-resource-planning.onrender.com/perfomancemanagement/create-assesment", newEntry)
             .then((res) => {
                 console.log({ status: res.status });
                 setPerfomanceManagementForm(prev => [...prev, newEntry]);
@@ -77,7 +77,7 @@ const PerfomanceManagement = () => {
         e.preventDefault();
         axios
           .put(
-            `http://localhost:3001/perfomancemanagement/update-perfomancemanagement/${perfomanceManagementEdit._id}`,
+            `https://enterprise-resource-planning.onrender.com/perfomancemanagement/update-perfomancemanagement/${perfomanceManagementEdit._id}`,
             perfomanceManagementEdit
           )
           .then((res) => {
@@ -96,7 +96,7 @@ const PerfomanceManagement = () => {
       const handleDelete = async (id) => {
         axios
           .delete(
-            `http://localhost:3001/perfomancemanagement/delete-perfomancemanagement/${id}`
+            `https://enterprise-resource-planning.onrender.com/perfomancemanagement/delete-perfomancemanagement/${id}`
           )
           .then(() => {
             console.log("Data successfully deleted!");
@@ -115,7 +115,7 @@ const PerfomanceManagement = () => {
       const handleDownload = async () => {
         try {
           const response = await axios.get(
-            "http://localhost:3001/perfomancemanagement/generate-csv",
+            "https://enterprise-resource-planning.onrender.com/perfomancemanagement/generate-csv",
             {
               responseType: "blob", // Important to handle binary data
             }
