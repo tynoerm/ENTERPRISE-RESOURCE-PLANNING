@@ -147,6 +147,7 @@ function App() {
         <Route path="AdminComponent" element={ <AdminComponent />} />
         <Route path="UserComponent" element={<UserComponent />} />
         <Route path="ManagerComponent" element={<ManagerComponent />} />
+        <Route path="Register" element={<Register />} />
 
         <Route path="UserManagementComponent" element={<UserManagementComponent />} />
 
