@@ -89,7 +89,7 @@ const InventoryManagement = () => {
         console.error(" Error updating item:", error);
         toast.error("Error updating item");
       });
-      setShow(false)
+      setShow1(false)
       notify2(" edited successfully")
   };
 
@@ -173,7 +173,7 @@ const InventoryManagement = () => {
         aria-labelledby="example-modal-sizes-title-lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
+          <Modal.Title>CAPTURING NEW STOCK</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -224,6 +224,7 @@ const InventoryManagement = () => {
                   type="text"
                   className="form-control"
                   name="last_updated"
+                  placeholder="YYYY/MM/DD"
                   id="last_updated"
                   value={userForm.last_updated}
                   onChange={(event) => {

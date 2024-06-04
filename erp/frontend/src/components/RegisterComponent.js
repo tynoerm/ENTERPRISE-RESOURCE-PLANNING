@@ -21,7 +21,7 @@ const RegisterComponent = () => {
     event.preventDefault();
     const userData = { username, fullname, email, role, password };
     try {
-      const response = await fetch("http://localhost:3001/api/register", {
+      const response = await fetch("https://enterprise-resource-planning.onrender.com/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

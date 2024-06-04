@@ -521,12 +521,7 @@ const Procurement = () => {
                                 <Button variant="btn btn-primary" onClick={() => { handleShow1(procurement) }}>
                                     Edit
                                 </Button>
-                                <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(procurement._id)}
-                  >
-                    Delete
-                  </button>
+                  
                             </td>
                         </tr>
                     })}

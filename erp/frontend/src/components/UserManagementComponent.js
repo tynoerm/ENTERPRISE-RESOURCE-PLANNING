@@ -87,7 +87,7 @@ const RegisterComponent = () => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Enter username"
+                
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
                 required
@@ -96,7 +96,7 @@ const RegisterComponent = () => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Enter fullname"
+              
                 value={fullname}
                 onChange={(event) => setFullname(event.target.value)}
                 required
@@ -105,7 +105,7 @@ const RegisterComponent = () => {
               <input
                 type="email"
                 className="form-control"
-                placeholder="Enter email"
+               
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
@@ -119,13 +119,15 @@ const RegisterComponent = () => {
               >
                 <option value="">Select Role</option>
                 <option value="client">Client</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Admin</option>
               
               </select>
               <label>Password:</label>
               <input
                 type="password"
                 className="form-control"
-                placeholder="Enter password"
+               
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 required
@@ -135,9 +137,7 @@ const RegisterComponent = () => {
               Register
             </button>
             <div className="fw-bold">
-              <ul>
-                <Link to="/">You can now login!</Link>
-              </ul>
+              
             </div>
           </form>
         </div>
