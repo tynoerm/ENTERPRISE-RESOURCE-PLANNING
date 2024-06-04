@@ -36,16 +36,20 @@ import { productionordersRoutes } from "./Routes/Manufacturing Production/produc
 import { qualitycontrolRoutes } from "./Routes/Manufacturing Production/qualitycontrolRoutes.js";
 
 // Connecting mongoDB Database
-mongoose
-  .connect("mongodb+srv://tinomutendaishemutemaringa:<password>@enterpriseresourceplann.bpdy8kv.mongodb.net/?retryWrites=true&w=majority&appName=enterpriseresourceplanning")
-  .then((x) => {
-    console.log(
-      `Connected to Mongo! Database name: "${x.connections[0].name}"`,
-    );
-  })
-  .catch((err) => {
-    console.error("mongodb://localhost:27017/", err.reason);
-  });
+
+
+const uri = "mongodb+srv://tinomutendaishemutemaringa:<password>@enterpriseresourceplann.bpdy8kv.mongodb.net/?retryWrites=true&w=majority&appName=enterpriseresourceplanning";
+mongoose.connect(uri, {
+    serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+    socketTimeoutMS: 45000, // Increase socket timeout
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15
+}).then(() => {
+    console.log('MongoDB connected');
+}).catch(err => {
+    console.error('MongoDB connection error:', err);
+});
+
 
 const app = express();
 
