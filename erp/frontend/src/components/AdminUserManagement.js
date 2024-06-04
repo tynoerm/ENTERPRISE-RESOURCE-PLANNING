@@ -74,7 +74,6 @@ const AdminUserManagement = () => {
         </button>
       </div>
 
-      <ToastContainer />
 
       <div className={`modal fade ${showModal ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: showModal ? "block" : "none" }}>
         <div className="modal-dialog modal-dialog-centered" role="document">
