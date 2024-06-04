@@ -40,6 +40,7 @@ const RegisterComponent = () => {
       console.error("Registration failed:", error);
       setError("Registration failed. Please try again later.");
     }
+    notify();
     navigate("/AdminComponent")
   };
 
