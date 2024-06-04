@@ -64,21 +64,21 @@ const LoginComponent = () => {
               navigate("/UserComponent");
             } else {
               setError("Unknown role");
-             
+              toast.error("Unknown role");
             }
           } else {
             setError(data.message);
-           
+            toast.error(data.message);
           }
         })
         .catch((error) => {
           console.error("Login failed:", error);
           setError("Login failed. Please try again later.");
-         
+          toast.error("Login failed. Please try again later.");
         });
     } else {
       setError("Please enter username and password");
-     
+      toast.error("Please enter username and password");
     }
   };
 
