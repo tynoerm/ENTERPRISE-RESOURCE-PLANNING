@@ -119,6 +119,8 @@ const RegisterComponent = () => {
               >
                 <option value="">Select Role</option>
                 <option value="client">Client</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Admin</option>
               
               </select>
               <label>Password:</label>
