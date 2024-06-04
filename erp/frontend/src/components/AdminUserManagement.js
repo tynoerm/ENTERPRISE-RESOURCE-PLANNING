@@ -13,6 +13,23 @@ const AdminUserManagement = () => {
   const [role, setRole] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [users, setUsers] = useState([]);
+  const [editUser, setEditUser] = useState(null);
+
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('https://enterprise-resource-planning.onrender.com/api/users');
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      setError('Failed to fetch users.');
+    }
+  };
 
   const navbarStyle = {
     backgroundImage: `url(${nav})`,
@@ -145,6 +162,47 @@ const AdminUserManagement = () => {
           </div>
         </div>
       </div>
+
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>username</th>
+            <th>fullname</th>
+            <th>email</th>
+            <th>role</th>
+            <th>password</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user, index) => {
+            return (
+              <tr key={index}>
+                <td>{user.username}</td>
+                <td>{user.fullname}</td>
+                <td>{user.email}</td>
+                <td>{user.role}</td>
+                <td>{user.password}</td>
+                
+                <td>
+                  <Button
+                    variant="btn btn-primary"
+                    onClick={() => handleShow(user)}
+                  >
+                    Edit
+                  </Button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(user._id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
