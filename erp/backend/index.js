@@ -40,10 +40,8 @@ import { qualitycontrolRoutes } from "./Routes/Manufacturing Production/qualityc
 
 const uri = "mongodb+srv://tinomutendaishemutemaringa:admin@enterpriseresourceplann.bpdy8kv.mongodb.net/?retryWrites=true&w=majority&appName=enterpriseresourceplanning";
 mongoose.connect(uri, {
-    serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
-    socketTimeoutMS: 45000, // Increase socket timeout
-    heartbeatFrequencyMS: 10000,
-    localThresholdMS: 15
+  socketTimeoutMS: 90000, // 60 seconds
+  connectTimeoutMS: 90000 // 60 seconds
 }).then(() => {
     console.log('MongoDB connected');
 }).catch(err => {
