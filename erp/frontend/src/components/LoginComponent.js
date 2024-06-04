@@ -46,7 +46,7 @@ const LoginComponent = () => {
 
     if (username && password) {
       axios
-        .post("http://localhost:3001/api/login", {
+        .post("https://enterprise-resource-planning.onrender.com/api/login", {
           username,
           password,
         })
@@ -63,7 +63,7 @@ const LoginComponent = () => {
             } else if (data.role === "manager") {
               navigate("/ManagerComponent");
             } else if (data.role === "client") {
-              navigate("/ClientComponent");
+              navigate("/UserComponent");
             } else {
               setError("Unknown role");
             }
@@ -150,9 +150,7 @@ const LoginComponent = () => {
             Login
           </button>
           <div className="fw-bold">
-            <ul>
-              <Link to="/Register">Create an account</Link>
-            </ul>
+          
           </div>
         </form>
       </div>
