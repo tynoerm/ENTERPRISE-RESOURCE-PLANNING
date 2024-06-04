@@ -144,6 +144,20 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+//Read all users in the database
+
+// Read all users
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
 // Login route
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
