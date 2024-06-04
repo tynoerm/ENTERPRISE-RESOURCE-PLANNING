@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
-import nav from "../../images/nav.jpeg";
+import nav from "../images/nav.jpeg";
 
 const AdminUserManagement = () => {
   const navbarStyle = {
