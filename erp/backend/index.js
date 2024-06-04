@@ -38,7 +38,7 @@ import { qualitycontrolRoutes } from "./Routes/Manufacturing Production/qualityc
 // Connecting mongoDB Database
 
 
-const uri = "mongodb+srv://tinomutendaishemutemaringa:<password>@enterpriseresourceplann.bpdy8kv.mongodb.net/?retryWrites=true&w=majority&appName=enterpriseresourceplanning";
+const uri = "mongodb+srv://tinomutendaishemutemaringa:admin@enterpriseresourceplann.bpdy8kv.mongodb.net/?retryWrites=true&w=majority&appName=enterpriseresourceplanning";
 mongoose.connect(uri, {
     serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
     socketTimeoutMS: 45000, // Increase socket timeout
