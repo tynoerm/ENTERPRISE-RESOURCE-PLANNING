@@ -95,7 +95,7 @@ import SalesForecastingManager from './SalesCustomerRelation/Manager/SalesForeca
 
 import ManufacturingProductionDashboard from './ManufacturingProduction/Dashboard';
 import ManufacturingProductionDashboardClient from './ManufacturingProduction/Client/DashboardClient';
-import ManufacturingProductionDashboardManager from './ManufacturingProduction/Manager/BillofMaterialsManager';
+import ManufacturingProductionDashboardManager from './ManufacturingProduction/Manager/DashboardManager';
 
 import BillofMaterials from './ManufacturingProduction/BillofMaterials';
 import BillofMaterialsClient from './ManufacturingProduction/Client/BillofMaterialsClient';
