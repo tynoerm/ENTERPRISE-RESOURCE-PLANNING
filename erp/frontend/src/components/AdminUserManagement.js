@@ -35,6 +35,7 @@ const AdminUserManagement = () => {
 
   return (
     <div>
+         <ToastContainer />
       <nav
         className="navbar bg-body-tertiary bg-dark border-bottom border-body"
         style={navbarStyle}
@@ -58,15 +59,7 @@ const AdminUserManagement = () => {
 
       <ToastContainer />
 
-      <nav
-        className="navbar bg-body-tertiary bg-dark border-bottom border-body shadow-lg p-3 mb-5 bg-body rounded"
-        style={navbarStyle}
-      >
-        <a className="navbar-brand" style={{ color: "white" }}>
-          <b>REGISTRATION SECTION</b>
-        </a>
-      </nav>
-
+     
       <div
         className="modal fade show"
         style={{ display: showModal ? "block" : "none" }}
