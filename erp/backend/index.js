@@ -37,7 +37,7 @@ import { qualitycontrolRoutes } from "./Routes/Manufacturing Production/qualityc
 
 // Connecting mongoDB Database
 mongoose
-  .connect("mongodb://127.0.0.1:27017/ENTERPRISE_RESOURCE_PLANNING")
+  .connect("mongodb+srv://tinomutendaishemutemaringa:<password>@enterpriseresourceplann.bpdy8kv.mongodb.net/?retryWrites=true&w=majority&appName=enterpriseresourceplanning")
   .then((x) => {
     console.log(
       `Connected to Mongo! Database name: "${x.connections[0].name}"`,
