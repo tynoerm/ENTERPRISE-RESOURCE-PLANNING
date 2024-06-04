@@ -140,7 +140,7 @@ function App() {
     <Router>
       <Routes>
      
-      <Route path="" element={<LoginComponent/>} />
+      <Route path="" element={!loggedIn?<Navigate to="/" />:<LoginComponent/>} />
        
         <Route path="Register" element={<Register/>} />
 
