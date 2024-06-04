@@ -115,7 +115,7 @@ const authorizeRoles = (...roles) => {
 
 // Registration route
 app.post('/api/register', async (req, res) => {
-  const { username, role, password } = req.body;
+  const { username,fullname,email, role, password } = req.body;
   try {
     // Check if the username already exists
     /*const existingUser = await User.findOne({ username });
