@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import React, { useState } from "react";
 import { MdDashboard } from "react-icons/md";
 import nav from "../images/nav.jpeg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import DataTable from 'react-data-table-component';
-import { Button } from 'react-bootstrap';
 
 const AdminUserManagement = () => {
   const [showModal, setShowModal] = useState(false);
@@ -15,76 +12,43 @@ const AdminUserManagement = () => {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [users, setUsers] = useState([]);
-  const [editUser, setEditUser] = useState(null);
+  
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get('https://enterprise-resource-planning.onrender.com/api/users');
-      setUsers(response.data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-      setError('Failed to fetch users.');
-    }
+  
+  const navbarStyle = {
+    backgroundImage: `url(${nav})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    color: "black",
   };
 
-  const handleShow = () => {
-    setEditUser(null);
-    setShowModal(true);
-  };
-
+  const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const userData = { username, fullname, email, role, password };
     try {
-      const response = await axios.post("https://enterprise-resource-planning.onrender.com/api/register", userData);
-      if (response.status === 200) {
-        toast.success("User registered successfully!");
-        handleClose();
-        fetchUsers(); // Refresh the user list
+      const response = await fetch("https://enterprise-resource-planning.onrender.com/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success("User registered successfully!"); // Notify user upon successful registration
+        handleClose();  // Close the modal
       } else {
-        setError(response.data.message);
+        setError(data.message);
       }
     } catch (error) {
       console.error("Registration failed:", error);
       setError("Registration failed. Please try again later.");
     }
   };
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`https://enterprise-resource-planning.onrender.com/api/users/${id}`);
-      fetchUsers(); // Refresh the user list after deletion
-    } catch (error) {
-      console.error('Error deleting user:', error);
-      setError('Failed to delete user.');
-    }
-  };
-
-  const columns = [
-    { name: 'Username', selector: 'username', sortable: true },
-    { name: 'Fullname', selector: 'fullname', sortable: true },
-    { name: 'Email', selector: 'email', sortable: true },
-    { name: 'Role', selector: 'role', sortable: true },
-    {
-      cell: (row) => (
-        <>
-          <Button variant="warning" onClick={() => alert('Edit functionality not implemented yet')}>Edit</Button>
-          <Button variant="danger" onClick={() => handleDelete(row._id)}>Delete</Button>
-        </>
-      ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-    },
-  ];
 
   return (
     <div>
@@ -95,14 +59,19 @@ const AdminUserManagement = () => {
       >
         <a className="navbar-brand" style={{ color: "white" }}>
           <b>
-            <MdDashboard /> &nbsp;ADMIN USER MANAGEMENT
+            {" "}
+            <MdDashboard /> &nbsp;ADMIN USER MANAGEMENT{" "}
           </b>
         </a>
       </nav>
       <div className="d-flex justify-content-end p-3">
-        <Button type="button" className="btn btn-success" onClick={handleShow}>
+        <button
+          type="button"
+          className="btn btn-success"
+          onClick={handleShow}
+        >
           Create + 1
-        </Button>
+        </button>
       </div>
 
       <ToastContainer />
@@ -178,15 +147,7 @@ const AdminUserManagement = () => {
         </div>
       </div>
 
-      <div className="container mt-4">
-        {error && <div className="alert alert-danger">{error}</div>}
-        <DataTable
-          title="User Management"
-          columns={columns}
-          data={users}
-          pagination
-        />
-      </div>
+      
     </div>
   );
 };
