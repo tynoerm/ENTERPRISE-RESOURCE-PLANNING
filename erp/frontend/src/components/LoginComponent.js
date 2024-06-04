@@ -4,9 +4,10 @@ import { RiLoginBoxFill } from "react-icons/ri";
 import axios from "axios";
 import { TbLogin2 } from "react-icons/tb";
 import insuranceImage from "../images/insurance2.jpeg";
-import loginImage from "../images/insurance2.jpeg"
+import loginImage from "../images/insurance2.jpeg";
 import nav from "../images/nav.jpeg";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Create AuthContext
 const AuthContext = createContext();
@@ -32,14 +33,11 @@ const AuthProvider = ({ children }) => {
 };
 
 const LoginComponent = () => {
-
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useContext(AuthContext); // Use login from context
-  const [showLoader, setShowLoader] = useState(false);
 
   const handleLogin = (event) => {
     event.preventDefault(); // Prevent default form submission
@@ -66,21 +64,23 @@ const LoginComponent = () => {
               navigate("/UserComponent");
             } else {
               setError("Unknown role");
+              toast.error("Unknown role");
             }
           } else {
             setError(data.message);
+            toast.error(data.message);
           }
         })
         .catch((error) => {
           console.error("Login failed:", error);
           setError("Login failed. Please try again later.");
+          toast.error("Login failed. Please try again later.");
         });
     } else {
       setError("Please enter username and password");
+      toast.error("Please enter username and password");
     }
   };
-
-  
 
   const navbarStyle = {
     backgroundImage: `url(${nav})`, // Set the background image
@@ -91,71 +91,69 @@ const LoginComponent = () => {
 
   return (
     <div
-    style={{
-      backgroundImage: `url(${loginImage})`, // Replace with your image path
-      backgroundSize: "cover",
-     height: "100vh",
-       backgroundPosition: "center",
-      width: "100vw",
-      display: "flex",
-      flexDirection: "column",
-    }}
-  >
-    <nav
-      className="navbar bg-body-tertiary bg-dark border-bottom border-body shadow-lg p-3 mb-5 bg-body rounded"
-      style={navbarStyle}
+      style={{
+        backgroundImage: `url(${loginImage})`, // Replace with your image path
+        backgroundSize: "cover",
+        height: "100vh",
+        backgroundPosition: "center",
+        width: "100vw",
+        display: "flex",
+        flexDirection: "column",
+      }}
     >
-      <a className="navbar-brand" style={{ color: "white" }}>
-        <b>AUTHENTICATION SECTION</b>
-      </a>
-    </nav>
-
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{ flex: 1 }}
-    >
-      <div
-        className="col-md-5 shadow-lg p-3 mb-5 bg-body rounded"
-        style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}
+      <ToastContainer />
+      <nav
+        className="navbar bg-body-tertiary bg-dark border-bottom border-body shadow-lg p-3 mb-5 bg-body rounded"
+        style={navbarStyle}
       >
-        <h5 className="shadow-sm p-3 mb-5 bg-body rounded">
-          <RiLoginBoxFill /> &nbsp; FREIGHT MARKS LOGISTICS
-        </h5>
+        <a className="navbar-brand" style={{ color: "white" }}>
+          <b>AUTHENTICATION SECTION</b>
+        </a>
+      </nav>
 
-        <form onSubmit={handleLogin}>
-          <div className="form-group">
-            <label>Username: </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Enter username"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
-              style={{ marginBottom: "20px" }}
-            />
-          </div>
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ flex: 1 }}
+      >
+        <div
+          className="col-md-5 shadow-lg p-3 mb-5 bg-body rounded"
+          style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}
+        >
+          <h5 className="shadow-sm p-3 mb-5 bg-body rounded">
+            <RiLoginBoxFill /> &nbsp; FREIGHT MARKS LOGISTICS
+          </h5>
 
-          <div className="form-group">
-            <label>Password: </label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              style={{ marginBottom: "20px" }}
-            />
-          </div>
-          <button type="submit" className="btn btn-primary btn-block">
-            Login
-          </button>
-          <div className="fw-bold">
-          
-          </div>
-        </form>
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label>Username: </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter username"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+                style={{ marginBottom: "20px" }}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Password: </label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Enter password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                style={{ marginBottom: "20px" }}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary btn-block">
+              Login
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
   );
 };
 
