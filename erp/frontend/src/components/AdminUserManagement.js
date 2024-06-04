@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
-import { GiArchiveRegister } from "react-icons/gi";
 import nav from "../images/nav.jpeg";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -59,14 +56,8 @@ const AdminUserManagement = () => {
 
       <ToastContainer />
 
-     
-      <div
-        className="modal fade show"
-        style={{ display: showModal ? "block" : "none" }}
-        tabIndex="-1"
-        role="dialog"
-      >
-        <div className="modal-dialog" role="document">
+      <div className={`modal fade ${showModal ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: showModal ? "block" : "none" }}>
+        <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">Register User</h5>
