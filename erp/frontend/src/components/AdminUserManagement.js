@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AdminUserManagement = () => {
-  const [showModal, setShowModal] = useState(false);
+    const [show, setShow] = useState(false);
   const [username, setUsername] = useState('');
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
@@ -45,57 +45,60 @@ const AdminUserManagement = () => {
         </a>
       </nav>
       <div className="d-flex justify-content-end p-3">
-        <button
-          type="button"
-          className="btn btn-success"
-          onClick={handleShow}
-        >
+      <Button variant="btn btn-success" onClick={handleShow}>
           Create + 1
-        </button>
+        </Button>
       </div>
 
-      <ToastContainer />
-
-      <div className={`modal fade ${showModal ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: showModal ? "block" : "none" }}>
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Register User</h5>
-              <button type="button" className="close" onClick={handleClose}>
-                <span>&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label>Username:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter username"
-                    value={username}
-                    onChange={(event) => setUsername(event.target.value)}
-                    required
-                  />
-                  <label>Fullname:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter fullname"
-                    value={fullname}
-                    onChange={(event) => setFullname(event.target.value)}
-                    required
-                  />
-                  <label>Email:</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Enter email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    required
-                  />
-                  <label>Role:</label>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+        size="lg"
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>CREATE NEW USER</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="form-wrapper">
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label className="form-label">username</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="username"
+                  id="username"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">fullname</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="fullname"
+                  id="fullname"
+                  value={fullname}
+                  onChange={(event) => setFullname(event.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">email</label>
+                <input
+                  type="email"
+                  className="email"
+                  name="email"
+                  id="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+              <label>Role:</label>
                   <select
                     className="form-control"
                     value={role}
@@ -107,25 +110,36 @@ const AdminUserManagement = () => {
                     <option value="manager">Manager</option>
                     <option value="admin">Admin</option>
                   </select>
-                  <label>Password:</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    required
-                  />
-                </div>
-                <button type="submit" className="btn btn-primary btn-block">
-                  Register
+              </div>
+              <div className="mb-3">
+                <label className="form-label">password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  id="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+              </div>
+              
+             
+              <div className="mb-3">
+                <button type="submit"  className="btn btn-primary">
+                  Submit
                 </button>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
-        </div>
-      </div>
-    </div>
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
+
+
+
+
+       </div>
+    
   );
 };
 
