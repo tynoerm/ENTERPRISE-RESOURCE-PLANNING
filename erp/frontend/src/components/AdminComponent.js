@@ -158,7 +158,7 @@ const MainDashboard = () => {
                 </h5>
                 <p class="card-text"> user management section</p>
                 <Link
-                  to="/UserManagementComponent"
+                  to="/RegisterComponent"
                   type="button"
                   class="btn btn-primary"
                 >
