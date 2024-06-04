@@ -11,7 +11,7 @@ import ManagerComponent from './components/ManagerComponent';
 import UserComponent from './components/UserComponent';
 import Register from './components/RegisterComponent';
 
-import UserManagementComponent from './components/UserManagementComponent'
+import AdminUserManagement from './components/AdminUserManagement'
 
 import SupplyChainManagementDashboard from './SupplyChainManagement/Dashboard';
 import SupplyChainManagementDashboardUser from './SupplyChainManagement/User/DashboardUser';
@@ -149,7 +149,7 @@ function App() {
         <Route path="ManagerComponent" element={<ManagerComponent />} />
         <Route path="Register" element={<Register />} />
 
-        <Route path="UserManagementComponent" element={<UserManagementComponent />} />
+        <Route path="AdminUserManagement" element={<AdminUserManagement />} />
 
 
         <Route path="MainDashboard" element={!loggedIn?<Navigate to="/" />:<MainDashboard />} />
