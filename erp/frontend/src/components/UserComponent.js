@@ -76,7 +76,7 @@ const MainDashboard = () => {
                     .
                   </p>
                   <Link
-                    to="/FinanceAccountingDashboardUser"
+                    to="/FinanceAccountingDashboardClient"
                     type="button"
                     class="btn btn-primary"
                   >
@@ -99,7 +99,7 @@ const MainDashboard = () => {
                     management.
                   </p>
                   <Link
-                    to="/SalesCustomerRelationUser"
+                    to="/SalesCustomerRelationClient"
                     type="button"
                     class="btn btn-primary"
                   >
@@ -122,7 +122,7 @@ const MainDashboard = () => {
                     lifecycle management
                   </p>
                   <Link
-                    to="/ManufacturingProductionDashboardUser"
+                    to="/ManufacturingProductionDashboardClient"
                     type="button"
                     class="btn btn-primary"
                   >
@@ -147,7 +147,7 @@ const MainDashboard = () => {
                     development, time and attendance tracking.
                   </p>
                   <Link
-                    to="/HumanResourcesDashboardUser"
+                    to="/HumanResourcesDashboardClient"
                     type="button"
                     class="btn btn-primary"
                   >
