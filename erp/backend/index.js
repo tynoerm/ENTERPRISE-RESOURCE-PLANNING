@@ -73,6 +73,8 @@ app.use(cors());
 // Define the user schema
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
+  fullname: {type: String},
+  email: {type: String},
   role: { type: String, enum: ['admin', 'manager', 'client'], required: true},
   password: { type: String, required: true }
 });
@@ -127,6 +129,8 @@ app.post('/api/register', async (req, res) => {
     // Create a new user
     const newUser = new User({
       username,
+      fullname,
+      email,
       role,
       password:hashedPassword
     });
