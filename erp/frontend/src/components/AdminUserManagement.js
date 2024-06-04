@@ -12,6 +12,7 @@ const AdminUserManagement = () => {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const navbarStyle = {
     backgroundImage: `url(${nav})`,
@@ -23,16 +24,34 @@ const AdminUserManagement = () => {
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission logic here
-    toast.success("User registered successfully!");
-    handleClose();
+    const userData = { username, fullname, email, role, password };
+    try {
+      const response = await fetch("https://enterprise-resource-planning.onrender.com/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success("User registered successfully!"); // Notify user upon successful registration
+        handleClose();  // Close the modal
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+      console.error("Registration failed:", error);
+      setError("Registration failed. Please try again later.");
+    }
   };
 
   return (
     <div>
-         <ToastContainer />
+      <ToastContainer />
       <nav
         className="navbar bg-body-tertiary bg-dark border-bottom border-body"
         style={navbarStyle}
@@ -58,7 +77,7 @@ const AdminUserManagement = () => {
 
       <div className={`modal fade ${showModal ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: showModal ? "block" : "none" }}>
         <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
+          <div className="modal-content" style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
             <div className="modal-header">
               <h5 className="modal-title">Register User</h5>
               <button type="button" className="close" onClick={handleClose}>
@@ -66,6 +85,7 @@ const AdminUserManagement = () => {
               </button>
             </div>
             <div className="modal-body">
+              {error && <div className="alert alert-danger">{error}</div>}
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label>Username:</label>
