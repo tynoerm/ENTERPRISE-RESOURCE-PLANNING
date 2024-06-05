@@ -30,6 +30,8 @@ const InventoryManagement = () => {
   const [selling_price, setSellingprice] = useState("");
   const [supplier_name, setSuppliername] = useState("");
 
+  const [inputValue, setInputValue] = useState('');
+
   const handleShow1 = (a) => {
     setShow1(true);
     setItemEdit(a);
@@ -115,6 +117,12 @@ const InventoryManagement = () => {
       });
       setShow(false)
       notify("Deleted Successfully")
+
+      //Validate input
+
+      if (!inputValue.trim()) {
+        setError('Form Submitted can not be empty:', inputValue);
+      }
   };
 
   
@@ -176,7 +184,7 @@ const InventoryManagement = () => {
         aria-labelledby="example-modal-sizes-title-lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
+          <Modal.Title>RECEIVE INVENTORY</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -194,6 +202,7 @@ const InventoryManagement = () => {
                     setItemName(event.target.value);
                   }}
                 />
+                 {error && <div style={{ color: 'red' }}>{error}</div>}
               </div>
               <div className="mb-3">
                 <label className="form-label">Category</label>
