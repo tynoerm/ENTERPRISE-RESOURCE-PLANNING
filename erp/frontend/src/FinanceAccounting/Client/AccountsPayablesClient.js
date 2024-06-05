@@ -47,7 +47,7 @@ const AccountsPayables = () => {
 
 
 
-
+  const notify = (message) => toast(message);
   const notify1 = (message) => toast(message);
    
 
