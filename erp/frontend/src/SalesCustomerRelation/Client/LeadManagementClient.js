@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
+import { FaFileCsv } from "react-icons/fa";
 
 
 import { ToastContainer, toast } from "react-toastify";
@@ -137,7 +138,13 @@ const LeadManagement = () => {
           <a class="navbar-brand">
             <b>LEAD MAANAGEMENT</b>
           </a>
+          <form className="d-flex" role="search">
+            <a href="/Login" className="btn btn-primary me-2"></a>
+            <a href= "/" className="btn btn-success">Log Out</a>
+          </form>
         </div>
+
+        
       </nav>
 
       <div className="d-flex justify-content-end">

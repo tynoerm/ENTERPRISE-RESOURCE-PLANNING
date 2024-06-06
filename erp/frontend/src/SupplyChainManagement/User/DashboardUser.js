@@ -76,7 +76,7 @@ const SupplyChainManagementDashboard = () => {
                   including tracking shipments.
                 </p>
                 <Link
-                  to="/LogisticsandShippingUser"
+                  to="/InventoryManagementUser"
                   type="button"
                   class="btn btn-primary"
                 >

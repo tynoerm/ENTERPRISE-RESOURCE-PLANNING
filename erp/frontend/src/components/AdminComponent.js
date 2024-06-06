@@ -156,7 +156,7 @@ const MainDashboard = () => {
                   {" "}
                   <AiFillLayout /> &nbsp; USER MANAGEMENT
                 </h5>
-                <p class="card-text"> user management section</p>
+                <p class="card-text">create new user</p>
                 <Link
                   to="/Register"
                   type="button"

@@ -65,7 +65,7 @@ const AccountsReceivables = () => {
     };
     axios
       .post(
-        "http://localhost:3001/accountsreceivables/create_accountsreceivables",
+        "https://enterprise-resource-planning.onrender.com/accountsreceivables/create_accountsreceivables",
         accountsReceivablesinsert
       )
       .then((res) => {
@@ -84,7 +84,7 @@ const AccountsReceivables = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `http://localhost:3001/accountsreceivables/delete-accountsreceivables/${id}`
+        `https://enterprise-resource-planning.onrender.com/accountsreceivables/delete-accountsreceivables/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -107,7 +107,7 @@ const AccountsReceivables = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3001/accountsreceivables/update-accountsreceivables/${accountsReceivablesEdit._id}`,
+        `https://enterprise-resource-planning.onrender.com/accountsreceivables/update-accountsreceivables/${accountsReceivablesEdit._id}`,
         accountsReceivablesEdit
       )
       .then((res) => {
@@ -128,7 +128,7 @@ const AccountsReceivables = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/accountsreceivables/generate-csv",
+        "https://enterprise-resource-planning.onrender.com/accountsreceivables/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }

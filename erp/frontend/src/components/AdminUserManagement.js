@@ -12,9 +12,8 @@ const AdminUserManagement = () => {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
   const [password, setPassword] = useState('');
-  
+  const [error, setError] = useState('');
 
-  
   const navbarStyle = {
     backgroundImage: `url(${nav})`,
     backgroundSize: "cover",
@@ -74,6 +73,7 @@ const AdminUserManagement = () => {
         </button>
       </div>
 
+      <ToastContainer />
 
       <div className={`modal fade ${showModal ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: showModal ? "block" : "none" }}>
         <div className="modal-dialog modal-dialog-centered" role="document">
@@ -145,8 +145,6 @@ const AdminUserManagement = () => {
           </div>
         </div>
       </div>
-
-      
     </div>
   );
 };

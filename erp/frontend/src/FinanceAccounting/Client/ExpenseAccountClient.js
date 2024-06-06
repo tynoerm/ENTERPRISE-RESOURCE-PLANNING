@@ -62,7 +62,7 @@ const ExpenseAccount = () => {
     };
     axios
       .post(
-        "http://localhost:3001/expenseaccount/create_expenseaccount",
+        "https://enterprise-resource-planning.onrender.com/expenseaccount/create_expenseaccount",
         expenseaccountinsert
       )
       .then((res) => {
@@ -77,7 +77,7 @@ const ExpenseAccount = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:3001/expenseaccount/update-expenseaccount/${expenseaccountEdit._id}`,
+        `https://enterprise-resource-planning.onrender.com/expenseaccount/update-expenseaccount/${expenseaccountEdit._id}`,
         expenseaccountEdit
       )
       .then((res) => {
@@ -93,7 +93,7 @@ const ExpenseAccount = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/expenseaccount/generate-csv",
+        "https://enterprise-resource-planning.onrender.com/expenseaccount/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }
@@ -113,7 +113,7 @@ const ExpenseAccount = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `http://localhost:3001/expenseaccount/delete-expenseaccount/${id}`
+        `https://enterprise-resource-planning.onrender.com/expenseaccount/delete-expenseaccount/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
