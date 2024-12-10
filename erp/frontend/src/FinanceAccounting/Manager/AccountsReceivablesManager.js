@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { FaFileCsv } from "react-icons/fa";
-
+import { Card, Form, Row, Col, Button } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const AccountsReceivables = () => {
   const [modalShow, setModalShow] = useState(false);
   const [accountsReceivablesForm, setAccountsReceivablesForm] = useState([]);
+  const [formData, setFormData] = useState([]);
 
   const [show, setShow] = useState(false);
   const [show1, setShow1] = useState(false);
+  const [show2, setShow2] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleClose1 = () => setShow1(false);
+  const handleClose2 = () => setShow2(false);
 
   const handleShow = () => setShow(true);
   const handleShow1 = (a) => {
@@ -26,6 +29,7 @@ const AccountsReceivables = () => {
     setAccountsReceivablesEdit(a);
     console.log(a);
   };
+  const handleShow2 = () => setShow2(true);
 
   const [accountsReceivablesinsert, setAccountsReceivablesinsert] = useState(
     {}
@@ -39,9 +43,66 @@ const AccountsReceivables = () => {
   const [aging_information, setAgingInformation] = useState("");
   const [payment_history, setPaymentHistory] = useState("");
 
+  const [InvoiceForm, setInvoiceForm] = useState([]);
+
+  const [dateofinvoice, setDateofinvoice] = useState("");
+  const [customername, setCustomername] = useState("");
+  const [address, setAddress] = useState("");
+  const [itemdescription, setItemdescription] = useState("");
+  const [customercontact, setCustomercontact] = useState("");
+  const [sellername, setSellername] = useState("");
+  const [paymentmethods, setPaymentmethods] = useState("");
+  const [vatamount, setVatamount] = useState("");
+  const [taxes, setTaxes] = useState("");
+  const [discoutapplied, setDiscountapplied] = useState("");
+  const [totalamountdue, setTotalamountdue] = useState("");
+
+   const[ selectedAccountsreceivables, setSelectedAccountsreceivables] =  useState([]);
+
+
+   const handleCheckboxChange = (accountsreceivablesId) => {
+    setSelectedAccountsreceivables((prevSelected) =>
+      prevSelected.includes(accountsreceivablesId)
+        ? prevSelected.filter((id) => id !== accountsreceivablesId)
+        : [...prevSelected, accountsreceivablesId]
+    );
+  };
+
+  const downloadPDF = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/accountsreceivables/download-pdf",
+        {  selectedAccountsreceivables},
+        { responseType: "blob" }
+      );
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Invoice.pdf");
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Error downloading the PDF", error);
+    }
+  };
+
+
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
+
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/accountsreceivables/")
+      .get("http://localhost:3001/accountsreceivables/")
       .then((res) => {
         setAccountsReceivablesForm(res.data.data);
       })
@@ -49,7 +110,6 @@ const AccountsReceivables = () => {
         console.log(error);
       });
   }, []);
-
 
   const notify1 = (message) => toast(message);
 
@@ -65,7 +125,7 @@ const AccountsReceivables = () => {
     };
     axios
       .post(
-        "https://enterprise-resource-planning.onrender.com/accountsreceivables/create_accountsreceivables",
+        "http://localhost:3001/accountsreceivables/create_accountsreceivables",
         accountsReceivablesinsert
       )
       .then((res) => {
@@ -75,18 +135,16 @@ const AccountsReceivables = () => {
           accountsReceivablesinsert,
         ]);
       });
-      setShow(false)
-      notify1("accounts receivables created successfully")
+    setShow(false);
+    notify1("accounts receivables created successfully");
   };
 
-
   const notify5 = (message) => toast(message);
-   
 
   const handleDelete = async (id) => {
     axios
       .delete(
-        `https://enterprise-resource-planning.onrender.com/accountsreceivables/delete-accountsreceivables/${id}`
+        `http://localhost:3001/accountsreceivables/delete-accountsreceivables/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -98,9 +156,8 @@ const AccountsReceivables = () => {
       .catch((error) => {
         console.log(error);
       });
-      notify5(" deleted successfully")
+    notify5(" deleted successfully");
   };
-
 
   const notify2 = (message) => toast(message);
 
@@ -108,7 +165,7 @@ const AccountsReceivables = () => {
     e.preventDefault();
     axios
       .put(
-        `https://enterprise-resource-planning.onrender.com/accountsreceivables/update-accountsreceivables/${accountsReceivablesEdit._id}`,
+        `http://localhost:3001/accountsreceivables/update-accountsreceivables/${accountsReceivablesEdit._id}`,
         accountsReceivablesEdit
       )
       .then((res) => {
@@ -119,15 +176,45 @@ const AccountsReceivables = () => {
       .catch((error) => {
         console.error(" Error updating item:", error);
       });
-      setShow(false)
-      notify2("accounts receivables updated successfully")
+    setShow(false);
+    notify2("accounts receivables updated successfully");
   };
 
+  const notify3 = (message) => toast(message);
+
+  const handleSubmit2 = (e) => {
+    e.preventDefault();
+    const invoiceinsert = {
+      dateofinvoice,
+      customername,
+      address,
+      itemdescription,
+      customercontact,
+      sellername,
+      paymentmethods,
+      vatamount,
+      taxes,
+      discoutapplied,
+      totalamountdue,
+    };
+    axios
+      .post(
+        "http://localhost:3001/accountsreceivablesinvoice/create-accountsreceivables2",
+        invoiceinsert
+      )
+      .then((res) => {
+        console.log({ status: res.status });
+        setInvoiceForm((prev) => [...prev, invoiceinsert]);
+      });
+
+    setShow2(false);
+    notify3("standard invoice created successfully");
+  };
 
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "https://enterprise-resource-planning.onrender.com/accountsreceivables/generate-csv",
+        "http://localhost:3001/accountsreceivables/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }
@@ -145,20 +232,78 @@ const AccountsReceivables = () => {
 
   return (
     <div>
-       <ToastContainer/>
+      <ToastContainer />
       <nav class=" navbar bg-body-tertiary bg-dark border-bottom border-body shadow-lg p-3 mb-5 bg-body rounded">
         <div class="container-fluid">
           <a class="navbar-brand">
             <b>ACCOUNTS RECEIVABLES</b>
           </a>
+
+          <form className="d-flex" role="search">
+            <a className="btn btn-outline-primary " onClick={handleShow2}>
+              CREATE INVOICE
+            </a>
+          
+            <ul className="nav justify-content-end">
+              <li className="nav-item">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to="/AccountsPayablesManager"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  ACCOUNTS PAYABLES
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/AccountsReceivablesManager"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  ACCOUNTS RECEIVABLES
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/ExpenseAccountManager"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  EXPENSE ACCOUNT
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/"
+                  type="button"
+                  class="btn btn-outline-success"
+                >
+                  LOG OUT
+                </Link>
+              </li>
+           
+           
+            </ul>
+          </form>
         </div>
       </nav>
 
       <div className="d-flex justify-content-end">
-      <button className="btn btn-primary" onClick={handleDownload}>
-          {" "}
-          <FaFileCsv /> &nbsp;Reports
-        </button>
+      <Button
+          variant="btn btn-primary"
+          onClick={downloadPDF}
+          disabled={selectedAccountsreceivables.length === 0}
+        >
+          Download Selected as PDF
+        </Button>
         <Button variant="btn btn-success" onClick={handleShow}>
           Create + 1
         </Button>
@@ -396,9 +541,217 @@ const AccountsReceivables = () => {
         <Modal.Footer></Modal.Footer>
       </Modal>
 
+      <Modal
+        show={show2}
+        onHide={handleClose2}
+        backdrop="static"
+        keyboard={false}
+        size="xl"
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton>
+          
+          <Modal.Title>STANDARD INVOICE CREATION</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <div className="form-wrapper">
+            <form onSubmit={handleSubmit2}>
+              <div className="inline-form">
+                <div className="row mb-3">
+                  <div className="col">
+                  <label className="form-label" htmlFor="customername">
+                      Date
+                    </label>
+                    <div>
+                      <div className="form-group">
+                        <DatePicker
+                          className="form-control"
+                          selected={dateofinvoice}
+                          onChange={(date) => setDateofinvoice(date)}
+                          dateFormat="MM/dd/yyyy"
+                          isClearable
+                          showYearDropdown
+                          scrollableMonthYearDropdown
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <label className="form-label" htmlFor="customername">
+                      Customer Name
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="customername"
+                      id="customername"
+                      value={InvoiceForm.customername}
+                      onChange={(event) => {
+                        setCustomername(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Address</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="address"
+                      id="address"
+                      value={InvoiceForm.address}
+                      onChange={(event) => {
+                        setAddress(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Item Description</label>
+
+                    <textarea
+                      className="form-control"
+                      name="itemdescription"
+                      id="itemdescription"
+                      value={InvoiceForm.itemdescription}
+                      onChange={(event) => {
+                        setItemdescription(event.target.value);
+                      }}
+                    ></textarea>
+                  </div>
+
+                  <div className="col">
+                    <label className="form-label" htmlFor=" customercontact">
+                      Customer Contact
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name=" customercontact"
+                      id=" customercontact"
+                      value={InvoiceForm.customercontact}
+                      onChange={(event) => {
+                        setCustomercontact(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="col">
+                    <label className="form-label" htmlFor=" sellername">
+                      Seller Name
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name=" sellername"
+                      id=" sellername"
+                      value={InvoiceForm.sellername}
+                      onChange={(event) => {
+                        setSellername(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Payment Methods</label>
+                    <select
+                      className="form-control"
+                      value={paymentmethods}
+                      onChange={(event) =>
+                        setPaymentmethods(event.target.value)
+                      }
+                      required
+                    >
+                      <option value="">select payment method</option>
+                      <option value="debitcards">Debit Cards</option>
+                      <option value="creditcards">Credit Cards</option>
+                      <option value="cash">Cash Payment</option>
+                      <option value="ecocashpayment">Ecocash Payment</option>
+                    </select>
+                  </div>
+
+                  <div className="col">
+                    <label className="form-label" htmlFor=" vatamount">
+                      (VAT)amount
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="vatamount"
+                      id="vatamount"
+                      value={InvoiceForm.vatamount}
+                      onChange={(event) => {
+                        setVatamount(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="col">
+                    <label className="form-label" htmlFor=" taxes">
+                      Gross total amount
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name=" taxes"
+                      id=" taxes"
+                      value={InvoiceForm.taxes}
+                      onChange={(event) => {
+                        setTaxes(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="col">
+                    <label className="form-label" htmlFor=" discountapplied">
+                      Discount Applied
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="discountapplied"
+                      id="discountapplied"
+                      value={InvoiceForm.discoutapplied}
+                      onChange={(event) => {
+                        setDiscountapplied(event.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="col">
+                    <label className="form-label" htmlFor="totalamountdue">
+                      Net amount payable
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="totalamountdue"
+                      id="totalamountdue"
+                      value={InvoiceForm.totalamountdue}
+                      onChange={(event) => {
+                        setTotalamountdue(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <button type="submit" className="btn btn-primary">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </Modal.Body>
+
+        <Modal.Footer></Modal.Footer>
+      </Modal>
+
       <table className="table table-striped">
         <thead>
           <tr>
+          <th>Select</th>
             <th>customer_information</th>
             <th> invoice_details</th>
             <th>payment_information</th>
@@ -411,7 +764,14 @@ const AccountsReceivables = () => {
         <tbody>
           {accountsReceivablesForm.map((accountsreceivables, index) => {
             return (
-              <tr key={index}>
+              <tr key={accountsreceivables._id}>
+                    <td>
+                <input
+                  type="checkbox"
+                  checked={selectedAccountsreceivables.includes(accountsreceivables._id)}
+                  onChange={() => handleCheckboxChange(accountsreceivables._id)}
+                />
+              </td>
                 <td>{accountsreceivables.customer_information}</td>
                 <td>{accountsreceivables.invoice_details}</td>
                 <td>{accountsreceivables.payment_information}</td>
@@ -440,6 +800,10 @@ const AccountsReceivables = () => {
           })}
         </tbody>
       </table>
+
+      <div style={footerStyle}>
+        <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+      </div>
     </div>
   );
 };

@@ -11,17 +11,23 @@ const AccountsPayables = () => {
   const [modalShow, setModalShow] = useState(false);
   const [accountsPayablesForm, setAccountsPayablesForm] = useState([]);
 
+  const [InvoiceForm, setInvoiceForm] = useState([]);
+
   const [show, setShow] = useState(false);
   const [show1, setShow1] = useState(false);
+  const [show2, setShow2] = useState(false);
+
   const handleClose = () => setShow(false);
   const handleClose1 = () => setShow1(false);
-  const handleShow = () => setShow(true);
+  const handleClose2 = () => setShow2(false);
 
+  const handleShow = () => setShow(true);
   const handleShow1 = (a) => {
     setShow1(true);
     setAccountspayableEdit(a);
     console.log(a);
   };
+  const handleShow2 = () => setShow2(true);
 
   const [accountspayableinsert, setAccountspayableinsert] = useState({});
   const [accountspayableEdit, setAccountspayableEdit] = useState({});
@@ -33,10 +39,25 @@ const AccountsPayables = () => {
   const [invoice_date, setInvoicedate] = useState("");
   const [invoice_amount, setInvoiceamount] = useState("");
   const [invoice_description, setInvoiceDescription] = useState("");
+  const [paymentmethod, setPaymentmethod] = useState("");
+
+  const [companyname, setCompanyname] = useState("");
+  const [contactdetails, setContactdetails] = useState("");
+  const [address, setAddress] = useState("");
+  const [itemdescription, setItemdescription] = useState("");
+  const [freightorshippingcost, setFreightorshippinngcost] = useState("");
+  const [handlingcharges, setHandlingcharges] = useState("");
+  const [paymentmethods, setPaymentmethods] = useState("");
+  const [vatamount, setVatamount] = useState("");
+  const [grosstotalamount, setGrosstotalamaount] = useState("");
+  const [discoutapplied, setDiscountapplied] = useState("");
+  const [netamountpayable, setNetamountpayable] = useState("");
+
+  //ACCOUNTS PAYABLES INVOICE
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/accountspayables/")
+      .get("http://localhost:3001/accountspayables/")
       .then((res) => {
         setAccountsPayablesForm(res.data.data);
       })
@@ -45,6 +66,15 @@ const AccountsPayables = () => {
       });
   }, []);
 
+  const handleInputChange1 = (event) => {
+    const value = event.taget.value;
+    setDiscountapplied(value);
+
+    const calculatedValue = value * 2;
+    setNetamountpayable(calculatedValue);
+  };
+
+  const notify = (message) => toast(message);
   const notify1 = (message) => toast(message);
 
   const handleSubmit = (e) => {
@@ -60,7 +90,7 @@ const AccountsPayables = () => {
     };
     axios
       .post(
-        "https://enterprise-resource-planning.onrender.com/accountspayables/create-accountspayables",
+        "http://localhost:3001/accountspayables/create-accountspayables",
         accountspayableinsert
       )
       .then((res) => {
@@ -68,18 +98,48 @@ const AccountsPayables = () => {
         setAccountsPayablesForm((prev) => [...prev, accountspayableinsert]);
       });
 
-      setShow(false)
-      notify1("accounts payables created successfully")
+    setShow(false);
+    notify1("accounts payables created successfully");
   };
 
-
   const notify2 = (message) => toast(message);
-     
+
+  const notify3 = (message) => toast(message);
+
+  const handleSubmit2 = (e) => {
+    e.preventDefault();
+    const invoiceinsert = {
+      companyname,
+      contactdetails,
+      address,
+      itemdescription,
+      freightorshippingcost,
+      handlingcharges,
+      paymentmethods,
+      vatamount,
+      grosstotalamount,
+      discoutapplied,
+      netamountpayable,
+    };
+    axios
+      .post(
+        "http://localhost:3001/accountspayableinvoice/create-accountspayables2",
+        invoiceinsert
+      )
+      .then((res) => {
+        console.log({ status: res.status });
+        setInvoiceForm((prev) => [...prev, invoiceinsert]);
+      });
+
+    setShow2(false);
+    notify3("vendors invoice created successfully");
+  };
+
   const handleUpdate = (e) => {
     e.preventDefault();
     axios
       .put(
-        `https://enterprise-resource-planning.onrender.com/accountspayables/update-accountspayable/${accountspayableEdit._id}`,
+        `http://localhost:3001/accountspayables/update-accountspayable/${accountspayableEdit._id}`,
         accountspayableEdit
       )
       .then((res) => {
@@ -90,34 +150,34 @@ const AccountsPayables = () => {
       .catch((error) => {
         console.error(" Error updating item:", error);
       });
-      setShow(false)
-      notify2("accounts payables updated successfully")
+    setShow(false);
+    notify2("accounts payables updated successfully");
   };
 
-
   const notify5 = (message) => toast(message);
-   
+
   const handleDelete = async (id) => {
     axios
-      .delete(`https://enterprise-resource-planning.onrender.com/accountspayables/delete-accountspayable/${id}`)
+      .delete(
+        `http://localhost:3001/accountspayables/delete-accountspayable/${id}`
+      )
       .then(() => {
         console.log("Data successfully deleted!");
 
         setAccountsPayablesForm((prevaccountsPayablesForm) =>
-            prevaccountsPayablesForm.filter((item) => item._id !== id)
+          prevaccountsPayablesForm.filter((item) => item._id !== id)
         );
       })
       .catch((error) => {
         console.log(error);
       });
-      notify5("accounts payables updated successfully")
+    notify5("accounts payables updated successfully");
   };
-
 
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "https://enterprise-resource-planning.onrender.com/accountspayables/generate-csv",
+        "http://localhost:3001/accountspayables/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }
@@ -133,23 +193,124 @@ const AccountsPayables = () => {
     }
   };
 
+  const [selectedAccountspayable, setSelectedAccountspayable] = useState([]);
+
+  const handleCheckboxChange = (accountspayableId) => {
+    setSelectedAccountspayable((prevSelected) =>
+      prevSelected.includes(accountspayableId)
+        ? prevSelected.filter((id) => id !== quotationId)
+        : [...prevSelected, accountspayableId]
+    );
+  };
+
+
+  const downloadPDF = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/accountspayables/download-pdf",
+        { selectedAccountspayable },
+        { responseType: "blob" }
+      );
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "quotations.pdf");
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Error downloading the PDF", error);
+    }
+  };
+
+
+
+
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
 
   return (
     <div>
-      <ToastContainer/>
+      <ToastContainer />
       <nav class=" navbar bg-body-tertiary bg-dark border-bottom border-body shadow-lg p-3 mb-5 bg-body rounded">
         <div class="container-fluid">
           <a class="navbar-brand">
             <b>ACCOUNTS PAYABLES MANAGER</b>
           </a>
+
+          <form className="d-flex" role="search">
+          <a className="btn btn-outline-primary " onClick={handleShow2}>
+              CREATE INVOICE
+            </a>
+            <ul className="nav justify-content-end">
+              <li className="nav-item">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to="/AccountsPayablesManager"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  ACCOUNTS PAYABLES
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/AccountsReceivablesManager"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  ACCOUNTS RECEIVABLES
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/ExpenseAccountManager"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  EXPENSE ACCOUNT
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/"
+                  type="button"
+                  class="btn btn-outline-success"
+                >
+                  LOG OUT
+                </Link>
+              </li>
+           
+           
+            </ul>
+          </form>
         </div>
       </nav>
 
       <div className="d-flex justify-content-end">
-      <button className="btn btn-primary" onClick={handleDownload}>
-          {" "}
-          <FaFileCsv /> &nbsp;Reports
-        </button>
+      <Button
+          variant="btn btn-primary"
+          onClick={downloadPDF}
+          disabled={selectedAccountspayable.length === 0}
+        >
+          Download Selected as PDF
+        </Button>
         <Button variant="btn btn-success" onClick={handleShow}>
           Create + 1
         </Button>
@@ -163,7 +324,8 @@ const AccountsPayables = () => {
         size="lg"
         aria-labelledby="example-modal-sizes-title-lg"
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton
+        style={{ backgroundColor: "blue", color: "white" }}>
           <Modal.Title>ACCOUNTS PAYABLES</Modal.Title>
         </Modal.Header>
 
@@ -289,7 +451,8 @@ const AccountsPayables = () => {
         size="lg"
         aria-labelledby="example-modal-sizes-title-lg"
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton
+        style={{ backgroundColor: "blue", color: "white" }}>
           <Modal.Title>EDIT</Modal.Title>
         </Modal.Header>
 
@@ -422,9 +585,212 @@ const AccountsPayables = () => {
         <Modal.Footer></Modal.Footer>
       </Modal>
 
+      <Modal
+        show={show2}
+        onHide={handleClose2}
+        backdrop="static"
+        keyboard={false}
+        size="xl"
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>VENDOR'S INVOICE CREATION</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <div className="form-wrapper">
+            <form onSubmit={handleSubmit2}>
+              <div className="inline-form">
+                <div className="row mb-3">
+                  <div className="col">
+                    <label className="form-label" htmlFor="vendor_name">
+                      Company Name
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="companyname"
+                      id="companyname"
+                      value={InvoiceForm.companyname}
+                      onChange={(event) => {
+                        setCompanyname(event.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="col">
+                    <label className="form-label" htmlFor="vendor_address">
+                      Contact Details
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="contactdetails"
+                      id="contactdetails"
+                      value={InvoiceForm.contactdetails}
+                      onChange={(event) => {
+                        setContactdetails(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Address</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="address"
+                      id="address"
+                      value={InvoiceForm.address}
+                      onChange={(event) => {
+                        setAddress(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Item Description</label>
+
+                    <textarea
+                      className="form-control"
+                      name="itemdescription"
+                      id="itemdescription"
+                      value={InvoiceForm.itemdescription}
+                      onChange={(event) => {
+                        setItemdescription(event.target.value);
+                      }}
+                    ></textarea>
+                  </div>
+
+                  <div className="col">
+                    <label className="form-label" htmlFor="vendor_name">
+                      Freight or Shipping Cost
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="freightorshippingcost"
+                      id="freightorshippingcost"
+                      value={InvoiceForm.freightorshippingcost}
+                      onChange={(event) => {
+                        setFreightorshippinngcost(event.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="col">
+                    <label className="form-label" htmlFor="vendor_address">
+                      Handling Charges
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="handlingcharges"
+                      id="handlingcharges"
+                      value={InvoiceForm.handlingcharges}
+                      onChange={(event) => {
+                        setHandlingcharges(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Payment Methods</label>
+                    <select
+                      className="form-control"
+                      value={paymentmethods}
+                      onChange={(event) =>
+                        setPaymentmethods(event.target.value)
+                      }
+                      required
+                    >
+                      <option value="">select payment method</option>
+                      <option value="debitcards">Debit Cards</option>
+                      <option value="creditcards">Credit Cards</option>
+                      <option value="cash">Cash Payment</option>
+                      <option value="ecocashpayment">Ecocash Payment</option>
+                    </select>
+                  </div>
+
+                  <div className="col">
+                    <label className="form-label" htmlFor="vendor_name">
+                      (VAT)amount
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="vatamount"
+                      id="vatamount"
+                      value={InvoiceForm.vatamount}
+                      onChange={(event) => {
+                        setVatamount(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="col">
+                    <label className="form-label" htmlFor="vendor_address">
+                      Gross total amount
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="grosstotalamount"
+                      id="grosstotalamount"
+                      value={InvoiceForm.grosstotalamount}
+                      onChange={(event) => {
+                        setGrosstotalamaount(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="col">
+                    <label className="form-label" htmlFor="vendor_name">
+                      Discount Applied
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="discountapplied"
+                      id="discountapplied"
+                      value={InvoiceForm.discoutapplied}
+                      onChange={(event) => {
+                        setDiscountapplied(event.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="col">
+                    <label className="form-label" htmlFor="vendor_address">
+                      Net amount payable
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="netamountpayable"
+                      id="netamountpayable"
+                      value={netamountpayable}
+                      onChange={(event) => {
+                        setNetamountpayable(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <button type="submit" className="btn btn-primary">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </Modal.Body>
+
+        <Modal.Footer></Modal.Footer>
+      </Modal>
+
       <table className="table table-striped">
         <thead>
           <tr>
+          <th>Select</th>
             <th>vendor_name</th>
             <th> vendor_address</th>
             <th>vendor_contactdetails</th>
@@ -438,7 +804,14 @@ const AccountsPayables = () => {
         <tbody>
           {accountsPayablesForm.map((accountspayables, index) => {
             return (
-              <tr key={index}>
+              <tr key={accountspayables._id}>
+                 <td>
+                <input
+                  type="checkbox"
+                  checked={selectedAccountspayable.includes(accountspayables._id)}
+                  onChange={() => handleCheckboxChange(accountspayables._id)}
+                />
+              </td>
                 <td>{accountspayables.vendor_name}</td>
                 <td>{accountspayables.vendor_address}</td>
                 <td>{accountspayables.vendor_contactdetails}</td>
@@ -468,6 +841,10 @@ const AccountsPayables = () => {
           })}
         </tbody>
       </table>
+      
+      <div style={footerStyle}>
+        <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,15 @@
+/* InlineForm.css */
+.inline-form .row {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Adjust the gap between the fields */
+  }
+  
+  .inline-form .form-label {
+    margin-right: 10px;
+  }
+  
+  .inline-form .form-control {
+    width: auto; /* Adjust the width as needed */
+  }
+  

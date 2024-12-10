@@ -38,7 +38,7 @@ const ExpenseAccount = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/expenseaccount/")
+      .get("http://localhost:3001/expenseaccount/")
       .then((res) => {
         setExpenseAccountForm(res.data.data);
       })
@@ -62,7 +62,7 @@ const ExpenseAccount = () => {
     };
     axios
       .post(
-        "https://enterprise-resource-planning.onrender.com/expenseaccount/create_expenseaccount",
+        "http://localhost:3001/expenseaccount/create_expenseaccount",
         expenseaccountinsert
       )
       .then((res) => {
@@ -77,7 +77,7 @@ const ExpenseAccount = () => {
     e.preventDefault();
     axios
       .put(
-        `https://enterprise-resource-planning.onrender.com/expenseaccount/update-expenseaccount/${expenseaccountEdit._id}`,
+        `http://localhost:3001/expenseaccount/update-expenseaccount/${expenseaccountEdit._id}`,
         expenseaccountEdit
       )
       .then((res) => {
@@ -93,7 +93,7 @@ const ExpenseAccount = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "https://enterprise-resource-planning.onrender.com/expenseaccount/generate-csv",
+        "http://localhost:3001/expenseaccount/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }
@@ -109,11 +109,20 @@ const ExpenseAccount = () => {
     }
   };
 
-
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
   const handleDelete = async (id) => {
     axios
       .delete(
-        `https://enterprise-resource-planning.onrender.com/expenseaccount/delete-expenseaccount/${id}`
+        `http://localhost:3001/expenseaccount/delete-expenseaccount/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -135,7 +144,33 @@ const ExpenseAccount = () => {
           <a class="navbar-brand">
             <b>EXPENSE ACCOUNT CLIENT</b>
           </a>
+          <ul className="nav justify-content-end">
+      <li className="nav-item">
+        <Link className="nav-link active" aria-current="page" to="/AccountsPayablesClient" type="button" class="btn btn-outline-primary">
+          ACCOUNTS PAYABLES
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/AccountsReceivablesClient"type="button" class="btn btn-outline-primary">
+          ACCOUNTS RECEIVABLES
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/ExpenseAccountClient"type="button" class="btn btn-outline-primary">
+          EXPENSE ACCOUNT
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/"type="button" class="btn btn-outline-success">
+          LOG OUT
+        </Link>
+      </li>
+    </ul>
         </div>
+        
       </nav>
 
       <div className="d-flex justify-content-end">
@@ -156,7 +191,8 @@ const ExpenseAccount = () => {
         size="lg"
         aria-labelledby="example-modal-sizes-title-lg"
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton
+        style={{ backgroundColor: "blue", color: "white" }}>
           <Modal.Title>EXPENSE ACCOUNT</Modal.Title>
         </Modal.Header>
 
@@ -277,7 +313,8 @@ const ExpenseAccount = () => {
         size="lg"
         aria-labelledby="example-modal-sizes-title-lg"
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton
+        style={{ backgroundColor: "blue", color: "white" }}>
           <Modal.Title>EDIT</Modal.Title>
         </Modal.Header>
 
@@ -416,7 +453,7 @@ const ExpenseAccount = () => {
           <tr>
             <th>account_name</th>
             <th> account_number</th>
-            <th>debits_andcredits</th>
+            <th>debited_amount</th>
             <th> description</th>
             <th> opening_balance</th>
             <th> transactions</th>
@@ -452,6 +489,10 @@ const ExpenseAccount = () => {
           })}
         </tbody>
       </table>
+      <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
     </div>
   );
 };

@@ -25,6 +25,32 @@ const FinanceAccountingDashboard = () => {
             <MdDashboard /> &nbsp;FINANCE AND ACCOUNTING{" "}
           </b>
         </a>
+        
+        <ul className="nav justify-content-end">
+      <li className="nav-item">
+        <Link className="nav-link active" aria-current="page" to="/AccountsPayables" type="button" class="btn btn-outline-primary">
+          ACCOUNTS PAYABLES
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/AccountsReceivables"type="button" class="btn btn-outline-primary">
+          ACCOUNTS RECEIVABLES
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/ExpenseAccount"type="button" class="btn btn-outline-primary">
+          EXPENSE ACCOUNT
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/"type="button" class="btn btn-outline-light">
+          LOG OUT
+        </Link>
+      </li>
+    </ul>
       </nav>
 
 
@@ -36,7 +62,7 @@ const FinanceAccountingDashboard = () => {
 
                             <div class="card-body ">
                                 <h5 class="card-title">ACCOUNTS PAYABLES</h5>
-                                <p class="card-text">This account records the company's outstanding invoices and bills for goods or services received from vendors or suppliers but not yet paid. It may include sub-accounts for individual vendors</p>
+                                <p class="card-text"></p>
 
                                 <Link to="/AccountsPayables" type="button"     class="btn btn-primary"> Next </Link>
 
@@ -48,7 +74,7 @@ const FinanceAccountingDashboard = () => {
 
                             <div class="card-body ">
                                 <h5 class="card-title">ACCOUNTS RECEIVABLES</h5>
-                                <p class="card-text">This account tracks the money owed to the company by its customers for services provided but not yet paid for. It may include sub-accounts for individual customers or clients.</p>
+                                <p class="card-text"></p>
                                 <Link to="/AccountsReceivables" type="button"     class="btn btn-primary"> Next </Link>
                             </div>
                         </div>
@@ -57,8 +83,7 @@ const FinanceAccountingDashboard = () => {
                         <div class="card shadow p-3 mb-5 bg-body rounded">
 
                             <div class="card-body">
-                                <h5 class="card-title">EXPENSE ACCOUNT</h5>
-                                <p class="card-text"> These accounts record the company's costs and expenses incurred in its operations. They may include categories such as "Salaries and Wages," "Rent," "Insurance," "Transportation," "Utilities," "Office Supplies," "</p>
+                                <h5 class="card-title">EXPENSE ACCOUNT</h5><p class="card-text"> </p>
                                 <Link to="/ExpenseAccount" type="button"     class="btn btn-primary">  Next </Link>
                             </div>
                         </div>

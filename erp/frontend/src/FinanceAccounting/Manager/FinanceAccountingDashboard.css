@@ -1,0 +1,10 @@
+/* FinanceAccountingDashboard.css */
+
+.content-area {
+    background-image: url('../../images/fmclog.PNG'); /* Replace with your actual image path */
+    background-size: cover;
+    background-position: center;
+    min-height: auto; /* Ensure it covers the full height */
+    padding-top: 20px; /* Add padding to prevent content from overlapping with the navbar */
+  }
+  

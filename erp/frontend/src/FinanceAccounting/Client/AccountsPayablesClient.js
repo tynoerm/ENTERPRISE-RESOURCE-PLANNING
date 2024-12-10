@@ -17,11 +17,25 @@ const AccountsPayables = () => {
   const handleClose1 = () => setShow1(false);
   const handleShow = () => setShow(true);
 
+
   const handleShow1 = (a) => {
     setShow1(true);
     setAccountspayableEdit(a);
     console.log(a);
   };
+
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
+
+ 
 
   const [accountspayableinsert, setAccountspayableinsert] = useState({});
   const [accountspayableEdit, setAccountspayableEdit] = useState({});
@@ -36,7 +50,7 @@ const AccountsPayables = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/accountspayables/")
+      .get("http://localhost:3001/accountspayables/")
       .then((res) => {
         setAccountsPayablesForm(res.data.data);
       })
@@ -53,6 +67,7 @@ const AccountsPayables = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     const accountspayableinsert = {
       vendor_name,
       vendor_address,
@@ -64,7 +79,7 @@ const AccountsPayables = () => {
     };
     axios
       .post(
-        "https://enterprise-resource-planning.onrender.com/accountspayables/create-accountspayables",
+        "http://localhost:3001/accountspayables/create-accountspayables",
         accountspayableinsert
       )
       .then((res) => {
@@ -82,7 +97,7 @@ const AccountsPayables = () => {
     e.preventDefault();
     axios
       .put(
-        `https://enterprise-resource-planning.onrender.com/accountspayables/update-accountspayable/${accountspayableEdit._id}`,
+        `http://localhost:3001/accountspayables/update-accountspayable/${accountspayableEdit._id}`,
         accountspayableEdit
       )
       .then((res) => {
@@ -101,7 +116,7 @@ const AccountsPayables = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `https://enterprise-resource-planning.onrender.com/accountspayables/delete-accountspayable/${id}`
+        `http://localhost:3001/accountspayables/delete-accountspayable/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -118,7 +133,7 @@ const AccountsPayables = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "https://enterprise-resource-planning.onrender.com/accountspayables/generate-csv",
+        "http://localhost:3001/accountspayables/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }
@@ -143,6 +158,31 @@ const AccountsPayables = () => {
           <a class="navbar-brand">
             <b>ACCOUNTS PAYABLES CLIENT</b>
           </a>
+          <ul className="nav justify-content-end">
+      <li className="nav-item">
+        <Link className="nav-link active" aria-current="page" to="/AccountsPayablesClient" type="button" class="btn btn-outline-primary">
+          ACCOUNTS PAYABLES
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/AccountsReceivablesClient"type="button" class="btn btn-outline-primary">
+          ACCOUNTS RECEIVABLES
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/ExpenseAccountClient"type="button" class="btn btn-outline-primary">
+          EXPENSE ACCOUNT
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/"type="button" class="btn btn-outline-success">
+          LOG OUT
+        </Link>
+      </li>
+    </ul>
         </div>
       </nav>
 
@@ -164,7 +204,8 @@ const AccountsPayables = () => {
         size="lg"
         aria-labelledby="example-modal-sizes-title-lg"
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton
+        style={{ backgroundColor: "blue", color: "white" }}>
           <Modal.Title>ACCOUNTS PAYABLES</Modal.Title>
         </Modal.Header>
 
@@ -226,7 +267,7 @@ const AccountsPayables = () => {
               <div className="mb-3">
                 <label className="form-label">invoice_date</label>
                 <input
-                  type="text"
+                  type="date"
                   className="form-control"
                   name="invoice_date"
                   id="invoice_date"
@@ -291,7 +332,8 @@ const AccountsPayables = () => {
         size="lg"
         aria-labelledby="example-modal-sizes-title-lg"
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton
+        style={{ backgroundColor: "blue", color: "white" }}>
           <Modal.Title>EDIT</Modal.Title>
         </Modal.Header>
 
@@ -464,6 +506,10 @@ const AccountsPayables = () => {
           })}
         </tbody>
       </table>
+      <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
     </div>
   );
 };

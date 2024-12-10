@@ -38,7 +38,7 @@ const AccountsReceivables = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/accountsreceivables/")
+      .get("http://localhost:3001/accountsreceivables/")
       .then((res) => {
         setAccountsReceivablesForm(res.data.data);
       })
@@ -61,7 +61,7 @@ const AccountsReceivables = () => {
     };
     axios
       .post(
-        "https://enterprise-resource-planning.onrender.com/accountsreceivables/create_accountsreceivables",
+        "http://localhost:3001/accountsreceivables/create_accountsreceivables",
         accountsReceivablesinsert
       )
       .then((res) => {
@@ -81,7 +81,7 @@ const AccountsReceivables = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `https://enterprise-resource-planning.onrender.com/accountsreceivables/delete-accountsreceivables/${id}`
+        `http://localhost:3001/accountsreceivables/delete-accountsreceivables/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -102,7 +102,7 @@ const AccountsReceivables = () => {
     e.preventDefault();
     axios
       .put(
-        `https://enterprise-resource-planning.onrender.com/accountsreceivables/update-accountsreceivables/${accountsReceivablesEdit._id}`,
+        `http://localhost:3001/accountsreceivables/update-accountsreceivables/${accountsReceivablesEdit._id}`,
         accountsReceivablesEdit
       )
       .then((res) => {
@@ -118,11 +118,24 @@ const AccountsReceivables = () => {
       notify2("accounts receivables edited successfully")
   };
 
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
+
+
+
 
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "https://enterprise-resource-planning.onrender.com/accountsreceivables/generate-csv",
+        "http://localhost:3001/accountsreceivables/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }
@@ -146,7 +159,33 @@ const AccountsReceivables = () => {
           <a class="navbar-brand">
             <b>ACCOUNTS RECEIVABLES</b>
           </a>
+          <ul className="nav justify-content-end">
+      <li className="nav-item">
+        <Link className="nav-link active" aria-current="page" to="/AccountsPayablesClient" type="button" class="btn btn-outline-primary">
+          ACCOUNTS PAYABLES
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/AccountsReceivablesClient"type="button" class="btn btn-outline-primary">
+          ACCOUNTS RECEIVABLES
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/ExpenseAccountClient"type="button" class="btn btn-outline-primary">
+          EXPENSE ACCOUNT
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/"type="button" class="btn btn-outline-success">
+          LOG OUT
+        </Link>
+      </li>
+    </ul>
         </div>
+        
       </nav>
 
       <div className="d-flex justify-content-end">
@@ -167,7 +206,8 @@ const AccountsReceivables = () => {
         size="lg"
         aria-labelledby="example-modal-sizes-title-lg"
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton
+        style={{ backgroundColor: "blue", color: "white" }}>
           <Modal.Title>ACCOUNTS RECEIVABLES CLIENT</Modal.Title>
         </Modal.Header>
 
@@ -274,7 +314,8 @@ const AccountsReceivables = () => {
         size="lg"
         aria-labelledby="example-modal-sizes-title-lg"
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton
+        style={{ backgroundColor: "blue", color: "white" }}>
           <Modal.Title>EDIT</Modal.Title>
         </Modal.Header>
 
@@ -430,6 +471,10 @@ const AccountsReceivables = () => {
           })}
         </tbody>
       </table>
+      <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
     </div>
   );
 };
