@@ -36,7 +36,7 @@ const BillofMaterials = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/materials/")
+      .get("http://localhost:3001/materials/")
       .then((res) => {
         setBillofmaterials(res.data.data);
       })
@@ -58,7 +58,7 @@ const BillofMaterials = () => {
     };
     axios
       .post(
-        "https://enterprise-resource-planning.onrender.com/materials/create-materials",
+        "http://localhost:3001/materials/create-materials",
         billofmaterialsInsert
       )
       .then((res) => {
@@ -74,7 +74,7 @@ const BillofMaterials = () => {
     e.preventDefault();
     axios
       .put(
-        `https://enterprise-resource-planning.onrender.com/materials/update-billofmaterials/${billofmaterialsEdit._id}`,
+        `http://localhost:3001/materials/update-billofmaterials/${billofmaterialsEdit._id}`,
         billofmaterialsEdit
       )
       .then((res) => {
@@ -92,7 +92,7 @@ const BillofMaterials = () => {
   const notify = (message) => toast(message);
   const handleDelete = async (id) => {
     axios
-      .delete(`https://enterprise-resource-planning.onrender.com/materials/delete-billofmaterials/${id}`)
+      .delete(`http://localhost:3001/materials/delete-billofmaterials/${id}`)
       .then(() => {
         console.log("Data successfully deleted!");
 
@@ -110,7 +110,7 @@ const BillofMaterials = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "https://enterprise-resource-planning.onrender.com/materials/generate-csv",
+        "http://localhost:3001/materials/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }

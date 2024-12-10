@@ -40,7 +40,7 @@ const ProductionOrders = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/")
+      .get("http://localhost:3001/")
       .then((res) => {
         setProductionordersForm(res.data.data);
       })
@@ -63,7 +63,7 @@ const ProductionOrders = () => {
     };
     axios
       .post(
-        "https://enterprise-resource-planning.onrender.com/create-productionorders",
+        "http://localhost:3001/create-productionorders",
         productionordersInsert
       )
       .then((res) => {
@@ -80,7 +80,7 @@ const ProductionOrders = () => {
     e.preventDefault();
     axios
       .put(
-        `https://enterprise-resource-planning.onrender.com/update-productionorders/${productionordersEdit._id}`,
+        `http://localhost:3001/update-productionorders/${productionordersEdit._id}`,
         productionordersEdit
       )
       .then((res) => {
@@ -99,7 +99,7 @@ const ProductionOrders = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `https://enterprise-resource-planning.onrender.com/delete-productionorders/${id}`
+        `http://localhost:3001/delete-productionorders/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -118,7 +118,7 @@ const ProductionOrders = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "https://enterprise-resource-planning.onrender.com/generate-csv",
+        "http://localhost:3001/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }

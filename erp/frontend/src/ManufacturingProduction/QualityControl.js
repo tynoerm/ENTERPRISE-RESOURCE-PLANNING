@@ -37,7 +37,7 @@ const QualityControl = () => {
 
     useEffect(() => {
         axios
-          .get("https://enterprise-resource-planning.onrender.com/qualitycontrol/")
+          .get("http://localhost:3001/qualitycontrol/")
           .then((res) => {
            setQualitycontrolForm(res.data.data);
           })
@@ -51,7 +51,7 @@ const QualityControl = () => {
         e.preventDefault();
         const qualitycontrolInsert = {insepection_date,insepection_type,inspection_result,defects_ofnonconformances,inspection_notes,inspector,acceptance_criteria,approved_by}
         axios
-            .post("https://enterprise-resource-planning.onrender.com/qualitycontrol/create-qualitycontrol", qualitycontrolInsert)
+            .post("http://localhost:3001/qualitycontrol/create-qualitycontrol", qualitycontrolInsert)
             .then((res) => {
                 console.log( { status: res.status});
                setQualitycontrolForm(prev => [...prev, qualitycontrolInsert])
@@ -66,7 +66,7 @@ const QualityControl = () => {
         e.preventDefault();
         axios
           .put(
-            `https://enterprise-resource-planning.onrender.com/qualitycontrol//${qualitycontrolEdit._id}`,
+            `http://localhost:3001/qualitycontrol//${qualitycontrolEdit._id}`,
             qualitycontrolEdit
           )
           .then((res) => {
@@ -85,7 +85,7 @@ const QualityControl = () => {
       const handleDelete = async (id) => {
         axios
           .delete(
-            `https://enterprise-resource-planning.onrender.com/qualitycontrol/delete-qualitycontrol/${id}`
+            `http://localhost:3001/qualitycontrol/delete-qualitycontrol/${id}`
           )
           .then(() => {
             console.log("Data successfully deleted!");
@@ -104,7 +104,7 @@ const QualityControl = () => {
       const handleDownload = async () => {
         try {
           const response = await axios.get(
-            "https://enterprise-resource-planning.onrender.com/qualitycontrol/generate-csv",
+            "http://localhost:3001/qualitycontrol/generate-csv",
             {
               responseType: "blob", // Important to handle binary data
             }

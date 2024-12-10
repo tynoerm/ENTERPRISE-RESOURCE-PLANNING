@@ -30,7 +30,7 @@ const ManufacturingProductionDashboard = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/inventorymanagement/")
+      .get("http://localhost:3001/inventorymanagement/")
       .then((res) => {
         setInventorymanagement(res.data.data);
       })
@@ -41,7 +41,7 @@ const ManufacturingProductionDashboard = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/expenseaccount/")
+      .get("http://localhost:3001/expenseaccount/")
       .then((res) => {
         setExpenseaccount(res.data.data);
       })
@@ -61,6 +61,32 @@ const ManufacturingProductionDashboard = () => {
             <MdDashboard /> &nbsp;MANUFACTURING PRODUCTION
           </b>
         </a>
+
+        <ul className="nav justify-content-end">
+      <li className="nav-item">
+        <Link className="nav-link active" aria-current="page" to="/BillofMaterials" type="button" class="btn btn-outline-primary">
+          BILLS OF MATERIALS
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/ProductionOrders"type="button" class="btn btn-outline-primary">
+          PRODUCTION ORDERS
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/QualityControl"type="button" class="btn btn-outline-primary">
+          QUALITY CONTROL 
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/"type="button" class="btn btn-outline-light">
+          LOG OUT
+        </Link>
+      </li>
+    </ul>
       </nav>
 
       <div>
@@ -70,12 +96,7 @@ const ManufacturingProductionDashboard = () => {
               <div className="card-body">
                 <h5 className="card-title">Bill of Materials (BOM)</h5>
                 <p className="card-text">
-                  Comprehensive list of components, raw materials, and
-                  sub-assemblies required to manufacture a product. It specifies
-                  the quantity, unit of measure, and relationships between
-                  different parts. The ERP system stores and manages the BOM
-                  information, allowing for accurate planning and tracking of
-                  material requirements.
+                
                 </p>
                 <Link to="/BillofMaterials" className="btn btn-primary">
                   Next
@@ -88,13 +109,7 @@ const ManufacturingProductionDashboard = () => {
               <div className="card-body">
                 <h5 className="card-title">Production Orders</h5>
                 <p className="card-text">
-                  Represent work orders or jobs that are created to initiate the
-                  manufacturing process for a specific quantity of a product.
-                  They contain details such as the product to be manufactured,
-                  quantity, start and end dates, and any specific instructions
-                  or notes. The ERP system manages the creation, tracking, and
-                  execution of production orders, providing visibility into the
-                  progress of each order.
+               
                 </p>
                 <Link to="/ProductionOrders" className="btn btn-primary">
                   Next
@@ -107,12 +122,7 @@ const ManufacturingProductionDashboard = () => {
               <div className="card-body">
                 <h5 className="card-title">Quality Control</h5>
                 <p className="card-text">
-                  Incorporate functionalities related to quality control and
-                  assurance. This may include defining quality standards and
-                  specifications for products, conducting inspections and tests
-                  during the manufacturing process, capturing quality data, and
-                  managing non-conformances or deviations. These features help
-                  ensure that products meet the required quality standards.
+                 
                 </p>
                 <Link to="/QualityControl" className="btn btn-primary">
                   Next
@@ -128,8 +138,7 @@ const ManufacturingProductionDashboard = () => {
                   CHECK SUPPLY CHAIN & ACCOUNTING MODULE
                 </h5>
                 <p className="card-text">
-                  You now have access to available stock as well as the expense
-                  account to be aware of the budget assigned to your department.
+                  
                 </p>
                 <Button variant="primary" onClick={handleShow}>
                   SELECT OPTION

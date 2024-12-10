@@ -4,6 +4,7 @@ import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import { FaFileCsv } from "react-icons/fa";
 
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -13,6 +14,8 @@ const ProductionOrders = () => {
 
   const [show, setShow] = useState(false);
   const [show1, setShow1] = useState(false);
+
+
 
   const handleClose = () => setShow(false);
   const handleClose1 = () => setShow1(false);
@@ -27,18 +30,44 @@ const ProductionOrders = () => {
   const [productionordersInsert, setProductionordersInsert] = useState({});
   const [productionordersEdit, setProductionordersEdit] = useState({});
 
-  const [order_id, setOrderid] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [start_date, setStartdate] = useState("");
-  const [end_date, setEnddate] = useState("");
-  const [status, setStatus] = useState("");
-  const [assigned_employee, setAssignedemployee] = useState("");
-  const [last_updated_by, setLastupdatedby] = useState("");
-  const [last_updated_date, setLastupdateddate] = useState("");
+  const [ date,setDateofdispatch] = useState("");
+  const [ productname, setProductname] = useState("");
+  const [  clientname, setClientname] = useState("");
+  const [clientaddress, setClientaddress] = useState("");
+  const [category,setCategory] = useState("");
+  const [itemdescription, setItemdescription] = useState("");
+  const [ quantity, setQuantity] = useState("");
+  const [ createdby, setCreatedby] = useState("");
+
+ const [selectedPurchaseorder, setSelectedPurchaseorder] = useState([]);
+  
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
+  
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        throw new Error("Invalid date");
+      }
+      return date.toISOString().split("T")[0]; // Display YYYY-MM-DD
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return ""; // Handle error case gracefully
+    }
+  };
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/productionorders/")
+      .get("http://localhost:3001/productionorders/")
       .then((res) => {
         setProductionordersForm(res.data.data);
       })
@@ -47,38 +76,72 @@ const ProductionOrders = () => {
       });
   }, []);
 
-  const notify1 = (message) => toast(message);
 
+  const handleCheckboxChange = (productionordersId) => {
+    setSelectedPurchaseorder((prevSelected) =>
+      prevSelected.includes(productionordersId)
+        ? prevSelected.filter((id) => id !== productionordersId)
+        : [...prevSelected, productionordersId]
+    );
+  };
+
+  const downloadPDF = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/productionorders/download-pdf",
+        { selectedPurchaseorder },
+        { responseType: "blob" }
+      );
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "deliverynote.pdf");
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Error downloading the PDF", error);
+    }
+  };
+
+
+  const notify1 = (message) => toast(message);
   const handleSubmit = (e) => {
     e.preventDefault();
     const productionordersInsert = {
-      order_id,
+     
+     date,
+      productname,
+      clientname,
+      clientaddress,
+      category,
+      itemdescription,
       quantity,
-      start_date,
-      end_date,
-      status,
-      assigned_employee,
+      createdby,
+ 
     };
     axios
       .post(
-        "https://enterprise-resource-planning.onrender.com/productionorders/create-productionorders",
+        "http://localhost:3001/productionorders/create-productionorders",
         productionordersInsert
       )
       .then((res) => {
         console.log({ status: res.status });
         setProductionordersForm((prev) => [...prev, productionordersInsert]);
       });
+
       setShow(false)
       notify1(" created successfully")
   };
 
-  const notify2 = (message) => toast(message);
 
+  const notify2 = (message) => toast(message);
   const handleUpdate = (e) => {
     e.preventDefault();
     axios
       .put(
-        `https://enterprise-resource-planning.onrender.com/productionorders/update-productionorders/${productionordersEdit._id}`,
+        `http://localhost:3001/productionorders/update-productionorders/${productionordersEdit._id}`,
         productionordersEdit
       )
       .then((res) => {
@@ -93,10 +156,12 @@ const ProductionOrders = () => {
       notify2(" edited successfully")
   };
 
+
+  const notify = (message) => toast(message);
   const handleDelete = async (id) => {
     axios
       .delete(
-        `https://enterprise-resource-planning.onrender.com/productionorders/delete-productionorders/${id}`
+        `http://localhost:3001/productionorders/delete-productionorders/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -108,12 +173,14 @@ const ProductionOrders = () => {
       .catch((error) => {
         console.log(error);
       });
+      setShow(false)
+      notify("Deleted Successfully")
   };
 
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "https://enterprise-resource-planning.onrender.com/productionorders/generate-csv",
+        "http://localhost:3001/productionorders/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }
@@ -131,19 +198,19 @@ const ProductionOrders = () => {
 
   return (
     <div>
-      <ToastContainer/>
+       <ToastContainer/>
       <nav class=" navbar bg-body-tertiary bg-dark border-bottom border-body shadow-lg p-3 mb-5 bg-body rounded">
         <div class="container-fluid">
           <a class="navbar-brand">
-            <b>PRODUCTION ORDERS</b>
+            <b>DISPATCH MANAGEMENT</b>
           </a>
         </div>
       </nav>
 
       <div className="d-flex justify-content-end">
-      <button className="btn btn-primary" onClick={handleDownload}>
+      <button className="btn btn-primary" onClick={downloadPDF}>
           {" "}
-          <FaFileCsv /> &nbsp;Reports
+          <FaFileCsv /> &nbsp;GENERATE DISPATCH FORM
         </button>
         <Button variant="btn btn-success" onClick={handleShow}>
           Create + 1
@@ -159,116 +226,116 @@ const ProductionOrders = () => {
         aria-labelledby="example-modal-sizes-title-lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>PRODUCTION </Modal.Title>
+          <Modal.Title>CREATE DISPATCH </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <div className="form-wrapper">
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="form-label"> order_id</label>
+                <label className="form-label">Date of Dispatch</label>
                 <input
-                  type="text"
+                  type="date"
                   className="form-control"
-                  name="order_id"
-                  id="order_id"
-                  value={productionordersForm.order_id}
+                  name=" date"
+                  id=" date"
+                  value={productionordersForm. date}
                   onChange={(event) => {
-                    setOrderid(event.target.value);
+                    setDateofdispatch(event.target.value);
                   }}
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label">quantity</label>
+                <label className="form-label">Product Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="quantity"
-                  id="quantity"
+                  name="productname"
+                  id="productname"
+                  value={productionordersForm.productname}
+                  onChange={(event) => {
+                    setProductname(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Client Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="clientname"
+                  id="clientname"
+                  value={productionordersForm.clientname}
+                  onChange={(event) => {
+                    setClientname(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Client Address</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="clientaddress"
+                  id="clientaddress"
+                  value={productionordersForm.clientaddress}
+                  onChange={(event) => {
+                    setClientaddress(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Category</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="category"
+                  id="category"
+                  value={productionordersForm.category}
+                  onChange={(event) => {
+                    setCategory(event.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label"> Item Description</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name=" itemdescription"
+                  id=" itemdescription"
+                  value={productionordersForm.itemdescription}
+                  onChange={(event) => {
+                   setItemdescription(event.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label"> Quantity</label>
+                <input
+                  type="Number"
+                  className="form-control"
+                  name=" quantity"
+                  id=" quantity"
                   value={productionordersForm.quantity}
                   onChange={(event) => {
                     setQuantity(event.target.value);
                   }}
                 />
               </div>
-              <div className="mb-3">
-                <label className="form-label">start_date</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="start_date"
-                  id="start_date"
-                  value={productionordersForm.start_date}
-                  onChange={(event) => {
-                    setStartdate(event.target.value);
-                  }}
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">end_date</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="end_date"
-                  id="end_date"
-                  value={productionordersForm.end_date}
-                  onChange={(event) => {
-                    setEnddate(event.target.value);
-                  }}
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">status</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="status"
-                  id="status"
-                  value={productionordersForm.status}
-                  onChange={(event) => {
-                    setStatus(event.target.value);
-                  }}
-                />
-              </div>
 
               <div className="mb-3">
-                <label className="form-label"> assigned_employee</label>
+                <label className="form-label">Created By</label>
                 <input
                   type="text"
                   className="form-control"
-                  name=" assigned_employee"
-                  id=" assigned_employee"
-                  value={productionordersForm.assigned_employee}
+                  name="createdby"
+                  id=" createdby"
+                  value={productionordersForm.createdby}
                   onChange={(event) => {
-                    setAssignedemployee(event.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label"> last_updated_by</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name=" last_updated_by"
-                  id=" last_updated_by"
-                  value={productionordersForm.last_updated_by}
-                  onChange={(event) => {
-                    setLastupdatedby(event.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">last_updated_date</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name=" last_updated_date"
-                  id=" last_updated_date"
-                  value={productionordersForm.last_updated_date}
-                  onChange={(event) => {
-                    setLastupdateddate(event.target.value);
+                  setCreatedby(event.target.value);
                   }}
                 />
               </div>
@@ -301,137 +368,121 @@ const ProductionOrders = () => {
           <div className="form-wrapper">
             <form onSubmit={handleUpdate}>
               <div className="mb-3">
-                <label className="form-label"> order_id</label>
+                <label className="form-label"> Date of Dispatch</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="order_id"
-                  id="order_id"
-                  value={productionordersEdit.order_id}
+                  name=" date"
+                  id=" date"
+                  value={productionordersEdit.date}
                   onChange={(e) =>
                     setProductionordersEdit({
                       ...productionordersEdit,
-                      order_id: e.target.value,
+                     date: e.target.value,
                     })
                   }
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label">quantity</label>
+              <label className="form-label">Product Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="quantity"
-                  id="quantity"
+                  name="productname"
+                  id="productname"
+                  value={productionordersEdit. productname}
+                  onChange={(e) =>
+                    setProductionordersEdit({
+                      ...productionordersEdit,
+                     productname: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Client Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="clientname"
+                  id="clientname"
+                  value={productionordersEdit.clientname}
+                  onChange={(e) =>
+                    setProductionordersEdit({
+                      ...productionordersEdit,
+                      clientname: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Client Address</label>
+                <input
+                  type="text"
+                  className="form-control"
+              name="clientaddress"
+                  id="clientaddress"
+                  value={productionordersEdit.clientaddress}
+                  onChange={(e) =>
+                    setProductionordersEdit({
+                      ...productionordersEdit,
+                      clientaddress: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="mb-3">
+              <label className="form-label"> Item Description</label>
+                <input
+                  type="text"
+                  className="form-control"
+                 name=" itemdescription"
+                  id=" itemdescription"
+                  value={productionordersEdit.itemdescription}
+                  onChange={(e) =>
+                    setProductionordersEdit({
+                      ...productionordersEdit,
+                      itemdescription: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="mb-3">
+              <label className="form-label"> Quantity</label>
+                <input
+                  type="text"
+                  className="form-control"
+                name=" quantity"
+                  id=" quantity"
                   value={productionordersEdit.quantity}
                   onChange={(e) =>
                     setProductionordersEdit({
                       ...productionordersEdit,
-                      quantity: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">start_date</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="start_date"
-                  id="start_date"
-                  value={productionordersEdit.start_date}
-                  onChange={(e) =>
-                    setProductionordersEdit({
-                      ...productionordersEdit,
-                      start_date: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">end_date</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="end_date"
-                  id="end_date"
-                  value={productionordersEdit.end_date}
-                  onChange={(e) =>
-                    setProductionordersEdit({
-                      ...productionordersEdit,
-                      end_date: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">status</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="status"
-                  id="status"
-                  value={productionordersEdit.status}
-                  onChange={(e) =>
-                    setProductionordersEdit({
-                      ...productionordersEdit,
-                      status: e.target.value,
+                     quantity: e.target.value,
                     })
                   }
                 />
               </div>
 
               <div className="mb-3">
-                <label className="form-label"> assigned_employee</label>
+              <label className="form-label">Created By</label>
                 <input
                   type="text"
                   className="form-control"
-                  name=" assigned_employee"
-                  id=" assigned_employee"
-                  value={productionordersEdit.assigned_employee}
+                name="createdby"
+                  id=" createdby"
+                  value={productionordersEdit.createdby}
                   onChange={(e) =>
                     setProductionordersEdit({
                       ...productionordersEdit,
-                      assigned_employee: e.target.value,
+                      createdby: e.target.value,
                     })
                   }
                 />
               </div>
 
-              <div className="mb-3">
-                <label className="form-label"> last_updated_by</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name=" last_updated_by"
-                  id=" last_updated_by"
-                  value={productionordersEdit.last_updated_by}
-                  onChange={(e) =>
-                    setProductionordersEdit({
-                      ...productionordersEdit,
-                      last_updated_by: e.target.value,
-                    })
-                  }
-                />
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">last_updated_date</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name=" last_updated_date"
-                  id=" last_updated_date"
-                  value={productionordersEdit.last_updated_date}
-                  onChange={(e) =>
-                    setProductionordersEdit({
-                      ...productionordersEdit,
-                      last_updated_date: e.target.value,
-                    })
-                  }
-                />
-              </div>
-
+       
               <div className="mb-3">
                 <button type="submit" className="btn btn-primary">
                   Submit
@@ -447,14 +498,15 @@ const ProductionOrders = () => {
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>order_id</th>
-            <th> quantity</th>
-            <th>start_date</th>
-            <th> end_date</th>
-            <th> status</th>
-            <th> assigned_employee</th>
-            <th> last_updated_by</th>
-            <th> last_updated_date</th>
+          <th>Select</th>
+            <th>Date of Dispatch</th>
+            <th> Production Name</th>
+            <th>Client Name</th>
+            <th>Client Address</th>
+            <th> Category</th>
+            <th> Item Datescription</th>
+            <th> Quantity</th>
+            <th>Created By</th>
             <th>action</th>
           </tr>
         </thead>
@@ -462,14 +514,25 @@ const ProductionOrders = () => {
           {productionordersForm.map((productionorders, index) => {
             return (
               <tr key={index}>
-                <td>{productionorders.order_id}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedPurchaseorder.includes(
+                      productionorders._id
+                    )}
+                    onChange={() =>
+                      handleCheckboxChange(productionorders._id)
+                    }
+                  />
+                </td>
+                <td>{formatDate(productionorders. date)}</td>
+                <td>{productionorders.  productname}</td>
+                <td>{productionorders.clientname}</td>
+                <td>{productionorders.clientaddress}</td>
+                <td>{productionorders.category}</td>
+                <td>{productionorders. itemdescription}</td>
                 <td>{productionorders.quantity}</td>
-                <td>{productionorders.start_date}</td>
-                <td>{productionorders.end_date}</td>
-                <td>{productionorders.status}</td>
-                <td>{productionorders.assigned_employee}</td>
-                <td>{productionorders.last_updated_by}</td>
-                <td>{productionorders.last_updated_date}</td>
+                <td>{productionorders.createdby}</td>
 
                 <td>
                   <Button
@@ -480,13 +543,22 @@ const ProductionOrders = () => {
                   >
                     Edit
                   </Button>
-           
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(productionorders._id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+      <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
     </div>
   );
 };

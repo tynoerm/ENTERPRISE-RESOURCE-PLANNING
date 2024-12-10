@@ -10,6 +10,17 @@ const ManufacturingProductionDashboard = () => {
     backgroundPosition: "center", // Center the background image
     color: "black", // Set text color
   };
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
+
 
   return (
     <div>
@@ -20,9 +31,35 @@ const ManufacturingProductionDashboard = () => {
         <a className="navbar-brand" style={{ color: "white" }}>
           <b>
             {" "}
-            <MdDashboard /> &nbsp;MANUFACTURING PRODUCTION{" "}
+            <MdDashboard /> &nbsp;WAREHOUSE{" "}
           </b>
         </a>
+        
+        <ul className="nav justify-content-end">
+      <li className="nav-item">
+        <Link className="nav-link active" aria-current="page" to="/BillofMaterialsClient" type="button" class="btn btn-outline-primary">
+         
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/ProductionOrdersClient"type="button" class="btn btn-outline-primary">
+      
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/QualityControlClient"type="button" class="btn btn-outline-primary">
+          
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/"type="button" class="btn btn-outline-light">
+          LOG OUT
+        </Link>
+      </li>
+    </ul>
       </nav>
 
       <div>
@@ -30,18 +67,13 @@ const ManufacturingProductionDashboard = () => {
           <div class="col mb-3 shadow-sm p-3 mb-5 bg-body rounded">
             <div class="card shadow p-3 mb-5 bg-body rounded">
               <div class="card-body ">
-                <h5 class="card-title">Bill of Materials (BOM)</h5>
+                <h5 class="card-title">INVENTORY</h5>
                 <p class="card-text">
-                  comprehensive list of components, raw materials, and
-                  sub-assemblies required to manufacture a product. It specifies
-                  the quantity, unit of measure, and relationships between
-                  different parts. The ERP system stores and manages the BOM
-                  information, allowing for accurate planning and tracking of
-                  material requirements.s{" "}
+             
                 </p>
 
                 <Link
-                  to="/BillofMaterialsClient"
+                  to="/InventoryManagementUser"
                   type="button"
                   class="btn btn-primary"
                 >
@@ -54,16 +86,9 @@ const ManufacturingProductionDashboard = () => {
           <div class="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
             <div class="card shadow p-3 mb-5 bg-body rounded">
               <div class="card-body ">
-                <h5 class="card-title">Production Orders</h5>
+                <h5 class="card-title">DISPACH FORMS</h5>
                 <p class="card-text">
-                  {" "}
-                  represent work orders or jobs that are created to initiate the
-                  manufacturing process for a specific quantity of a product.
-                  They contain details such as the product to be manufactured,
-                  quantity, start and end dates, and any specific instructions
-                  or notes. The ERP system manages the creation, tracking, and
-                  execution of production orders, providing visibility into the
-                  progress of each order{" "}
+                
                 </p>
                 <Link
                   to="/ProductionOrdersClient"
@@ -79,15 +104,9 @@ const ManufacturingProductionDashboard = () => {
           <div class="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
             <div class="card shadow p-3 mb-5 bg-body rounded">
               <div class="card-body">
-                <h5 class="card-title"> Quality Control</h5>
+                <h5 class="card-title"> GOODS AVAILABLE</h5>
                 <p class="card-text">
-                  {" "}
-                  incorporate functionalities related to quality control and
-                  assurance. This may include defining quality standards and
-                  specifications for products, conducting inspections and tests
-                  during the manufacturing process, capturing quality data, and
-                  managing non-conformances or deviations. These features help
-                  ensure that products meet the required quality standards
+                
                 </p>
                 <Link
                   to="/QualityControlClient"
@@ -100,6 +119,11 @@ const ManufacturingProductionDashboard = () => {
               </div>
             </div>
           </div>
+          <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
+
         </div>
       </div>
     </div>
