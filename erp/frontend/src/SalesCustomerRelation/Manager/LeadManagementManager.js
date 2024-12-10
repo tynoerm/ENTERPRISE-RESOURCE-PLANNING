@@ -7,15 +7,14 @@ import { FaFileCsv } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-
-
 const LeadManagement = () => {
   const [modalShow, setModalShow] = useState(false);
   const [leadManagementForm, setLeadmanagementForm] = useState([]);
 
   const [show, setShow] = useState(false);
   const [show1, setShow1] = useState(false);
+
+  const [selectedLeadmanagement, setSelectedLeadmanagement] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleClose1 = () => setShow1(false);
@@ -30,17 +29,19 @@ const LeadManagement = () => {
   const [leadManagementinsert, setLeadmanagementinsert] = useState({});
   const [leadManagementEdit, setLeadmanagementEdit] = useState({});
 
-  const [lead_source, setLeadsource] = useState("");
-  const [lead_status, setLeadstatus] = useState("");
-  const [contact_information, setContactinformation] = useState("");
-  const [lead_owner, setLeadowner] = useState("");
-  const [lead_score, setLeadscore] = useState("");
-  const [lead_notes, setLeadnotes] = useState("");
-  const [conversion_information, setConversioninformation] = useState("");
+  const [date, setDate] = useState("");
+  const [sendername, setSendername] = useState("");
+  const [recipient, setRecipient] = useState("");
+  const [listofitems, setListofitems] = useState("");
+  const [quantityofpackages, setQuantityofpackages] = useState("");
+  const [referencename, setReferencename] = useState("");
+  const [referencenumber, setReferencenumber] = useState("");
+
+  const [paymentmethods, setPaymentmethods] = useState("");
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/leadmanagement/")
+      .get("http://localhost:3001/leadmanagement/")
       .then((res) => {
         setLeadmanagementForm(res.data.data);
       })
@@ -51,39 +52,80 @@ const LeadManagement = () => {
 
   const notify1 = (message) => toast(message);
 
+  const handleCheckboxChange = (leadmanagementId) => {
+    setSelectedLeadmanagement((prevSelected) =>
+      prevSelected.includes(leadmanagementId)
+        ? prevSelected.filter((id) => id !== leadmanagementId)
+        : [...prevSelected, leadmanagementId]
+    );
+  };
 
+  const downloadPDF = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/leadmanagement/download-pdf",
+        { selectedLeadmanagement },
+        { responseType: "blob" }
+      );
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "deliverynote.pdf");
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Error downloading the PDF", error);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        throw new Error("Invalid date");
+      }
+      return date.toISOString().split("T")[0]; // Display YYYY-MM-DD
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return ""; // Handle error case gracefully
+    }
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     const leadManagementinsert = {
-      lead_source,
-      lead_status,
-      contact_information,
-      lead_owner,
-      lead_score,
-      lead_notes,
-      conversion_information,
+      date,
+      sendername,
+      recipient,
+      listofitems,
+      quantityofpackages,
+      referencename,
+      referencenumber,
+      paymentmethods,
     };
     axios
       .post(
-        "https://enterprise-resource-planning.onrender.com/leadmanagement/create-lead",
+        "http://localhost:3001/leadmanagement/create-lead",
         leadManagementinsert
       )
       .then((res) => {
         console.log({ status: res.status });
         setLeadmanagementForm((prev) => [...prev, leadManagementinsert]);
       });
-      setShow(false)
-            notify1(" created successfully")
+    setShow(false);
+    notify1(" created successfully");
   };
 
-  const notify2 = (message) => toast(message);
+  const [refresh, setRefresh] = useState(false)
 
+  const notify2 = (message) => toast(message);
 
   const handleUpdate = (e) => {
     e.preventDefault();
     axios
       .put(
-        `https://enterprise-resource-planning.onrender.com/leadmanagement/update-leadmanagement/${leadManagementEdit._id}`,
+        `http://localhost:3001/leadmanagement/update-leadmanagement/${leadManagementEdit._id}`,
         leadManagementEdit
       )
       .then((res) => {
@@ -94,16 +136,16 @@ const LeadManagement = () => {
       .catch((error) => {
         console.error(" Error updating item:", error);
       });
-      setShow(false)
-          notify2(" edited successfully")
+    setShow1(false);
+    notify2(" edited successfully");
+    setRefresh (prev => !prev);
   };
-
 
   const notify = (message) => toast(message);
   const handleDelete = async (id) => {
     axios
       .delete(
-        `https://enterprise-resource-planning.onrender.com/leadmanagement/delete-leadmanagement/${id}`
+        `http://localhost:3001/leadmanagement/delete-leadmanagement/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -115,14 +157,24 @@ const LeadManagement = () => {
       .catch((error) => {
         console.log(error);
       });
-      setShow(false)
-      notify("Deleted Successfully")
+    setShow(false);
+    notify("Deleted Successfully");
   };
 
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "https://enterprise-resource-planning.onrender.com/leadmanagement/generate-csv",
+        "http://localhost:3001/leadmanagement/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }
@@ -140,19 +192,29 @@ const LeadManagement = () => {
 
   return (
     <div>
-      <ToastContainer/>
-      <nav class=" navbar bg-body-tertiary bg-dark border-bottom border-body shadow-lg p-3 mb-5 bg-body rounded">
+      <ToastContainer />
+      <nav
+        className="navbar"
+        style={{
+          backgroundColor: "#004085",
+          borderBottom: "1px solid #dee2e6",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+          padding: "1rem",
+          marginBottom: "1.5rem",
+          borderRadius: "0.25rem",
+        }}
+      >
         <div class="container-fluid">
           <a class="navbar-brand">
-            <b>LEAD MAANAGEMENT</b>
+            <b>DELIVERY NOTES MANAGEMENT</b>
           </a>
         </div>
       </nav>
 
       <div className="d-flex justify-content-end">
-        <button className="btn btn-primary" onClick={handleDownload}>
+        <button className="btn btn-primary" onClick={downloadPDF}>
           {" "}
-          <FaFileCsv /> &nbsp;Reports
+          <FaFileCsv /> &nbsp;GENERATE DELIVERY NOTE
         </button>
         <Button variant="btn btn-success" onClick={handleShow}>
           Create + 1
@@ -168,104 +230,124 @@ const LeadManagement = () => {
         aria-labelledby="example-modal-sizes-title-lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title>CREATE A LEAD</Modal.Title>
+          <Modal.Title>CREATE A DELIVERY NOTE</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <div className="form-wrapper">
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="form-label"> lead_source</label>
+                <label className="form-label"> Date</label>
                 <input
-                  type="text"
+                  type="date"
                   className="form-control"
-                  name="lead_source"
-                  id="lead_source"
-                  value={setLeadmanagementForm.lead_source}
+                  name="date"
+                  id="date"
+                  value={setLeadmanagementForm.date}
                   onChange={(event) => {
-                    setLeadsource(event.target.value);
+                    setDate(event.target.value);
                   }}
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label">lead_status</label>
+                <label className="form-label">Sender Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="lead_status"
-                  id="lead_status"
-                  value={setLeadmanagementForm.lead_status}
+                  name="sendername"
+                  id="sendername"
+                  value={setLeadmanagementForm.sendername}
                   onChange={(event) => {
-                    setLeadstatus(event.target.value);
+                    setSendername(event.target.value);
                   }}
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label"> contact_information</label>
+                <label className="form-label">Recipient/Consignee</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="contact_information"
-                  id="contact_information"
-                  value={setLeadmanagementForm.contact_information}
+                  name="recipient"
+                  id="recipient"
+                  value={setLeadmanagementForm.recipient}
                   onChange={(event) => {
-                    setContactinformation(event.target.value);
+                    setRecipient(event.target.value);
                   }}
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label"> lead_owner</label>
+                <label className="form-label">List of Items</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="lead_owner"
-                  id="lead_owner"
-                  value={setLeadmanagementForm.lead_owner}
+                  name="listofitems"
+                  id="listofitems"
+                  value={setLeadmanagementForm.listofitems}
                   onChange={(event) => {
-                    setLeadowner(event.target.value);
-                  }}
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label"> lead_score</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name=" lead_score"
-                  id=" lead_score"
-                  value={setLeadmanagementForm.lead_score}
-                  onChange={(event) => {
-                    setLeadscore(event.target.value);
-                  }}
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">lead_notes</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="lead_notes"
-                  id="lead_notes"
-                  value={setLeadmanagementForm.lead_notes}
-                  onChange={(event) => {
-                    setLeadnotes(event.target.value);
+                    setListofitems(event.target.value);
                   }}
                 />
               </div>
 
               <div className="mb-3">
-                <label className="form-label"> conversion_information</label>
+                <label className="form-label">Quantity of Packages</label>
                 <input
-                  type="text"
+                  type="number"
                   className="form-control"
-                  name="conversion_information"
-                  id="conversion_information"
-                  value={setLeadmanagementForm.conversion_information}
+                  name="quantityofpackages"
+                  id="quantityofpackages"
+                  value={setLeadmanagementForm.quantityofpackages}
                   onChange={(event) => {
-                    setConversioninformation(event.target.value);
+                    setQuantityofpackages(event.target.value);
                   }}
                 />
               </div>
+
+              <div className="mb-3">
+                <label className="form-label">Reference Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="referencename"
+                  id="referencename"
+                  value={setLeadmanagementForm.referencename}
+                  onChange={(event) => {
+                    setReferencename(event.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Reference Contact Number</label>
+                <input
+                  type="Number"
+                  className="form-control"
+                  name="referencenumber"
+                  id="referencenumber"
+                  value={setLeadmanagementForm.referencenumber}
+                  onChange={(event) => {
+                    setReferencenumber(event.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="mb-3">
+                    <label className="form-label">Payment Methods</label>
+                    <select
+                      className="form-control"
+                      value={paymentmethods}
+                      onChange={(event) =>
+                        setPaymentmethods(event.target.value)
+                      }
+                      required
+                    >
+                      <option value="">select payment method</option>
+                      <option value="debitcards">Debit Cards</option>
+                      <option value="creditcards">Credit Cards</option>
+                      <option value="cash">Cash Payment</option>
+                      <option value="ecocashpayment">Ecocash Payment</option>
+                    </select>
+                  </div>
 
               <div className="mb-3">
                 <button type="submit" className="btn btn-primary">
@@ -295,118 +377,139 @@ const LeadManagement = () => {
           <div className="form-wrapper">
             <form onSubmit={handleUpdate}>
               <div className="mb-3">
-                <label className="form-label"> lead_source</label>
+                <label className="form-label"> Date</label>
                 <input
-                  type="text"
+                  type="date"
                   className="form-control"
-                  name="lead_source"
-                  id="lead_source"
-                  value={leadManagementEdit.lead_source}
+                  name="date"
+                  id="date"
+                  value={leadManagementEdit.date}
                   onChange={(e) =>
                     setLeadmanagementEdit({
                       ...leadManagementEdit,
-                      lead_source: e.target.value,
+                      date: e.target.value,
                     })
                   }
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label">lead_status</label>
+                <label className="form-label">Sender Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="lead_status"
-                  id="lead_status"
-                  value={leadManagementEdit.lead_status}
+                  name="sendername"
+                  id="sendername"
+                  value={leadManagementEdit.sendername}
                   onChange={(e) =>
                     setLeadmanagementEdit({
                       ...leadManagementEdit,
-                      lead_status: e.target.value,
+                      sendername: e.target.value,
                     })
                   }
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label">contact_information</label>
+                <label className="form-label">Recipient</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="contact_information"
-                  id="contact_information"
-                  value={leadManagementEdit.contact_information}
+                  name="recipient"
+                  id="recipient"
+                  value={leadManagementEdit.recipient}
                   onChange={(e) =>
                     setLeadmanagementEdit({
                       ...leadManagementEdit,
-                      contact_information: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label"> lead_owner</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="lead_owner"
-                  id="lead_owner"
-                  value={leadManagementEdit.lead_owner}
-                  onChange={(e) =>
-                    setLeadmanagementEdit({
-                      ...leadManagementEdit,
-                      lead_owner: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label"> lead_score</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="lead_score"
-                  id="lead_score"
-                  value={leadManagementEdit.lead_score}
-                  onChange={(e) =>
-                    setLeadmanagementEdit({
-                      ...leadManagementEdit,
-                      lead_score: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">lead_notes</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="lead_notes"
-                  id="lead_notes"
-                  value={leadManagementEdit.lead_notes}
-                  onChange={(e) =>
-                    setLeadmanagementEdit({
-                      ...leadManagementEdit,
-                      lead_notes: e.target.value,
+                      recipient: e.target.value,
                     })
                   }
                 />
               </div>
 
               <div className="mb-3">
-                <label className="form-label">conversion_information</label>
+                <label className="form-label"> List of Items</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="conversion_information"
-                  id="conversion_information"
-                  value={leadManagementEdit.conversion_information}
+                  name="listofitems"
+                  id="listofitems"
+                  value={leadManagementEdit.listofitems}
                   onChange={(e) =>
                     setLeadmanagementEdit({
                       ...leadManagementEdit,
-                      conversion_information: e.target.value,
+                      listofitems: e.target.value,
                     })
                   }
                 />
               </div>
+
+              <div className="mb-3">
+                <label className="form-label"> Quantity of Packages</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="quantityofpackages"
+                  id="quantityofpackages"
+                  value={leadManagementEdit.quantityofpackages}
+                  onChange={(e) =>
+                    setLeadmanagementEdit({
+                      ...leadManagementEdit,
+                      quantityofpackages: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label"> Reference Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="referencename"
+                  id="referencename"
+                  value={leadManagementEdit.referencename}
+                  onChange={(e) =>
+                    setLeadmanagementEdit({
+                      ...leadManagementEdit,
+                      referencename: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label"> Reference Number</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="referencenumber"
+                  id="referencenumber"
+                  value={leadManagementEdit.referencenumber}
+                  onChange={(e) =>
+                    setLeadmanagementEdit({
+                      ...leadManagementEdit,
+                      referencenumber: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="mb-3">
+                    <label className="form-label">Payment Methods</label>
+                    <select
+                      className="form-control"
+                      value={paymentmethods}
+                      onChange={(event) =>
+                        setPaymentmethods(event.target.value)
+                      }
+                      required
+                    >
+                      <option value="">select payment method</option>
+                      <option value="debitcards">Debit Cards</option>
+                      <option value="creditcards">Credit Cards</option>
+                      <option value="cash">Cash Payment</option>
+                      <option value="ecocashpayment">Ecocash Payment</option>
+                    </select>
+                  </div>
 
               <div className="mb-3">
                 <button type="submit" className="btn btn-primary">
@@ -423,13 +526,15 @@ const LeadManagement = () => {
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>lead_source</th>
-            <th>lead_status</th>
-            <th>contact_information</th>
-            <th> lead_owner</th>
-            <th>lead_score</th>
-            <th>lead_notes</th>
-            <th>conversion_information</th>
+            <th>Select</th>
+            <th>Date</th>
+            <th>Sender/shipper Name</th>
+            <th>Recipient/Consignee Name</th>
+            <th>List of Items</th>
+            <th>Quantity of Packages</th>
+            <th>Receiver Name</th>
+            <th>Reference Number</th>
+            <th>Payment Methods</th>
             <th>action</th>
           </tr>
         </thead>
@@ -437,13 +542,25 @@ const LeadManagement = () => {
           {leadManagementForm.map((leadmanagement, index) => {
             return (
               <tr key={index}>
-                <td>{leadmanagement.lead_source}</td>
-                <td>{leadmanagement.lead_status}</td>
-                <td>{leadmanagement.contact_information}</td>
-                <td>{leadmanagement.lead_owner}</td>
-                <td>{leadmanagement.lead_score}</td>
-                <td>{leadmanagement.lead_notes}</td>
-                <td>{leadmanagement.conversion_information}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedLeadmanagement.includes(
+                      leadmanagement._id
+                    )}
+                    onChange={() =>
+                      handleCheckboxChange(leadmanagement._id)
+                    }
+                  />
+                </td>
+                <td>{formatDate(leadmanagement.date)}</td>
+                <td>{leadmanagement.sendername}</td>
+                <td>{leadmanagement.recipient}</td>
+                <td>{leadmanagement.listofitems}</td>
+                <td>{leadmanagement.quantityofpackages}</td>
+                <td>{leadmanagement.referencename}</td>
+                <td>{leadmanagement.referencenumber}</td>
+                <td>{leadmanagement.paymentmethods}</td>
 
                 <td>
                   <Button
@@ -466,6 +583,9 @@ const LeadManagement = () => {
           })}
         </tbody>
       </table>
+      <div style={footerStyle}>
+        <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+      </div>
     </div>
   );
 };

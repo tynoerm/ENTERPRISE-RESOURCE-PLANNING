@@ -13,6 +13,18 @@ const SalesCustomerRelation = () => {
     color: "black", // Set text color
   };
 
+
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
+
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -30,7 +42,7 @@ const SalesCustomerRelation = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/expenseaccount/")
+      .get("http://localhost:3001/expenseaccount/")
       .then((res) => {
         setExpenseaccount(res.data.data);
       })
@@ -41,7 +53,7 @@ const SalesCustomerRelation = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/productionorders/")
+      .get("http://localhost:3001/productionorders/")
       .then((res) => {
         setProductionorders(res.data.data);
       })
@@ -61,6 +73,53 @@ const SalesCustomerRelation = () => {
             <MdDashboard /> &nbsp;SALES & CUSTOMER RELATION
           </b>
         </a>
+        <form className="d-flex" >
+            <a className="btn btn-danger" href="/QuotationManagementManager">
+            QUOTATION MANAGEMENT
+            </a>
+           
+
+                 
+            <ul className="nav justify-content-end">
+              <li className="nav-item">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to="/LeadManagementManager"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  Delivery Note
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/QuotationManagement"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  Quotation Management
+                </Link>
+              </li>
+              &nbsp;
+              
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/"
+                  type="button"
+                  class="btn btn-outline-success"
+                >
+                  LOG OUT
+                </Link>
+              </li>
+           
+           
+            </ul>
+          </form>
       </nav>
 
       <div>
@@ -68,14 +127,9 @@ const SalesCustomerRelation = () => {
           <div className="col mb-3 shadow-sm p-3 mb-5 bg-body rounded">
             <div className="card shadow p-3 mb-5 bg-body rounded">
               <div className="card-body">
-                <h5 className="card-title">LEAD MANAGEMENT</h5>
-                <p className="card-text">
-                  This module allows the company to track and manage potential
-                  leads or prospects. It provides tools to capture leads from
-                  various sources, such as website forms or trade shows, and
-                  centralizes the lead information for easy access and
-                  follow-up. The system can assign leads to sales
-                  representatives
+                <h5 className="card-title">DELIVERY NOTE</h5>
+                <p class="card-text">
+               
                 </p>
                 <Link
                   to="/LeadManagementManager"
@@ -87,42 +141,18 @@ const SalesCustomerRelation = () => {
               </div>
             </div>
           </div>
+
+        
           <div className="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
             <div className="card shadow p-3 mb-5 bg-body rounded">
               <div className="card-body">
-                <h5 className="card-title">OPPORTUNITY TRACKING</h5>
-                <p className="card-text">
-                  This feature enables the tracking of potential sales
-                  opportunities. It allows sales representatives to create and
-                  manage opportunities associated with specific leads or
-                  customers. The system can store information about the
-                  opportunity's stage, value, expected close date, and
-                  associated activities.
+                <h5 className="card-title">QUOTATION MANAGEMENT</h5>
+                <p class="card-text">
+                
                 </p>
+                
                 <Link
-                  to="/OpportunityTracking/Manager"
-                  type="button"
-                  className="btn btn-primary"
-                >
-                  Next
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
-            <div className="card shadow p-3 mb-5 bg-body rounded">
-              <div className="card-body">
-                <h5 className="card-title">SALES FORECASTING</h5>
-                <p className="card-text">
-                  The sales forecasting module allows the company to forecast
-                  future sales based on historical data, current opportunities,
-                  and market trends. It provides tools to analyze and predict
-                  sales performance, helping the company make informed decisions
-                  regarding resource allocation, production planning, and
-                  revenue projections.
-                </p>
-                <Link
-                  to="/SalesForecastingManager"
+                  to="/QuotationManagementManager"
                   type="button"
                   className="btn btn-primary"
                 >
@@ -136,11 +166,10 @@ const SalesCustomerRelation = () => {
             <div className="card shadow p-3 mb-5 bg-body rounded">
               <div className="card-body">
                 <h5 className="card-title">
-                  CHECK MANUFACTURING PRODUCTION & ACCOUNTING MODULE
+                  CHECK AVAILABLE STOCK
                 </h5>
                 <p className="card-text">
-                  You now have access to production orders as well as the budget
-                  assigned to each department.
+                  
                 </p>
                 <Button variant="primary" onClick={handleShow}>
                   SELECT OPTION
@@ -161,19 +190,13 @@ const SalesCustomerRelation = () => {
                   <Modal.Body>
                     <div className="form-wrapper">
                       <div className="d-grid gap-2">
-                        <Button
-                          variant="success"
-                          type="button"
-                          onClick={handleShow1}
-                        >
-                          MANUFACTURING & PRODUCTION
-                        </Button>
+                      
                         <Button
                           variant="success"
                           type="button"
                           onClick={handleShow2}
                         >
-                          FINANCE & ACCOUNTING
+                          WAREHOUSE
                         </Button>
                       </div>
                     </div>
@@ -192,7 +215,7 @@ const SalesCustomerRelation = () => {
                 >
                   <Modal.Header closeButton>
                     <Modal.Title>
-                      MANUFACTURING PRODUCTION (production orders)
+                    WAREHOUSE
                     </Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
@@ -235,7 +258,7 @@ const SalesCustomerRelation = () => {
                   aria-labelledby="example-modal-sizes-title-lg"
                 >
                   <Modal.Header closeButton>
-                    <Modal.Title>FINANCE & ACCOUNTING (expense account)</Modal.Title>
+                    <Modal.Title>WAREHOUSE</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     <div className="form-wrapper">
@@ -272,6 +295,10 @@ const SalesCustomerRelation = () => {
               </div>
             </div>
           </div>
+          <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
         </div>
       </div>
     </div>

@@ -30,7 +30,7 @@ const SalesCustomerRelation = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/expenseaccount/")
+      .get("http://localhost:3001/expenseaccount/")
       .then((res) => {
         setExpenseaccount(res.data.data);
       })
@@ -41,7 +41,7 @@ const SalesCustomerRelation = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/productionorders/")
+      .get("http://localhost:3001/productionorders/")
       .then((res) => {
         setProductionorders(res.data.data);
       })
@@ -61,6 +61,15 @@ const SalesCustomerRelation = () => {
             <MdDashboard /> &nbsp;SALES & CUSTOMER RELATION
           </b>
         </a>
+        <form className="d-flex" >
+            <a className="btn btn-danger" href="/QuotationManagement">
+            QUOTATION MANAGEMENT
+            </a>
+            <a className="btn btn-dark" href="/">
+              {" "}
+              Log Out
+            </a>
+          </form>
       </nav>
 
       <div>
@@ -70,12 +79,7 @@ const SalesCustomerRelation = () => {
               <div className="card-body">
                 <h5 className="card-title">LEAD MANAGEMENT</h5>
                 <p className="card-text">
-                  This module allows the company to track and manage potential
-                  leads or prospects. It provides tools to capture leads from
-                  various sources, such as website forms or trade shows, and
-                  centralizes the lead information for easy access and
-                  follow-up. The system can assign leads to sales
-                  representatives
+                 
                 </p>
                 <Link
                   to="/LeadManagementManager"
@@ -92,12 +96,7 @@ const SalesCustomerRelation = () => {
               <div className="card-body">
                 <h5 className="card-title">OPPORTUNITY TRACKING</h5>
                 <p className="card-text">
-                  This feature enables the tracking of potential sales
-                  opportunities. It allows sales representatives to create and
-                  manage opportunities associated with specific leads or
-                  customers. The system can store information about the
-                  opportunity's stage, value, expected close date, and
-                  associated activities.
+                  
                 </p>
                 <Link
                   to="/OpportunityTracking/Manager"
@@ -114,12 +113,7 @@ const SalesCustomerRelation = () => {
               <div className="card-body">
                 <h5 className="card-title">SALES FORECASTING</h5>
                 <p className="card-text">
-                  The sales forecasting module allows the company to forecast
-                  future sales based on historical data, current opportunities,
-                  and market trends. It provides tools to analyze and predict
-                  sales performance, helping the company make informed decisions
-                  regarding resource allocation, production planning, and
-                  revenue projections.
+                  
                 </p>
                 <Link
                   to="/SalesForecastingManager"
@@ -139,9 +133,7 @@ const SalesCustomerRelation = () => {
                   CHECK MANUFACTURING PRODUCTION & ACCOUNTING MODULE
                 </h5>
                 <p className="card-text">
-                  You now have access to production orders as well as the budget
-                  assigned to each department.
-                </p>
+                 </p>
                 <Button variant="primary" onClick={handleShow}>
                   SELECT OPTION
                 </Button>

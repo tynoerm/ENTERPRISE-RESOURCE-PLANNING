@@ -45,7 +45,7 @@ const opportunityTracking = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/opportunitytracking/")
+      .get("http://localhost:3001/opportunitytracking/")
       .then((res) => {
         setOpportunitytrackingForm(res.data.data);
       })
@@ -70,7 +70,7 @@ const opportunityTracking = () => {
     };
     axios
       .post(
-        "https://enterprise-resource-planning.onrender.com/opportunitytracking/create-opportunitytracking",
+        "http://localhost:3001/opportunitytracking/create-opportunitytracking",
         opportunityTrackinginsert
       )
       .then((res) => {
@@ -90,7 +90,7 @@ const opportunityTracking = () => {
     e.preventDefault();
     axios
       .put(
-        `https://enterprise-resource-planning.onrender.com/opportunitytracking/update-opportunitytracking/${opportunityTrackingEdit._id}`,
+        `http://localhost:3001/opportunitytracking/update-opportunitytracking/${opportunityTrackingEdit._id}`,
         opportunityTrackingEdit
       )
       .then((res) => {
@@ -108,7 +108,7 @@ const opportunityTracking = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `https://enterprise-resource-planning.onrender.com/opportunitytracking/delete-opportunitytracking/${id}`
+        `http://localhost:3001/opportunitytracking/delete-opportunitytracking/${id}`
       )
       .then(() => {
         console.log("Data successfully deleted!");
@@ -125,7 +125,7 @@ const opportunityTracking = () => {
   const handleDownload = async () => {
     try {
       const response = await axios.get(
-        "https://enterprise-resource-planning.onrender.com/opportunitytracking/generate-csv",
+        "http://localhost:3001/opportunitytracking/generate-csv",
         {
           responseType: "blob", // Important to handle binary data
         }

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import nav from "../../images/nav.jpeg";
+import fmclog from "../../images/fmclog.PNG";
 
 const SalesCustomerRelation = () => {
 
@@ -11,6 +12,17 @@ const SalesCustomerRelation = () => {
         backgroundPosition: "center", // Center the background image
         color: "black", // Set text color
       };
+      const footerStyle = {
+        backgroundColor: "navy",
+        color: "white",
+        textAlign: "center",
+        padding: "10px 0",
+        position: "fixed",
+        left: "0",
+        bottom: "0",
+        width: "100%",
+      };
+    
 
   return (
     <div>
@@ -19,26 +31,37 @@ const SalesCustomerRelation = () => {
         style={navbarStyle}
       >
         <a className="navbar-brand" style={{ color: "white" }}>
+        <img
+            src={fmclog}
+            alt="Logo"
+            style={{ width: "30px", height: "30px", marginRight: "10px" }}
+          />
+         
           <b>
             {" "}
-            <MdDashboard /> &nbsp; SALES & CUSTOMER RELATION{" "}
+          SALES & CUSTOMER RELATION{" "}
           </b>
         </a>
+
+        <form className="d-flex" >
+            <a className="btn btn-danger" href="/QuotationManagementClient">
+            QUOTATION MANAGEMENT
+            </a>
+            <a className="btn btn-dark" href="/">
+              {" "}
+              Log Out
+            </a>
+          </form>
       </nav>
 
+      
       <div>
         <div class="row row-cols-1 row-cols-md-3 shadow p-3 mb-5 bg-body rounded">
           <div class="col mb-3 shadow-sm p-3 mb-5 bg-body rounded">
             <div class="card shadow p-3 mb-5 bg-body rounded">
               <div class="card-body ">
-                <h5 class="card-title">LEAD MANAGEMENT</h5>
+                <h5 class="card-title">DELIVERY NOTE</h5>
                 <p class="card-text">
-                  This module allows the company to track and manage potential
-                  leads or prospects. It provides tools to capture leads from
-                  various sources, such as website forms or trade shows, and
-                  centralizes the lead information for easy access and
-                  follow-up. The system can assign leads to sales
-                  representatives{" "}
                 </p>
 
                 <Link
@@ -55,17 +78,11 @@ const SalesCustomerRelation = () => {
           <div class="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
             <div class="card shadow p-3 mb-5 bg-body rounded">
               <div class="card-body ">
-                <h5 class="card-title">OPPORTUNITY TRACKING</h5>
+                <h5 class="card-title">QUOTATION MANAGEMENT</h5>
                 <p class="card-text">
-                  This feature enables the tracking of potential sales
-                  opportunities. It allows sales representatives to create and
-                  manage opportunities associated with specific leads or
-                  customers. The system can store information about the
-                  opportunity's stage, value, expected close date, and
-                  associated activities.{" "}
-                </p>
+               </p>
                 <Link
-                  to="/OpportunityTrackingClient"
+                  to="/QuotationManagementManager"
                   type="button"
                   class="btn btn-primary"
                 >
@@ -75,30 +92,14 @@ const SalesCustomerRelation = () => {
               </div>
             </div>
           </div>
-          <div class="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
-            <div class="card shadow p-3 mb-5 bg-body rounded">
-              <div class="card-body">
-                <h5 class="card-title">SALES FORECASTING</h5>
-                <p class="card-text">
-                  {" "}
-                  The sales forecasting module allows the company to forecast
-                  future sales based on historical data, current opportunities,
-                  and market trends. It provides tools to analyze and predict
-                  sales performance, helping the company make informed decisions
-                  regarding resource allocation, production planning, and
-                  revenue projections.
-                </p>
-                <Link
-                  to="/SalesFocustingClient"
-                  type="button"
-                  class="btn btn-primary"
-                >
-                  {" "}
-                  Next{" "}
-                </Link>
-              </div>
-            </div>
-          </div>
+
+
+
+
+          <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
         </div>
       </div>
     </div>
