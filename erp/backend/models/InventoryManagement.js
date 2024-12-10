@@ -25,7 +25,19 @@ let InventorySchema = new Schema({
 
   supplier_name: {
     type: String
-  }
+  },
+  lowquality: {
+    type: Boolean,
+    default: false,
+  },
+  averagequality: {
+    type: Boolean,
+    default: false,
+  },
+  highquality: {
+    type: Boolean,
+    default: false,
+  },
 }, {
     collection: 'inventorymanagement'
   })

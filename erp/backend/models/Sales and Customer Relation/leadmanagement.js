@@ -3,35 +3,35 @@ const Schema = _Schema;
 
 let leadmanagementSchema = new Schema ({
 
-    lead_source: {
+    date: {
+        type: Date
+    },
+sendername: {
         type: String
     },
-    lead_status: {
+    recipient: {
         type: String
     },
-    contact_information: {
-        type: String
-    },
-    company_information: {
+    listofitems: {
         type: String
     },
     
-    lead_owner: {
-     type: String
+    quantityofpackages: {
+     type: Number
     },
 
-    lead_score: {
+    referencename: {
         type: String
     },
 
-    lead_notes: {
-        type: String
+    referencenumber: {
+        type: Number
     },
-
-    conversion_information: {
+    
+    paymentmethods: {
         type: String
     }
-
+  
 },{
     collection: 'leadmanagement'
 })

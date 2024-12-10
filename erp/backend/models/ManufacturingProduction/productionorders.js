@@ -3,29 +3,29 @@ const Schema = _Schema;
 
 let productionordersSchema = new Schema ({
 
-    order_id: {
+    date: {
+        type: Date
+    },
+    productname: {
+        type: String
+    },
+    clientname: {
+        type: String
+    },
+    clientaddress: {
+        type: String
+    },
+    category: {
+        type: String
+    },
+    itemdescription: {
         type: String
     },
     quantity: {
+        type: Number
+    },
+    createdby: {
         type: String
-    },
-    start_date: {
-        type: Date
-    },
-    end_date: {
-        type: Date
-    },
-    status: {
-        type: String
-    },
-    assigned_employee: {
-        type: String
-    },
-    last_updated_by: {
-        type: Date
-    },
-    last_updated_date: {
-        type: Date
     }
 
 

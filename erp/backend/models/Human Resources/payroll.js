@@ -3,33 +3,62 @@ const Schema = _Schema;
 
 let payrollSchema = new Schema ({
      
-employee_name: {
+    emeployeeId: {
     type: String
 },
 
-employee_status: {
+_name: {
+    type: String
+},
+
+department: {
     type: String
 },
  
-job_title: {
+position: {
     type: String
 },
 
-base_salary: {
+
+dateofjoining: {
+    type: Date
+},
+
+payperiodend: {
+    type: Date
+},
+
+
+payperiodstart: {
+    type: Date
+},
+overtimehours: {
+    type: Number
+},
+salary: {
+    type: Number
+},
+
+overtimepay: {
     type: Number
 },
 
 bonuses: {
-    type: String
+    type: Number
 },
 
-deductions_medicalcontribution: {
-    type: String
+grosspay: {
+    type: Number
+},
+taxdeductions: {
+    type: Number
 },
 
-banking_details: {
-    type: String
-}
+netpay: {
+    type: Number
+},
+
+
 
 }, {
     collection: 'payroll'

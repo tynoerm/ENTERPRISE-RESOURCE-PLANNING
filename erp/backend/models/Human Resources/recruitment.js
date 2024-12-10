@@ -6,26 +6,26 @@ let recruitmentSchema = new Schema ({
     type: String
   },
   
-  email: {
+ position: {
     type: String
   },
 
-  phone_number: {
+ email: {
     type: Number
   },
 
-  address: {
+  phonenumber: {
     type: String
   },
 
-  status: {
+ address: {
     type: String 
   },
 
-  offer_details: {
+  gender: {
     type: String
   },
-  applied_position: {
+  maritalstatus: {
     type: String
   }
 

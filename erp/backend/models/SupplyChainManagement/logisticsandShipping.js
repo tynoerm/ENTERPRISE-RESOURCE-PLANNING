@@ -4,10 +4,10 @@ const Schema = _Schema;
 
 let logisticsandShippingShema = new Schema({
 
-    sender_details: {
+    modeoftransport: {
         type: String
     },
-    receiver_details: {
+    sendername: {
         type: String
     },
     package_dimensions: {
