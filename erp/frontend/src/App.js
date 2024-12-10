@@ -4,6 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
+import EmailForm from './EmailForm';
+import SupplyChainManagementManager from './SupplyChainManagement/supplyChainManagementManager.js';
+import HumanResourceManager from './HumanResources/humanResourceManager.js';
+
+
+
 
 import LoginComponent from './components/LoginComponent';
 import AdminComponent from './components/AdminComponent';
@@ -17,9 +23,14 @@ import SupplyChainManagementDashboard from './SupplyChainManagement/Dashboard';
 import SupplyChainManagementDashboardUser from './SupplyChainManagement/User/DashboardUser';
 import SupplyChainManagementDashboardManager from './SupplyChainManagement/Manager/DashboardManager';
 
+import PurchaseOrderManager from './SupplyChainManagement/Manager/PurchaseOrderManager.js';
+import PurchaseOrderClient from   './SupplyChainManagement/User/PurchaseOrderClient.js'
+
 import Procurement from './SupplyChainManagement/Procurement';
 import ProcurementUser from './SupplyChainManagement/User/ProcurementUser';
 import ProcurementManager from './SupplyChainManagement/Manager/ProcurementManager';
+
+
 
 
 import LogisticsandShipping from './SupplyChainManagement/LogisticsandShipping';
@@ -38,7 +49,7 @@ import HumanResourcesDashboardManager from './HumanResources/Manager/DashboardMa
 
 import PerfomanceManagement from './HumanResources/PerfomanceManagement';
 import PerfomanceManagementClient from './HumanResources/Client/PerfomanceManagementClient';
-import PerfomanceManagementManager from './HumanResources/Manager/PerfomanceManagementManager';
+import PerfomanceManagementManager from './HumanResources/Manager/PerfomanceManagementManager.js';
 
 import Payroll from './HumanResources/Payroll';
 import PayrollClient from './HumanResources/Client/PayrollClient';
@@ -60,6 +71,7 @@ import FinanceAccountingDashboardManager from './FinanceAccounting/Manager/Dashb
 
 import AccountsPayables from './FinanceAccounting/AccountsPayables';
 import AccountsPayablesClient from './FinanceAccounting/Client/AccountsPayablesClient';
+
 import AccountsPayablesManager from './FinanceAccounting/Manager/AccountsPayablesManager';
 
 import AccountsReceivables from './FinanceAccounting/AccountsReceivables';
@@ -78,6 +90,10 @@ import ExpenseAccountManager from './FinanceAccounting/Manager/ExpenseAccountMan
 import SalesCustomerRelation from './SalesCustomerRelation/Dashboard';
 import SalesCustomerRelationClient from './SalesCustomerRelation/Client/DashboardClient';
 import SalesCustomerRelationManager from './SalesCustomerRelation/Manager/DashboardManager';
+
+import QuotationManagementClient from './SalesCustomerRelation/Client/QuotationManagementClient.js';
+import QuotationManagementManager from './SalesCustomerRelation/Manager/QuotationManagementManager.js';
+import QuotationManagement from './SalesCustomerRelation/QuotationManagement.js';
 
 import LeadManagement from './SalesCustomerRelation/LeadManagement';
 import LeadManagementClient from './SalesCustomerRelation/Client/LeadManagementClient';
@@ -110,6 +126,7 @@ import ProductionOrdersClient from './ManufacturingProduction/Client/ProductionO
 import ProductionOrdersManager from './ManufacturingProduction/Manager/ProductionOrdersManager';
 
 import {useNavigate} from 'react-router-dom';
+import { UserProvider } from './UserContext.js';
 
 
 
@@ -138,6 +155,7 @@ function App() {
 
   return (
     <Router>
+      <UserProvider>
       <Routes>
      
       <Route path="" element={<LoginComponent/>} />
@@ -150,6 +168,9 @@ function App() {
         <Route path="Register" element={<Register />} />
 
         <Route path="AdminUserManagement" element={<AdminUserManagement />} />
+        <Route path="EmailForm" element={<EmailForm/>} />
+        <Route path="SupplyChainManagementManager" element={<SupplyChainManagementManager/>} />
+        <Route path="HumanResourceManager" element={<HumanResourceManager/>} />
 
 
         <Route path="MainDashboard" element={!loggedIn?<Navigate to="/" />:<MainDashboard />} />
@@ -157,6 +178,11 @@ function App() {
         <Route path="SupplyChainManagementDashboard" element={<SupplyChainManagementDashboard />} />
         <Route path="SupplyChainManagementDashboardUser" element={<SupplyChainManagementDashboardUser />} />
         <Route path="SupplyChainManagementDashboardManager" element={<SupplyChainManagementDashboardManager />} />
+
+        <Route path="PurchaseOrderManager" element={<PurchaseOrderManager />} />
+        <Route path="PurchaseOrderClient" element={<PurchaseOrderClient />} />
+
+
 
         <Route path="Procurement" element={<Procurement />} />
         <Route path="ProcurementUser" element={<ProcurementUser />} />
@@ -178,7 +204,7 @@ function App() {
         
         <Route path="PerfomanceManagement" element={<PerfomanceManagement />} />
         <Route path="PerfomanceManagementClient" element={<PerfomanceManagementClient />} />
-        <Route path=" PerfomanceManagementManager" element={<PerfomanceManagementManager />} />
+        <Route path="PerfomanceManagementManager" element={<PerfomanceManagementManager />} />
 
         <Route path="Recruitment" element={<Recruitment />} />
         <Route path="RecruitmentClient" element={<RecruitmentClient />} />
@@ -196,7 +222,9 @@ function App() {
 
         <Route path="AccountsPayables" element={<AccountsPayables />} />
         <Route path="AccountsPayablesClient" element={<AccountsPayablesClient />} />
+
         <Route path="AccountsPayablesManager" element={<AccountsPayablesManager />} />
+        
 
         <Route path="AccountsReceivables" element={<AccountsReceivables />} />
         <Route path="AccountsReceivablesClient" element={<AccountsReceivablesClient />} />
@@ -212,6 +240,12 @@ function App() {
         <Route path="SalesCustomerRelation" element={<SalesCustomerRelation />} />
         <Route path="SalesCustomerRelationClient" element={<SalesCustomerRelationClient />} />
         <Route path="SalesCustomerRelationManager" element={<SalesCustomerRelationManager />} />
+
+        <Route path="QuotationManagementClient" element={<QuotationManagementClient />} />
+        <Route path="QuotationManagementManager" element={<QuotationManagementManager />} />
+        
+        <Route path="QuotationManagement" element={<QuotationManagement />} />
+
 
         <Route path="SalesFocusting" element={<SalesForecasting />} />
         <Route path="SalesFocustingClient" element={<SalesForecastingClient />} />
@@ -247,6 +281,7 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </UserProvider>
     </Router>
   );
 }
