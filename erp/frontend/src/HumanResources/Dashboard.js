@@ -25,7 +25,7 @@ const HumanResourceDashboard = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/expenseaccount/")
+      .get("http://localhost:3001/expenseaccount/")
       .then((res) => {
         setExpenseaccount(res.data.data);
       })
@@ -45,6 +45,32 @@ const HumanResourceDashboard = () => {
             <MdDashboard /> &nbsp;HUMAN RESOURCES
           </b>
         </a>
+
+        <ul className="nav justify-content-end">
+      <li className="nav-item">
+        <Link className="nav-link active" aria-current="page" to="/Payroll" type="button" class="btn btn-outline-primary">
+          PAYROLL
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/Recruitment"type="button" class="btn btn-outline-primary">
+          RECRUITMENT
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/ PerfomanceManagement"type="button" class="btn btn-outline-primary">
+          PERFORMANCE MANAGEMENT
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/"type="button" class="btn btn-outline-light">
+          LOG OUT
+        </Link>
+      </li>
+    </ul>
       </nav>
 
       <div>
@@ -54,9 +80,7 @@ const HumanResourceDashboard = () => {
               <div className="card-body">
                 <h5 className="card-title">PAYROLL</h5>
                 <p className="card-text">
-                  Employee information, salary or wages, time and attendance
-                  records, deductions, employee benefits, tax filings and
-                  reporting, payment distribution.
+                 
                 </p>
                 <Link to="/Payroll" type="button" className="btn btn-primary">
                   Next
@@ -69,9 +93,7 @@ const HumanResourceDashboard = () => {
               <div className="card-body">
                 <h5 className="card-title">RECRUITMENT</h5>
                 <p className="card-text">
-                  Its main contents include job requisition creation, applicant
-                  tracking, job posting and candidate sourcing, screening and
-                  shortlisting, etc.
+                 
                 </p>
                 <Link to="/Recruitment" type="button" className="btn btn-primary">
                   Next
@@ -84,9 +106,7 @@ const HumanResourceDashboard = () => {
               <div className="card-body">
                 <h5 className="card-title">PERFORMANCE MANAGEMENT & BENEFITS</h5>
                 <p className="card-text">
-                  Competency assessment, development planning, and performance
-                  analytics. It helps align employee goals with organizational
-                  objectives, track performance, etc.
+                 
                 </p>
                 <Link to="/PerformanceManagement" type="button" className="btn btn-primary">
                   Next
@@ -100,7 +120,7 @@ const HumanResourceDashboard = () => {
               <div className="card-body">
                 <h5 className="card-title">CHECK FINANCE AND ACCOUNT MODULE</h5>
                 <p className="card-text">
-                  You are now going to have access to the company expense account.
+                 
                 </p>
                 <Button variant="primary" onClick={handleShow}>
                   SELECT OPTION

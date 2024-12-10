@@ -11,6 +11,19 @@ const HumanResourceDashboard = () => {
         backgroundPosition: "center", // Center the background image
         color: "black", // Set text color
       };
+
+      const footerStyle = {
+        backgroundColor: "navy",
+        color: "white",
+        textAlign: "center",
+        padding: "10px 0",
+        position: "fixed",
+        left: "0",
+        bottom: "0",
+        width: "100%",
+      };
+    
+    
     
 
     return (
@@ -25,6 +38,31 @@ const HumanResourceDashboard = () => {
             <MdDashboard /> &nbsp;HUMAN RESOURCES{" "}
           </b>
         </a>
+        <ul className="nav justify-content-end">
+      <li className="nav-item">
+        <Link className="nav-link active" aria-current="page" to="/PayrollClient" type="button" class="btn btn-outline-primary">
+          PAYROLL
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/RecruitmentClient"type="button" class="btn btn-outline-primary">
+          RECRUITMENT
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/ PerfomanceManagementClient"type="button" class="btn btn-outline-primary">
+          PERFORMANCE MANAGEMENT
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/"type="button" class="btn btn-outline-light">
+          LOG OUT
+        </Link>
+      </li>
+    </ul>
       </nav>
 
 
@@ -53,24 +91,17 @@ const HumanResourceDashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
-                        <div class="card shadow p-3 mb-5 bg-body rounded">
-
-                            <div class="card-body">
-                                <h5 class="card-title">PERFOMANCE MANAGEMENT & BENEFITS</h5>
-                                <p class="card-text"> competency assessment, development planning, and performance analytics. It helps align employee goals with organizational objectives, track performance...</p>
-                                <Link to="/PerfomanceManagementClient" type="button"     class="btn btn-primary">  Next </Link>
-                            </div>
-                        </div>
-                    </div>
-                    
+                 
 
                     <div class="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
                         
                     </div>
                 </div>
             </div>
-
+            <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
         </div>
 
     )

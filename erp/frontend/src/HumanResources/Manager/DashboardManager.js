@@ -29,7 +29,7 @@ const HumanResourceDashboard = () => {
 
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/expenseaccount/")
+      .get("http://localhost:3001/expenseaccount/")
       .then((res) => {
         setExpenseaccount(res.data.data);
       })
@@ -37,6 +37,17 @@ const HumanResourceDashboard = () => {
         console.log(error);
       });
   }, []);
+
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
 
 
   return (
@@ -51,6 +62,27 @@ const HumanResourceDashboard = () => {
             <MdDashboard /> &nbsp;HUMAN RESOURCES{" "}
           </b>
         </a>
+        <ul className="nav justify-content-end">
+      <li className="nav-item">
+        <Link className="nav-link active" aria-current="page" to="/PayrollManager" type="button" class="btn btn-outline-primary">
+          PAYROLL
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/RecruitmentManager"type="button" class="btn btn-outline-primary">
+          RECRUITMENT
+        </Link>
+      </li>
+      &nbsp;
+      
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/"type="button" class="btn btn-outline-light">
+          LOG OUT
+        </Link>
+      </li>
+    </ul>
       </nav>
 
       <div>
@@ -60,9 +92,7 @@ const HumanResourceDashboard = () => {
               <div className="card-body">
                 <h5 className="card-title">PAYROLL</h5>
                 <p className="card-text">
-                  Employee information, salary or wages, time and attendance
-                  records, deductions, employee benefits, tax filings and
-                  reporting, payment distribution.
+                  
                 </p>
 
                 <Link to="/PayrollManager" type="button" className="btn btn-primary">
@@ -77,9 +107,7 @@ const HumanResourceDashboard = () => {
               <div className="card-body">
                 <h5 className="card-title">RECRUITMENT</h5>
                 <p className="card-text">
-                  Its main contents include job requisition creation, applicant
-                  tracking, job posting and candidate sourcing, screening and
-                  shortlisting, etc.
+                  
                 </p>
                 <Link to="/RecruitmentManager" type="button" className="btn btn-primary">
                   {" "}
@@ -88,29 +116,14 @@ const HumanResourceDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
-            <div className="card shadow p-3 mb-5 bg-body rounded">
-              <div className="card-body">
-                <h5 className="card-title">PERFORMANCE MANAGEMENT & BENEFITS</h5>
-                <p className="card-text">
-                  Competency assessment, development planning, and performance
-                  analytics. It helps align employee goals with organizational
-                  objectives, track performance, etc.
-                </p>
-                <Link to="/PerformanceManagementManager" type="button" className="btn btn-primary">
-                  {" "}
-                  Next{" "}
-                </Link>
-              </div>
-            </div>
-          </div>
+  
 
           <div className="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
             <div className="card shadow p-3 mb-5 bg-body rounded">
               <div className="card-body">
                 <h5 className="card-title">CHECK FINIANCE AND ACCOUNT MODULE</h5>
                 <p className="card-text">
-                 you are now going to have access to company expense account.
+               
                 </p>
                 <Button variant="primary" onClick={handleShow}>
                   SELECT OPTION
@@ -147,7 +160,7 @@ const HumanResourceDashboard = () => {
                   onHide={handleClose1}
                   backdrop="static"
                   keyboard={false}
-                  size="lg"
+                  size="xl"
                   aria-labelledby="example-modal-sizes-title-lg"
                 >
                   <Modal.Header closeButton>
@@ -191,7 +204,10 @@ const HumanResourceDashboard = () => {
             </div>
           </div>
 
-          <div className="col mb-4 shadow-sm p-3 mb-5 bg-body rounded"></div>
+          <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
         </div>
       </div>
     </div>

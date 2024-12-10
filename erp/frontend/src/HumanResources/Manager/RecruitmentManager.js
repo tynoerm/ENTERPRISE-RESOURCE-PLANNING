@@ -25,19 +25,29 @@ const recuitment = () => {
     const [recruitmentEdit,setRecruitmentEdit] = useState({})
 
     const [name, setName] = useState("");
+    const [position, setPosition] = useState("");
     const [email, setEmail] = useState("");
-    const [phone_number, setPhonenumber] = useState("");
+    const [phonenumber,setPhonenumber ]= useState("");
     const [address,setAddress] = useState("");
-    const [status, setStatus] = useState("");
-    const [offer_details, setOfferdetails] = useState("");
-    const [applied_position, setBanking_details] = useState("");
+    const [gender, setGender] = useState("");
+    const [maritalstatus, setMaritalstatus] = useState("");
     
-
+    const footerStyle = {
+        backgroundColor: "navy",
+        color: "white",
+        textAlign: "center",
+        padding: "10px 0",
+        position: "fixed",
+        left: "0",
+        bottom: "0",
+        width: "100%",
+      };
+    
 
 
     useEffect(() => {
         axios
-            .get("https://enterprise-resource-planning.onrender.com/recruitment/")
+            .get("http://localhost:3001/recruitment/")
             .then((res) => {
                 setRecruitmentForm(res.data.data);
             })
@@ -52,9 +62,17 @@ const recuitment = () => {
     const notify1 = (message) => toast(message);
     const handleSubmit = (e) => {
         e.preventDefault();
-        const recruitmentinsert = {name, email, phone_number,address, status, offer_details }
+        const recruitmentinsert = {
+            name,
+             position, 
+             email,
+             phonenumber, 
+             address, 
+           gender,
+            maritalstatus
+        }
         axios
-            .post("https://enterprise-resource-planning.onrender.com/recruitment/create-newrecuitment", recruitmentinsert)
+            .post("http://localhost:3001/recruitment/create-newrecuitment", recruitmentinsert)
             .then((res) => {
                 console.log({ status: res.status });
                 setRecruitmentForm(prev => [...prev, recruitmentinsert])
@@ -68,7 +86,7 @@ const recuitment = () => {
         e.preventDefault();
         axios
           .put(
-            `https://enterprise-resource-planning.onrender.com/recruitment/update-recruitment/${recruitmentEdit._id}`,
+            `http://localhost:3001/recruitment/update-recruitment/${recruitmentEdit._id}`,
             recruitmentEdit
           )
           .then((res) => {
@@ -87,7 +105,7 @@ const recuitment = () => {
       const handleDelete = async (id) => {
         axios
           .delete(
-            `https://enterprise-resource-planning.onrender.com/recruitment/delete-recruitment/${id}`
+            `http://localhost:3001/recruitment/delete-recruitment/${id}`
           )
           .then(() => {
             console.log("Data successfully deleted!");
@@ -106,7 +124,7 @@ const recuitment = () => {
       const handleDownload = async () => {
         try {
           const response = await axios.get(
-            "https://enterprise-resource-planning.onrender.com/recruitment/generate-csv",
+            "http://localhost:3001/recruitment/generate-csv",
             {
               responseType: "blob", // Important to handle binary data
             }
@@ -130,7 +148,27 @@ const recuitment = () => {
             <nav class=" navbar bg-body-tertiary bg-dark border-bottom border-body shadow-lg p-3 mb-5 bg-body rounded" >
                 <div class="container-fluid">
                     <a class="navbar-brand"><b>RECRUITMENT</b></a>
-                   
+                    <ul className="nav justify-content-end">
+      <li className="nav-item">
+        <Link className="nav-link active" aria-current="page" to="/PayrollManager" type="button" class="btn btn-outline-primary">
+          PAYROLL
+        </Link>
+      </li>
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/RecruitmentManager"type="button" class="btn btn-outline-primary">
+          RECRUITMENT
+        </Link>
+      </li>
+      &nbsp;
+      
+      &nbsp;
+      <li className="nav-item">
+        <Link className="nav-link" to="/"type="button" class="btn btn-outline-warning">
+          LOG OUT
+        </Link>
+      </li>
+    </ul>
                 </div>
             </nav>
                
@@ -172,70 +210,70 @@ const recuitment = () => {
                                     onChange={(event) => {setName(event.target.value) }} />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">email</label>
+                                <label className="form-label">Position</label>
                                 <input
                                     type="text"
+                                    className="form-control"
+                                    name="position"
+                                    id="position"
+                                    value={recuitmentForm.position}
+                                    onChange={(event) => { setPosition(event.target.value) }}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Email</label>
+                                <input
+                                    type="email"
                                     className="form-control"
                                     name="email"
                                     id="email"
                                     value={recuitmentForm.email}
-                                    onChange={(event) => { setEmail(event.target.value) }}
+                                    onChange={(event) => {setEmail(event.target.value) }}
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">phone_number</label>
+                                <label className="form-label">Phone Number</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="phone_number"
-                                    id="phone_number"
-                                    value={recuitmentForm.phone_number}
-                                    onChange={(event) => { setPhonenumber(event.target.value) }}
+                                    name="phonenumber"
+                                    id="phonenumber"
+                                    value={recuitmentForm.phonenumber}
+                                    onChange={(event) => {setPhonenumber(event.target.value) }}
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">address</label>
+                                <label className="form-label">Address</label>
                                 <input
                                     type="text"
                                     className="form-control"
                                     name="address"
                                     id="address"
-                                    value={recuitmentForm.payment_terms}
-                                    onChange={(event) => {setAddress(event.target.value) }}
+                                    value={recuitmentForm.address}
+                                    onChange={(event) => { setAddress(event.target.value) }}
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">status</label>
+                                <label className="form-label"> Gender</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="status"
-                                    id="status"
-                                    value={recuitmentForm.status}
-                                    onChange={(event) => { setStatus(event.target.value) }}
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label"> offer_details</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name=" offer_details"
-                                    id=" offer_details"
-                                    value={recuitmentForm. offer_details}
-                                    onChange={(event) => { setOfferdetails(event.target.value) }}
+                                    name=" gender"
+                                    id="gender"
+                                    value={recuitmentForm.gender}
+                                    onChange={(event) => { setGender(event.target.value) }}
                                 />
                             </div>
                            
                             <div className="mb-3">
-                                <label className="form-label"> applied_position</label>
+                                <label className="form-label"> Marital Status</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name=" applied_position"
-                                    id=" applied_position"
-                                    value={recuitmentForm. applied_position}
-                                    onChange={(event) => { setBanking_details(event.target.value) }}
+                                    name=" maritalstatus"
+                                    id=" maritalstatus"
+                                    value={recuitmentForm. maritalstatus}
+                                    onChange={(event) => {setMaritalstatus(event.target.value) }}
                                 />
                             </div>
                          
@@ -287,39 +325,39 @@ const recuitment = () => {
                                       } />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">email</label>
+                                <label className="form-label">Position</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="email"
-                                    id="email"
-                                    value={recruitmentEdit.email}
+                                name="position"
+                                    id="position"
+                                    value={recruitmentEdit.position}
                                     onChange={(e) =>
                                         setRecruitmentEdit({
                                           ...recruitmentEdit,
-                                          email: e.target.value,
+                                          position: e.target.value,
                                         })
                                       }
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">phone_number</label>
+                                <label className="form-label">Phone Number</label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     className="form-control"
-                                    name="phone_number"
-                                    id="phone_number"
-                                    value={recruitmentEdit.phone_number}
+                                    name="phonenumber"
+                                    id="phonenumber"
+                                    value={recruitmentEdit.phonenumber}
                                     onChange={(e) =>
                                        setRecruitmentEdit({
                                           ...recruitmentEdit,
-                                          phone_number: e.target.value,
+                                          phonenumber: e.target.value,
                                         })
                                       }
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">address</label>
+                                <label className="form-label">Address</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -335,54 +373,39 @@ const recuitment = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">status</label>
+                                <label className="form-label">Gender</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="status"
-                                    id="status"
-                                    value={recruitmentEdit.status}
+                                 name=" gender"
+                                    id="gender"
+                                    value={recruitmentEdit.gender}
                                     onChange={(e) =>
                                        setRecruitmentEdit({
                                           ...recruitmentEdit,
-                                         status: e.target.value,
+                                          gender: e.target.value,
                                         })
                                       }
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label"> offer_details</label>
+                                <label className="form-label">  Marital Status</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name=" offer_details"
-                                    id=" offer_details"
-                                    value={recruitmentEdit. offer_details}
+                                   name=" maritalstatus"
+                                    id=" maritalstatus"
+                                    value={recruitmentEdit. maritalstatus}
                                     onChange={(e) =>
                                         setRecruitmentEdit({
                                           ...recruitmentEdit,
-                                          offer_details: e.target.value,
+                                          maritalstatus: e.target.value,
                                         })
                                       }
                                 />
                             </div>
                            
-                            <div className="mb-3">
-                                <label className="form-label"> applied_position</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name=" applied_position"
-                                    id=" applied_position"
-                                    value={recruitmentEdit. applied_position}
-                                    onChange={(e) =>
-                                        setRecruitmentEdit({
-                                          ...recruitmentEdit,
-                                         applied_position: e.target.value,
-                                        })
-                                      }
-                                />
-                            </div>
+                           
                          
                             <div className="mb-3">
                                 <button type="submit" className="btn btn-primary">
@@ -409,11 +432,12 @@ const recuitment = () => {
                     <tr>
 
                         <th>name</th>
-                        <th> email</th>
-                        <th>phone_number</th>
+                        <th>position</th>
+                        <th>email</th>
+                        <th>phone number</th>
                         <th> address</th>
-                        <th>  status</th>
-                        <th> offer_details</th>
+                        <th>gender</th>
+                        <th>marital status</th>
                         <th>action</th>
                     </tr>
                 </thead>
@@ -423,11 +447,12 @@ const recuitment = () => {
                         return <tr key={index}>
 
                             <td>{recruitment.name}</td>
+                            <td>{recruitment.position}</td>
                             <td>{recruitment.email}</td>
-                            <td>{recruitment.phone_number}</td>
+                            <td>{recruitment.phonenumber}</td>
                             <td>{recruitment.address}</td>
-                            <td>{recruitment.status}</td>
-                            <td>{recruitment.offer_details}</td>
+                            <td>{recruitment.gender}</td>
+                            <td>{recruitment.maritalstatus}</td>
                             
 
                             <td>
@@ -451,7 +476,10 @@ const recuitment = () => {
 
 
 
-
+            <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
 
 
 

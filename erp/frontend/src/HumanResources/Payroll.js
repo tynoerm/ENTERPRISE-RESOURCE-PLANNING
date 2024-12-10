@@ -37,7 +37,7 @@ const Payroll = () => {
 
     useEffect(() => {
         axios
-            .get("https://enterprise-resource-planning.onrender.com/payroll/")
+            .get("http://localhost:3001/payroll/")
             .then((res) => {
                 setPayrollForm(res.data.data);
             })
@@ -54,7 +54,7 @@ const Payroll = () => {
         e.preventDefault();
         const payrollinsert = {employee_name, employee_status, job_title,base_salary, bonuses, deductions_medicalcontribution }
         axios
-            .post("https://enterprise-resource-planning.onrender.com/payroll/create-payroll", payrollinsert)
+            .post("http://localhost:3001/payroll/create-payroll", payrollinsert)
             .then((res) => {
                 console.log({ status: res.status });
                 setPayrollForm(prev => [...prev, payrollinsert])
@@ -68,7 +68,7 @@ const Payroll = () => {
         e.preventDefault();
         axios
           .put(
-            `https://enterprise-resource-planning.onrender.com/payroll/update-payroll/${payrollEdit._id}`,
+            `http://localhost:3001/payroll/update-payroll/${payrollEdit._id}`,
             payrollEdit
           )
           .then((res) => {
@@ -87,7 +87,7 @@ const Payroll = () => {
       const handleDelete = async (id) => {
         axios
           .delete(
-            `https://enterprise-resource-planning.onrender.com/payroll/delete-payroll/${id}`
+            `http://localhost:3001/payroll/delete-payroll/${id}`
           )
           .then(() => {
             console.log("Data successfully deleted!");
@@ -106,7 +106,7 @@ const Payroll = () => {
       const handleDownload = async () => {
         try {
           const response = await axios.get(
-            "https://enterprise-resource-planning.onrender.com/payroll/generate-csv",
+            "http://localhost:3001/payroll/generate-csv",
             {
               responseType: "blob", // Important to handle binary data
             }
