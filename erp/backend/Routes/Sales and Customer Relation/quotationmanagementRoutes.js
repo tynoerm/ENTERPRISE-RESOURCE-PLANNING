@@ -1,59 +1,47 @@
 import mongoose from "mongoose";
 import express from "express";
-
-import accountsreceivablesSchema from "../../models/Accounting/accountsreceivables.js";
-
-import { Parser }  from "json2csv";
-
+import { Parser } from "json2csv";
 import PDFDocument from "pdfkit";
 import path from "path";
 import fs from "fs";
 import 'pdfkit-table';
 import { fileURLToPath } from "url";
 
-let router = express.Router();
+import quotationmanagementSchema from "../../models/Sales and Customer Relation/quotationmanagement.js";
 
-//create accounts receivables
+const router = express.Router();
 
-
-router.route("/create_accountsreceivables").post(async (req, res, next) => {
-    await accountsreceivablesSchema
-        .create(req.body)
-        .then((result) => {
-            res.json({
-                data: result,
-                message: "record created successfully",
-                status: 200,
-            });
-        })
-        .catch((err) => {
-            return next(err);
-        });
-});
-
-//get all accounts receivables records from  the database
-
+// Fetch all quotations
 router.route("/").get(async (req, res, next) => {
-    await accountsreceivablesSchema
-        .find()
-        .then((result) => {
-            res.json({
-                data: result,
-                message: "all records fetched",
-                status: 200,
-            });
-        })
-
-        .catch((err) => {
-            return next(err);
-        });
+  try {
+    const result = await quotationmanagementSchema.find();
+    res.json({
+      data: result,
+      message: "quotations fetched",
+      status: 200,
+    });
+  } catch (err) {
+    return next(err);
+  }
 });
 
-// update accountsreceivables into the database
-
-router.route("/update-accountsreceivables/:id").put(async (req, res, next) => {
+// Create a new quotation
+router.route("/create-quotation").post(async (req, res, next) => {
   try {
-    const result = await accountsreceivablesSchema.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const result = await quotationmanagementSchema.create(req.body);
+    res.json({
+      data: result,
+      message: "quotation created successfully",
+      status: 200,
+    });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.route("/update-quotation/:id").put(async (req, res, next) => {
+  try {
+    const result = await quotationmanagementSchema.findByIdAndUpdate(req.params.id, req.body, { new: true });
     console.log(result);
     res.json({
       data: result,
@@ -64,33 +52,35 @@ router.route("/update-accountsreceivables/:id").put(async (req, res, next) => {
     res.status(500).json({ error: "Failed to update data." });
   }
 });
-  
 
-  router.route("/delete-accountsreceivables/:id").delete(async (req, res, next) => {
-    try {
-      const deletedUser = await accountsreceivablesSchema.findOneAndDelete({ _id: req.params.id });
-      if (!deletedUser) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-      res.json({ msg: "Data successfully deleted." });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Error deleting user' });
+router.route("/delete-quotationmanagement/:id").delete(async (req, res, next) => {
+  try {
+    const deletedUser = await quotationmanagementSchema.findOneAndDelete({ _id: req.params.id });
+    if (!deletedUser) {
+      return res.status(404).json({ error: 'User not found' });
     }
-  });
+    res.json({ msg: "Data successfully deleted." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error deleting user' });
+  }
+});
+
+
+
 
 // Get __dirname equivalent for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-router.post("/download-pdf", async (req, res) => {
-  const { selectedAccountsreceivables } = req.body;
+router.post('/download-pdf', async (req, res) => {
+  const { selectedQuotations } = req.body;
 
   try {
-    const accountsreceivables = await accountsreceivablesSchema.find({ _id: { $in:  selectedAccountsreceivables } });
+    const quotations = await quotationmanagementSchema.find({ _id: { $in: selectedQuotations } });
 
     const doc = new PDFDocument();
-    const filePath = path.join(__dirname, 'invoice.pdf');
+    const filePath = path.join(__dirname, 'quotations.pdf');
     const writeStream = fs.createWriteStream(filePath);
 
     doc.pipe(writeStream);
@@ -101,32 +91,39 @@ router.post("/download-pdf", async (req, res) => {
 
     // Title
     doc.fontSize(20).text('Freight Marks Logistics', 110, 50); // Adjust the position to fit next to the logo
-    doc.fontSize(20).text('Accounts Receivables Invoice', 110, 80); // Adjust the position to fit next to the logo
+    doc.fontSize(20).text('Quotation', 110, 80); // Adjust the position to fit next to the logo
     doc.moveDown(2);
 
     // Table headers
     const headers = [
-      'Customer Information',
-      'Invoice Details',
-      'Payment Information',
-      'Accounting Codes',
-      'Aging Information',
-      'Payment_History',
-     
-     
+      'Quotation Number',
+      'Current Date',
+      'Expiry Date',
+      'Goods Description',
+      'Sender Name',
+      'Created By',
+      'Payment Methods',
+      'VAT Amount',
+      'Gross Total Amount',
+      'Discount Applied',
+      'Total Freight Charges'
     ];
 
     // Table
     const table = {
       headers,
-      rows: accountsreceivables.map(accountsreceivables => [
-        accountsreceivables.customer_information,
-        accountsreceivables.invoice_details,
-        accountsreceivables.payment_information,
-        accountsreceivables.accounting_codes,
-        accountsreceivables. aging_information,
-        accountsreceivables.payment_history
-        
+      rows: quotations.map(quotation => [
+        quotation.quotationnumber,
+        quotation.currentdate,
+        quotation.expirydate,
+        quotation.goodsdescription,
+        quotation.sendername,
+        quotation.createdby,
+        quotation.paymentmethods,
+        quotation.vatamount,
+        quotation.taxes,
+        quotation.insurancefees,
+        quotation.totalfreightcharges
       ])
     };
 
@@ -185,5 +182,7 @@ router.post("/download-pdf", async (req, res) => {
   }
 });
 
+export default router;
 
-export { router as accountsreceivablesRoutes}
+
+export { router as quotationmanagementRoutes };

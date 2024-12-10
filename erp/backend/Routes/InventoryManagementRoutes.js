@@ -1,4 +1,4 @@
-
+1
 import express from "express";
 import InventorySchema from "../models/InventoryManagement.js";
 
@@ -70,6 +70,30 @@ router.route("/update-inventory/:id").put(async (req, res, next) => {
   }
 });
 
+router.put('/updateSelectedItems', async (req, res) => {
+  try {
+    const selectedItems = req.body.selectedItems;
+
+    for (const item of selectedItems) {
+      await InventorySchema.findOneAndUpdate(
+        { _id: item._id },
+        {
+          $set: {
+            lowquality: item.lowquality,
+            averagequality: item.averagequality,
+            highquality: item.highquality,
+          },
+        },
+        { new: true, useFindAndModify: false }
+      );
+    }
+
+    res.status(200).json({ message: 'Items updated successfully' });
+  } catch (error) {
+    console.error('Error updating items:', error);
+    res.status(500).json({ error: 'An error occurred while updating items' });
+  }
+});
 
 
 router.route("/delete-inventory/:id").delete(async (req, res, next) => {

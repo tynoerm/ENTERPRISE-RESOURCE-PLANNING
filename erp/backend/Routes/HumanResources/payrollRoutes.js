@@ -74,13 +74,27 @@ router.route("/delete-payroll/:id").delete(async (req, res, next) => {
   });
 
   // Endpoint to fetch data and generate CSV
-router.route('/generate-csv').get(async (req, res) => {
+  router.route('/generate-csv').get(async (req, res) => {
     try {
       // Fetch data from MongoDB using Mongoose
       const data = await payrollSchema.find({}, { _id: 0 }); // Exclude _id field if needed
   
+      // Define the fields for the CSV and their titles
+      const fields = [
+        { label: 'Employee ID', value: 'employeeId' },
+      
+        { label: 'Employee Name', value: 'employee_name' },
+        { label: 'Employee Status', value: 'employee_status' },
+        { label: 'Job Title', value: 'job_title' },
+        { label: 'Base Salary', value: 'base_salary' },
+        { label: 'Bonuses', value: 'bonuses' },
+        { label: 'Deductions', value: ' deductions_medicalcontribution' },
+       
+      ];
+      const opts = { fields };
+  
       // Convert data to CSV format using json2csv
-      const parser = new Parser();
+      const parser = new Parser(opts);
       const csv = parser.parse(data);
   
       // Set response headers for CSV download
@@ -92,8 +106,5 @@ router.route('/generate-csv').get(async (req, res) => {
       res.status(500).send('Error generating CSV');
     }
   });
-  
-  
-  
 
 export { router as payrollRoutes}

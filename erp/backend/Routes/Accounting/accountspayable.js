@@ -1,6 +1,13 @@
+
+
 import mongoose from "mongoose";
 import express from "express";
 import { Parser } from "json2csv";
+import PDFDocument from "pdfkit";
+import path from "path";
+import fs from "fs";
+import 'pdfkit-table';
+import { fileURLToPath } from "url";
 
 import accountsPayablesSchema from "../../models/Accounting/accountspayable.js";
 
@@ -76,26 +83,110 @@ router.route("/update-accountspayable/:id").put(async (req, res, next) => {
     }
   });
 
-  // Endpoint to fetch data and generate CSV
-router.route('/generate-csv').get(async (req, res) => {
-    try {
-      // Fetch data from MongoDB using Mongoose
-      const data = await accountsPayablesSchema.find({}, { _id: 0 }); // Exclude _id field if needed
-  
-      // Convert data to CSV format using json2csv
-      const parser = new Parser();
-      const csv = parser.parse(data);
-  
-      // Set response headers for CSV download
-      res.header('Content-Type', 'text/csv');
-      res.attachment('data.csv');
-      res.send(csv);
-    } catch (error) {
-      console.error('Error generating CSV:', error);
-      res.status(500).send('Error generating CSV');
-    }
-  });
-  
-  
 
-export { router as accountspayablesRoutes}
+// Get __dirname equivalent for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+router.post("/download-pdf", async (req, res) => {
+  const { selectedAccountspayable } = req.body;
+
+  try {
+    const accountspayables = await accountsPayablesSchema.find({ _id: { $in: selectedAccountspayable } });
+
+    const doc = new PDFDocument();
+    const filePath = path.join(__dirname, 'accountspayables.pdf');
+    const writeStream = fs.createWriteStream(filePath);
+
+    doc.pipe(writeStream);
+
+    // Add logo image
+    const logoPath = path.join(__dirname, '../../images/updatedlog.jpeg'); // Replace with the path to your logo
+    doc.image(logoPath, 50, 40, { width: 50, height: 50 }); // Adjust the position and size as needed
+
+    // Title
+    doc.fontSize(20).text('Freight Marks Logistics', 110, 50); // Adjust the position to fit next to the logo
+    doc.fontSize(20).text('Invoice', 110, 80); // Adjust the position to fit next to the logo
+    doc.moveDown(2);
+
+    // Table headers
+    const headers = [
+      'Name',
+      'Address',
+      'Contact Details',
+      'Invoice Number',
+      'Invoice Date',
+      'Invoice Amount',
+      'Invoice Description',
+    ];
+
+    // Table
+    const table = {
+      headers,
+      rows: accountspayables.map(accountspayable => [
+        accountspayable.vendor_name,
+        accountspayable.vendor_address,
+        accountspayable.vendor_contactdetails,
+        accountspayable.invoice_number,
+        accountspayable.invoice_date,
+        accountspayable.invoice_amount,
+        accountspayable.invoice_description,
+      ])
+    };
+
+    // Calculate column widths
+    const columnWidths = [80, 80, 80, 100, 80, 80, 100, 80];
+    const startX = 50;
+    const startY = 150;
+    const rowHeight = 20;
+
+    // Render table headers
+    doc.font('Helvetica-Bold').fontSize(10);
+    headers.forEach((header, i) => {
+      doc.text(header, startX + columnWidths.slice(0, i).reduce((a, b) => a + b, 0), startY, {
+        width: columnWidths[i],
+        align: 'left'
+      });
+    });
+
+    // Render table rows
+    doc.font('Helvetica').fontSize(10);
+    table.rows.forEach((row, rowIndex) => {
+      const rowY = startY + (rowIndex + 1) * rowHeight;
+      row.forEach((cell, cellIndex) => {
+        doc.text(cell, startX + columnWidths.slice(0, cellIndex).reduce((a, b) => a + b, 0), rowY, {
+          width: columnWidths[cellIndex],
+          align: 'left'
+        });
+      });
+    });
+
+    doc.end();
+
+    writeStream.on('finish', () => {
+      res.download(filePath, 'accountspayables.pdf', (err) => {
+        if (err) {
+          console.error('Error downloading the file:', err);
+          res.status(500).send('Error downloading the file');
+        } else {
+          fs.unlink(filePath, (unlinkErr) => {
+            if (unlinkErr) {
+              console.error('Error deleting the file:', unlinkErr);
+            }
+          });
+        }
+      });
+    });
+
+    writeStream.on('error', (err) => {
+      console.error('Error writing the PDF file:', err);
+      res.status(500).send('Error writing the PDF file');
+    });
+
+  } catch (error) {
+    console.error('Error fetching accountspayables:', error);
+    res.status(500).send('Error fetching accountspayables');
+  }
+});
+
+export {router as accountspayablesRoutes}
