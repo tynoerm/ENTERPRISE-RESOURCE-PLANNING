@@ -17,6 +17,17 @@ const MainDashboard = () => {
     backgroundPosition: "center", // Center the background image
     color: "black", // Set text color
   };
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
+
 
   return (
     <div>
@@ -27,6 +38,15 @@ const MainDashboard = () => {
         <a className="navbar-brand" style={{ color: "white" }}>
           <b> <MdDashboard />  &nbsp;ADMIN DASHBOARD </b>
         </a>
+        <form className="d-flex" role="search">
+            <a className="btn btn-primary me-2" >
+              
+            </a>
+            <a className="btn btn-success" href="/" >
+              Log Out
+            </a>
+
+            </form>
       </nav>
 
       <div>
@@ -105,7 +125,7 @@ const MainDashboard = () => {
               <div class="card-body">
                 <h5 class="card-title">
                   {" "}
-                  <AiFillControl /> &nbsp; MANUFACTURING PRODUCTION
+                  <AiFillControl /> &nbsp; WAREHOUSE
                 </h5>
                 <p class="card-text">
                   production planning, bill of materials (BOM), work order
@@ -168,6 +188,11 @@ const MainDashboard = () => {
               </div>
             </div>
           </div>
+          
+          <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
         </div>
       </div>
     </div>

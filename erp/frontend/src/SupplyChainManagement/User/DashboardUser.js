@@ -11,6 +11,18 @@ const SupplyChainManagementDashboard = () => {
     color: "black", // Set text color
   };
 
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
+
+
   return (
     <div>
       <nav
@@ -23,6 +35,16 @@ const SupplyChainManagementDashboard = () => {
             <MdDashboard /> &nbsp;SUPPLY CHAIN MANAGEMENT{" "}
           </b>
         </a>
+
+         <form className="d-flex" >
+            <a className="btn btn-primary" href="/PurchaseOrderClient">
+            PURCHASE ORDERS
+            </a>
+            <a className="btn btn-dark" href="/">
+              {" "}
+              Log Out
+            </a>
+          </form>
       </nav>
 
       <div>
@@ -32,8 +54,7 @@ const SupplyChainManagementDashboard = () => {
               <div class="card-body ">
                 <h5 class="card-title">INVENTORY MANAGEMENT</h5>
                 <p class="card-text">
-                  Tracks inventory levels, manages stock movements, and
-                  optimizes reorder points
+               
                 </p>
 
                 <Link
@@ -52,8 +73,7 @@ const SupplyChainManagementDashboard = () => {
               <div class="card-body ">
                 <h5 class="card-title">PROCUREMENT</h5>
                 <p class="card-text">
-                  Handles supplier management, purchase order
-                  creation,..........................
+                 
                 </p>
                 <Link
                   to="/ProcurementUser"
@@ -72,8 +92,7 @@ const SupplyChainManagementDashboard = () => {
               <div class="card-body">
                 <h5 class="card-title">LOGISTICS AND SHIPPING</h5>
                 <p class="card-text">
-                  Manages shipping, transportation, and logistics activities,
-                  including tracking shipments.
+               
                 </p>
                 <Link
                   to="/InventoryManagementUser"
@@ -86,6 +105,12 @@ const SupplyChainManagementDashboard = () => {
               </div>
             </div>
           </div>
+
+                    
+          <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
         </div>
       </div>
     </div>

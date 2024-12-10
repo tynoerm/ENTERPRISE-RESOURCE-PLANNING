@@ -34,6 +34,18 @@ const InventoryManagement = () => {
     setItemEdit(a);
     console.log(a);
   };
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
+
+
 
   useEffect(() => {
     axios
@@ -140,17 +152,7 @@ const InventoryManagement = () => {
           <a class="navbar-brand">
             <b>INVENTORY MANAGEMENT</b>
           </a>
-          <form class="d-flex" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
+          
         </div>
       </nav>
 
@@ -448,6 +450,11 @@ const InventoryManagement = () => {
           })}
         </tbody>
       </table>
+      <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
+
     </div>
   );
 };

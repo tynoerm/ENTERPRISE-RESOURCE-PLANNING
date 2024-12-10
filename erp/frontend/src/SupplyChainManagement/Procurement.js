@@ -9,8 +9,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
-
-
 const Procurement = () => {
 
     const [modalShow, setModalShow] = useState(false);
@@ -27,25 +25,20 @@ const Procurement = () => {
     const [procurementinsert, setProcurementinsert] = useState({});
     const [procurementEdit, setProcurementEdit] = useState({})
 
-    const [purchase_order_date, setPurchaseorderdate] = useState("");
-    const [buyer_information, setBuyerinformation] = useState("");
-    const [delivery_address, setDeliveryaddress] = useState("");
-    const [payment_terms, setPaymentterms] = useState("");
-    const [item_description, setItemdescription] = useState("");
-    const [selling_price, setSellingprice] = useState("");
-    const [quantity, setQuantity] = useState("");
-    const [unit_price, setUnitprice] = useState("");
-    const [sub_total, setSubtotal] = useState("");
-    const [delivery_date, setDeliverydate] = useState("");
-    const [warrant_information, setWarrantinformation] = useState("");
-    const [approvals, setApprovals] = useState("");
-
+    const [suppliername, setSuppliername] = useState("");
+    const [address, setAddress] = useState("");
+    const [contactdetails, setContactdetails] = useState("");
+    const [email, setEmail] = useState("");
+    const [qualityratings, setQualityratings] = useState("");
+    const [deliveryperformance,setDeliveryperfomance] = useState("");
+    const [categoryproducts, setCategoryproducts] = useState("");
+    
 
 
 
     useEffect(() => {
         axios
-            .get("https://enterprise-resource-planning.onrender.com/procurement/")
+            .get("http://localhost:3001/procurement/")
             .then((res) => {
                 setProcurementForm(res.data.data);
             })
@@ -56,11 +49,21 @@ const Procurement = () => {
     }, [])
 
     const notify1 = (message) => toast(message);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const procurementinsert = { purchase_order_date, buyer_information, delivery_address, payment_terms, item_description, selling_price, quantity, unit_price, sub_total, delivery_date, warrant_information, approvals }
+        const procurementinsert = {
+            suppliername,
+            address,
+            contactdetails,
+            email,
+            qualityratings, 
+            deliveryperformance,
+            categoryproducts,
+            
+               }
         axios
-            .post("https://enterprise-resource-planning.onrender.com/procurement/createpurchaseorder", procurementinsert)
+            .post("http://localhost:3001/procurement/createpurchaseorder", procurementinsert)
             .then((res) => {
                 console.log({ status: res.status });
                 setProcurementForm(prev => [...prev, procurementinsert])
@@ -74,7 +77,7 @@ const Procurement = () => {
         e.preventDefault();
         axios
           .put(
-            `https://enterprise-resource-planning.onrender.com/procurement/update-procurement/${procurementEdit._id}`,
+            `http://localhost:3001/procurement/update-procurement/${procurementEdit._id}`,
             procurementEdit
           )
           .then((res) => {
@@ -90,12 +93,11 @@ const Procurement = () => {
           notify2(" edited successfully")
       };
 
-
       const notify = (message) => toast(message);
       const handleDelete = async (id) => {
         axios
           .delete(
-            `https://enterprise-resource-planning.onrender.com/procurement/delete-procurement/${id}`
+            `http://localhost:3001/procurement/delete-procurement/${id}`
           )
           .then(() => {
       
@@ -111,12 +113,23 @@ const Procurement = () => {
           setShow(false)
           notify("Deleted Successfully")
       };
-
-
+      const footerStyle = {
+        backgroundColor: "navy",
+        color: "white",
+        textAlign: "center",
+        padding: "10px 0",
+        position: "fixed",
+        left: "0",
+        bottom: "0",
+        width: "100%",
+      };
+    
+    
+  
       const handleDownload = async () => {
         try {
           const response = await axios.get(
-            "https://enterprise-resource-planning.onrender.com/procurement/generate-csv",
+            "http://localhost:3001/procurement/generate-csv",
             {
               responseType: "blob", // Important to handle binary data
             }
@@ -138,10 +151,59 @@ const Procurement = () => {
 
     return (
         <div>
-               <ToastContainer/>
+            <ToastContainer/>
             <nav class=" navbar bg-body-tertiary bg-dark border-bottom border-body shadow-lg p-3 mb-5 bg-body rounded" >
                 <div class="container-fluid">
-                    <a class="navbar-brand"><b>PROCUREMENT</b></a>
+                    <a class="navbar-brand"><b>SUPPLIER MANAGEMENT</b></a>
+
+                    <ul className="nav justify-content-end">
+              <li className="nav-item">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to="/InventoryManagement"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  Inventory Management
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/Procurement"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  Supplier's Information
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/LogisticsandShipping"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  Logistics and Shipping 
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/"
+                  type="button"
+                  class="btn btn-outline-success"
+                >
+                  Log Out
+                </Link>
+              </li>
+           
+           
+            </ul>
                 </div>
             </nav>
 
@@ -171,134 +233,89 @@ const Procurement = () => {
                 aria-labelledby="example-modal-sizes-title-lg"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>CREATE PURCHASE ORDER</Modal.Title>
+                    <Modal.Title>ORDER</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
                     <div className="form-wrapper">
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
-                                <label className="form-label"> purchase_order_date</label>
+                                <label className="form-label"> Supplier Name</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="item_name"
-                                    id="item_name"
-                                    value={procurementForm.purchase_order_date}
-                                    onChange={(event) => { setPurchaseorderdate(event.target.value) }} />
+                                    name="suppliername"
+                                    id="suppliername"
+                                    value={procurementForm.suppliername}
+                                    onChange={(event) => {setSuppliername(event.target.value) }} />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">buyer_information</label>
+                                <label className="form-label">Address</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="category"
+                                    name="addresss"
+                                    id="address"
+                                    value={procurementForm.addresss}
+                                    onChange={(event) => {setAddress(event.target.value) }}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Contact Details</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    name="contactdetails"
+                                    id="contactdetails"
+                                    value={procurementForm.contactdetails}
+                                    onChange={(event) => {setContactdetails(event.target.value) }}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Email</label>
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    name="email"
                                     id="email"
-                                    value={procurementForm.buyer_information}
-                                    onChange={(event) => { setBuyerinformation(event.target.value) }}
+                                    value={procurementForm.email}
+                                    onChange={(event) => { setEmail(event.target.value) }}
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">delivery_address</label>
+                                <label className="form-label"> Quality Control Ratings</label>
                                 <input
                                     type="text"
-                                    className="form-control"
-                                    name="quantity"
-                                    id="quantity"
-                                    value={procurementForm.delivery_address}
-                                    onChange={(event) => { setDeliveryaddress(event.target.value) }}
+                                    className="qualityratings"
+                                    name="qualityratings"
+                                    id="qualityratings"
+                                    value={procurementForm.qualityratings}
+                                    onChange={(event) => { setQualityratings(event.target.value) }}
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">payment_terms</label>
+                                <label className="form-label">Delivery Perfomance</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="last_updated"
-                                    id="last_updated"
-                                    value={procurementForm.payment_terms}
-                                    onChange={(event) => { setPaymentterms(event.target.value) }}
+                                    name="deliveryperfomance"
+                                    id="deliveryperformance"
+                                    value={procurementForm.deliveryperformance}
+                                    onChange={(event) => { setDeliveryperfomance(event.target.value) }}
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">item_description</label>
+                                <label className="form-label">Category Products</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="cost_price"
-                                    id="cost_price"
-                                    value={procurementForm.item_description}
-                                    onChange={(event) => { setItemdescription(event.target.value) }}
+                                    name="categoryproducts"
+                                    id="categoryproducts"
+                                    value={procurementForm.categoryproducts}
+                                    onChange={(event) => { setCategoryproducts(event.target.value) }}
                                 />
                             </div>
-                            <div className="mb-3">
-                                <label className="form-label">quantity</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="selling-price"
-                                    id="selling_price"
-                                    value={procurementForm.quantity}
-                                    onChange={(event) => { setQuantity(event.target.value) }}
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">unit_price</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="supplier_name"
-                                    id="supplier_name"
-                                    value={procurementForm.unit_price}
-                                    onChange={(event) => { setUnitprice(event.target.value) }}
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">sub_total</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="supplier_name"
-                                    id="supplier_name"
-                                    value={procurementForm.sub_total}
-                                    onChange={(event) => { setSubtotal(event.target.value) }}
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">delivery_date</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="supplier_name"
-                                    id="supplier_name"
-                                    value={procurementForm.delivery_date}
-                                    onChange={(event) => { setDeliverydate(event.target.value) }}
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">warrant_information</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="supplier_name"
-                                    id="supplier_name"
-                                    value={procurementForm.warrant_information}
-                                    onChange={(event) => { setWarrantinformation(event.target.value) }}
-                                />
-                            </div>
-
-
-                            <div className="mb-3">
-                                <label className="form-label">approvals</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="supplier_name"
-                                    id="supplier_name"
-                                    value={procurementForm.approvals}
-                                    onChange={(event) => { setApprovals(event.target.value) }}
-                                />
-                            </div>
+                           
                             <div className="mb-3">
                                 <button type="submit" className="btn btn-primary">
                                     Submit
@@ -331,149 +348,96 @@ const Procurement = () => {
                     <div className="form-wrapper">
                         <form onSubmit={handleUpdate}>
                             <div className="mb-3">
-                                <label className="form-label"> purchase_order_date</label>
+                                <label className="form-label"> Supplier Name</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="purchase_order_date"
-                                    id="purchase_order_date"
-                                    value={procurementEdit.purchase_order_date}
+                                    name="suppliername"
+                                    id="suppliername"
+                                    value={procurementEdit.suppliername}
                                     onChange={(e) =>
-                                        setProcurementEdit({ ...procurementEdit, purchase_order_date: e.target.value })
+                                        setProcurementEdit({ ...procurementEdit, suppliername: e.target.value })
                                       } />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">buyer_information</label>
+                                <label className="form-label">Address</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="buyer_information"
-                                    id="buyer_information"
-                                    value={procurementEdit.buyer_information}
+                                 name="addresss"
+                                    id="address"
+                                    value={procurementEdit.address}
                                     onChange={(e) =>
-                                        setLogisticsandShippingEdit({ ...logisticsandShippingEdit, receiver_details: e.target.value })
+                                        setLogisticsandShippingEdit({ ...logisticsandShippingEdit,address: e.target.value })
                                       }
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">delivery_address</label>
+                                <label className="form-label">Contact Details</label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     className="form-control"
-                                    name="delivery_address"
-                                    id="delivery_address"
-                                    value={procurementEdit.delivery_address}
+                                     name="contactdetails"
+                                    id="contactdetails"
+                                    value={procurementEdit.contactdetails}
                                     onChange={(e) =>
-                                        setProcurementEdit({ ...procurementEdit, delivery_address: e.target.value })
+                                        setProcurementEdit({ ...procurementEdit, contactdetails: e.target.value })
                                       }
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">payment_terms</label>
+                                <label className="form-label">Email</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="payment_terms"
-                                    id="payment_terms"
-                                    value={procurementEdit.payment_terms}
+                               name="email"
+                                    id="email"
+                                    value={procurementEdit.email}
                                     onChange={(e) =>
-                                       setProcurementEdit({ ...procurementEdit,payment_terms: e.target.value })
+                                       setProcurementEdit({ ...procurementEdit,email: e.target.value })
                                       }
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">item_description</label>
+                                <label className="form-label">iQuality Control Ratings</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="item_description"
-                                    id="item_description"
-                                    value={procurementEdit.item_description}
+                                   name="qualityratings"
+                                    id="qualityratings"
+                                    value={procurementEdit.qualityratings}
                                     onChange={(e) =>
-                                        setProcurementEdit({ ...procurementEdit, item_description: e.target.value })
+                                        setProcurementEdit({ ...procurementEdit, qualityratings: e.target.value })
                                       }
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">quantity</label>
+                                <label className="form-label">Delivery Perfomance</label>
                                 <input
                                     type="text"
-                                    className="form-control"
-                                    name="quantity"
-                                    id="quantity"
-                                    value={procurementEdit.quantity}
+                               name="deliveryperfomance"
+                                    id="deliveryperformance"
+                                    value={procurementEdit.deliveryperformance}
                                     onChange={(e) =>
-                                        setProcurementEdit({ ...procurementEdit, quantity: e.target.value })
+                                        setProcurementEdit({ ...procurementEdit,deliveryperformance: e.target.value })
                                       }
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">unit_price</label>
+                                <label className="form-label">Category Products</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="unit_price"
-                                    id="unit_price"
-                                    value={procurementEdit.unit_price}
+                                     name="categoryproducts"
+                                    id="categoryproducts"
+                                    value={procurementEdit.categoryproducts}
                                     onChange={(e) =>
-                                       setProcurementEdit({ ...procurementEdit, unit_price: e.target.value })
-                                      }
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">sub_total</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="sub_total"
-                                    id="sub_total"
-                                    value={procurementEdit.sub_total}
-                                    onChange={(e) =>
-                                        setProcurementEdit({ ...procurementEdit, sub_total: e.target.value })
-                                      }
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">delivery_date</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="delivery_date"
-                                    id="delivery_date"
-                                    value={procurementEdit.delivery_date}
-                                    onChange={(e) =>
-                                        setProcurementEdit({ ...procurementEdit,delivery_date: e.target.value })
-                                      }
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">warrant_information</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="warrant_information"
-                                    id="warrant_information"
-                                    value={procurementEdit.warrant_information}
-                                    onChange={(e) =>
-                                        setProcurementEdit({ ...procurementEdit, warrant_information: e.target.value })
+                                       setProcurementEdit({ ...procurementEdit, categoryproducts: e.target.value })
                                       }
                                 />
                             </div>
 
 
-                            <div className="mb-3">
-                                <label className="form-label">approvals</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="approvals"
-                                    id="approvals"
-                                    value={procurementEdit.approvals}
-                                    onChange={(e) =>
-                                        setProcurementEdit({ ...procurementEdit, approvals: e.target.value })
-                                      }
-                                />
-                            </div>
                             <div className="mb-3">
                                 <button type="submit" className="btn btn-primary">
                                     Submit
@@ -498,13 +462,13 @@ const Procurement = () => {
                 <thead>
                     <tr>
 
-                        <th>purchase_order_date</th>
-                        <th> buyer_information</th>
-                        <th>supplier_information</th>
-                        <th> delivery_address</th>
-                        <th> payment_terms</th>
-                        <th> sub_total</th>
-                        <th>approvals</th>
+                        <th>Supplier Name</th>
+                        <th>Address</th>
+                        <th>Contact Details</th>
+                        <th>Email</th>
+                        <th>Quality Control Ratings</th>
+                        <th> Delivery Perfomance</th>
+                        <th>Category Products</th>
                         <th>action</th>
                     </tr>
                 </thead>
@@ -513,13 +477,13 @@ const Procurement = () => {
                     {procurementForm.map((procurement, index) => {
                         return <tr key={index}>
 
-                            <td>{procurement.purchase_order_date}</td>
-                            <td>{procurement.buyer_information}</td>
-                            <td>{procurement.supplier_information}</td>
-                            <td>{procurement.delivery_address}</td>
-                            <td>{procurement.payment_terms}</td>
-                            <td>{procurement.sub_total}</td>
-                            <td>{procurement.approvals}</td>
+                            <td>{procurement.suppliername}</td>
+                            <td>{procurement.address}</td>
+                            <td>{procurement.contactdetails}</td>
+                            <td>{procurement.email}</td>
+                            <td>{procurement.qualityratings}</td>
+                            <td>{procurement.deliveryperformance}</td>
+                            <td>{procurement.categoryproducts}</td>
 
                             <td>
 
@@ -539,7 +503,9 @@ const Procurement = () => {
                 </tbody>
             </table>
 
-
+            <div style={footerStyle}>
+        <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+      </div>
         </div>
     )
 }

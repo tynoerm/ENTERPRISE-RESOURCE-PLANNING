@@ -34,7 +34,7 @@ const SupplyChainManagementDashboard = () => {
     
       useEffect(() => {
         axios
-          .get("https://enterprise-resource-planning.onrender.com/productionorders/")
+          .get("http://localhost:3001/productionorders/")
           .then((res) => {
             setProductionorders(res.data.data);
           })
@@ -45,7 +45,7 @@ const SupplyChainManagementDashboard = () => {
     
       useEffect(() => {
         axios
-          .get("https://enterprise-resource-planning.onrender.com/leadmanagement/")
+          .get("http://localhost:3001/leadmanagement/")
           .then((res) => {
             setLeadmanagement(res.data.data);
           })
@@ -66,6 +66,54 @@ const SupplyChainManagementDashboard = () => {
             {" "}
             <MdDashboard /> &nbsp;SUPPLY CHAIN MANAGEMENT{" "}
           </b>
+          <ul className="nav justify-content-end">
+              <li className="nav-item">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to="/InventoryManagement"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  Inventory Management
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/Procurement"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  Supplier's Information
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/LogisticsandShipping"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  Logistics and Shipping 
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/"
+                  type="button"
+                  class="btn btn-outline-success"
+                >
+                  Log Out
+                </Link>
+              </li>
+           
+           
+            </ul>
         </a>
       </nav>
 
@@ -76,7 +124,7 @@ const SupplyChainManagementDashboard = () => {
 
                             <div class="card-body ">
                                 <h5 class="card-title">INVENTORY MANAGEMENT</h5>
-                                <p class="card-text">Tracks inventory levels, manages stock movements, and optimizes reorder points</p>
+                                <p class="card-text"></p>
 
                                 <Link to="/InventoryManagement" type="button"     class="btn btn-primary"> Next </Link>
 
@@ -88,7 +136,7 @@ const SupplyChainManagementDashboard = () => {
 
                             <div class="card-body ">
                                 <h5 class="card-title">PROCUREMENT</h5>
-                                <p class="card-text">Handles supplier management, purchase order creation,..........................</p>
+                                <p class="card-text"></p>
                                 <Link to="/Procurement" type="button"     class="btn btn-primary"> Next </Link>
                             </div>
                         </div>
@@ -100,7 +148,7 @@ const SupplyChainManagementDashboard = () => {
 
                             <div class="card-body">
                                 <h5 class="card-title">LOGISTICS AND SHIPPING</h5>
-                                <p class="card-text">Manages shipping, transportation, and logistics activities, including tracking shipments.
+                                <p class="card-text">
                                 </p>
                                 <Link to="/LogisticsandShipping" type="button"     class="btn btn-primary">  Next </Link>
                             </div>
@@ -113,7 +161,7 @@ const SupplyChainManagementDashboard = () => {
             CHECK MANUFACTURING PRODUCTION & SALES MODULE
           </h5>
           <p className="card-text">
-            You now have access to production orders as well as the budget assigned to each department.
+           
           </p>
           <Button variant="primary" onClick={handleShow}>
             SELECT OPTION

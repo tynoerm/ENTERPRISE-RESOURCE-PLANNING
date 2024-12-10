@@ -4,9 +4,9 @@ import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import { FaFileCsv } from "react-icons/fa";
 
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 
 
 const LogisticsandShipping = () => {
@@ -31,8 +31,8 @@ const LogisticsandShipping = () => {
   );
   const [logisticsandShippingEdit, setLogisticsandShippingEdit] = useState({});
 
-  const [sender_details, setSenderdetails] = useState("");
-  const [receiver_details, setReceiverdetails] = useState("");
+  const [modeoftransport, setModeoftransport] = useState("");
+  const [sendername, setSendername] = useState("");
   const [package_dimensions, setPackagedimensions] = useState("");
   const [weight, setWeight] = useState("");
   const [insurance_coverages, setInsurancecoverages] = useState("");
@@ -50,14 +50,13 @@ const LogisticsandShipping = () => {
       });
   }, []);
 
-
-  
   const notify1 = (message) => toast(message);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const logisticsandShippinginsert = {
-      sender_details,
-      receiver_details,
+      modeoftransport,
+      sendername,
       package_dimensions,
       weight,
       insurance_coverages,
@@ -81,6 +80,8 @@ const LogisticsandShipping = () => {
   };
 
 
+
+  const notify = (message) => toast(message);
   const handleDelete = async (id) => {
     axios
       .delete(
@@ -96,9 +97,10 @@ const LogisticsandShipping = () => {
       .catch((error) => {
         console.log(error);
       });
+      setShow(false)
+          notify("Deleted Successfully")
   };
 
-  
   const notify2 = (message) => toast(message);
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -116,7 +118,7 @@ const LogisticsandShipping = () => {
         console.error(" Error updating item:", error);
       });
       setShow(false)
-          notify2(" edited successfully")
+      notify2(" edited successfully")
   };
 
   const handleDownload = async () => {
@@ -137,10 +139,19 @@ const LogisticsandShipping = () => {
       console.error("Error downloading CSV:", error);
     }
   };
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
 
   return (
     <div>
-      <ToastContainer/>
       <nav class=" navbar bg-body-tertiary bg-dark border-bottom border-body shadow-lg p-3 mb-5 bg-body rounded">
         <div class="container-fluid">
           <a class="navbar-brand">
@@ -167,36 +178,36 @@ const LogisticsandShipping = () => {
         size="lg"
         aria-labelledby="example-modal-sizes-title-lg"
       >
-        <Modal.Header closeButton>
-          <Modal.Title>LOGISTICS ACTIVITY</Modal.Title>
-        </Modal.Header>
+     <Modal.Header closeButton style={{ backgroundColor: 'blue', color: 'white' }}>
+  <Modal.Title style={{ color: 'white' }}>LOGISTICS ACTIVITY</Modal.Title>
+</Modal.Header>
 
         <Modal.Body>
           <div className="form-wrapper">
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="form-label"> sender_details</label>
+                <label className="form-label">Mode of transport</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="sender_details"
-                  id="sender_details"
-                  value={logisticsandShippingForm.sender_details}
+                  name="modeoftransport"
+                  id="modeoftransport"
+                  value={logisticsandShippingForm.modeoftransport}
                   onChange={(event) => {
-                    setSenderdetails(event.target.value);
+                    setModeoftransport(event.target.value);
                   }}
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label">receiver_details</label>
+                <label className="form-label">Sender Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="receiver_details"
-                  id="receiver_details"
-                  value={logisticsandShippingForm.receiver_details}
+                  name="sendername"
+                  id="sendername"
+                  value={logisticsandShippingForm.sendername}
                   onChange={(event) => {
-                    setReceiverdetails(event.target.value);
+                    setSendername(event.target.value);
                   }}
                 />
               </div>
@@ -294,13 +305,13 @@ const LogisticsandShipping = () => {
           <div className="form-wrapper">
             <form onSubmit={handleUpdate}>
               <div className="mb-3">
-                <label className="form-label"> sender_details</label>
+                <label className="form-label"> Mode of transport</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="sender_details"
-                  id="sender_details"
-                  value={logisticsandShippingEdit.sender_details}
+                  name="modeoftransport"
+                  id="modeoftransport"
+                  value={logisticsandShippingEdit.modeoftransport}
                   onChange={(e) =>
                     setLogisticsandShippingEdit({
                       ...logisticsandShippingEdit,
@@ -310,13 +321,13 @@ const LogisticsandShipping = () => {
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label">receiver_details</label>
+                <label className="form-label">Sender Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="receiver_details"
-                  id="receiver_details"
-                  value={logisticsandShippingEdit.receiver_details}
+                  name="sendername"
+                  id="sendername"
+                  value={logisticsandShippingEdit.sendername}
                   onChange={(e) =>
                     setLogisticsandShippingEdit({
                       ...logisticsandShippingEdit,
@@ -422,7 +433,7 @@ const LogisticsandShipping = () => {
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>sender_details</th>
+            <th>Mode of Transport</th>
             <th> receiver_details</th>
             <th>package_dimensions</th>
             <th> weight</th>
@@ -436,8 +447,8 @@ const LogisticsandShipping = () => {
           {logisticsandShippingForm.map((logisticsandShipping, index) => {
             return (
               <tr key={index}>
-                <td>{logisticsandShipping.sender_details}</td>
-                <td>{logisticsandShipping.receiver_details}</td>
+                <td>{logisticsandShipping.modeoftransport}</td>
+                <td>{logisticsandShipping.sendername}</td>
                 <td>{logisticsandShipping.package_dimensions}</td>
                 <td>{logisticsandShipping.weight}</td>
                 <td>{logisticsandShipping.insurance_coverages}</td>
@@ -453,18 +464,16 @@ const LogisticsandShipping = () => {
                   >
                     Edit
                   </Button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(logisticsandShipping._id)}
-                  >
-                    Delete
-                  </button>
+                
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+      <div style={footerStyle}>
+        <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+      </div>
     </div>
   );
 };

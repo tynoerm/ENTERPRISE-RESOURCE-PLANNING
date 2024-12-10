@@ -3,13 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { GiArchiveRegister } from "react-icons/gi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import loginImage from "../images/insurance2.jpeg"
+import loginImage from "../images/newicon.jpeg";
 import nav from "../images/nav.jpeg";
 
 const RegisterComponent = () => {
   const [username, setUsername] = useState("");
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
+  const [department, setDepartment] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [error, setError] = useState("");
@@ -19,9 +20,9 @@ const RegisterComponent = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const userData = { username, fullname, email, role, password };
+    const userData = { username, fullname, email, role,department, password };
     try {
-      const response = await fetch("https://enterprise-resource-planning.onrender.com/api/register", {
+      const response = await fetch("http://localhost:3001/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,7 +33,7 @@ const RegisterComponent = () => {
       const data = await response.json();
       if (response.ok) {
         notify(); // Notify user upon successful registration
-       // navigate("/");  // Navigate to the login component after successful registration
+        // navigate("/");  // Navigate to the login component after successful registration
       } else {
         setError(data.message);
       }
@@ -41,7 +42,7 @@ const RegisterComponent = () => {
       setError("Registration failed. Please try again later.");
     }
     notify();
-    navigate("/AdminComponent")
+    navigate("/AdminComponent");
   };
 
   const navbarStyle = {
@@ -89,7 +90,6 @@ const RegisterComponent = () => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Enter username"
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
                 required
@@ -98,7 +98,6 @@ const RegisterComponent = () => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Enter fullname"
                 value={fullname}
                 onChange={(event) => setFullname(event.target.value)}
                 required
@@ -107,7 +106,6 @@ const RegisterComponent = () => {
               <input
                 type="email"
                 className="form-control"
-                placeholder="Enter email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
@@ -123,13 +121,36 @@ const RegisterComponent = () => {
                 <option value="client">Client</option>
                 <option value="manager">Manager</option>
                 <option value="admin">Admin</option>
-              
               </select>
+
+              <label>Department:</label>
+              <select
+                className="form-control"
+                value={department}
+                onChange={(event) => setDepartment(event.target.value)}
+                required
+              >
+                <option value="">Select Department</option>
+                <option value="supplychainmanagement">
+                  Supply Chain Management
+                </option>
+                <option value="finianceandaccounting">
+                  Finiance and Accounting
+                </option>
+                <option value="salesandcustomerrelation">
+                  Sales and Customer Relation
+                </option>
+                <option value="manufacturingproduction">
+                  Warehouse
+                </option>
+                <option value="humanresources">Human Resources</option>
+              </select>
+
+
               <label>Password:</label>
               <input
                 type="password"
                 className="form-control"
-                placeholder="Enter password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 required
@@ -138,11 +159,6 @@ const RegisterComponent = () => {
             <button type="submit" className="btn btn-primary btn-block">
               Register
             </button>
-            <div className="fw-bold">
-              <ul>
-                <Link to="/">You can now login!</Link>
-              </ul>
-            </div>
           </form>
         </div>
       </div>

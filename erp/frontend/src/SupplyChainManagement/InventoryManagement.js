@@ -35,9 +35,20 @@ const InventoryManagement = () => {
     console.log(a);
   };
 
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
+  };
+
   useEffect(() => {
     axios
-      .get("https://enterprise-resource-planning.onrender.com/inventorymanagement/")
+      .get("http://localhost:3001/inventorymanagement/")
       .then((res) => {
         setUserForm(res.data.data);
       })
@@ -60,7 +71,7 @@ const InventoryManagement = () => {
     };
     axios
       .post(
-        "https://enterprise-resource-planning.onrender.com/inventorymanagement/create-inventory",
+        "http://localhost:3001/inventorymanagement/create-inventory",
         itemInsert
       )
       .then((res) => {
@@ -76,7 +87,7 @@ const InventoryManagement = () => {
     e.preventDefault();
     axios
       .put(
-        `https://enterprise-resource-planning.onrender.com/inventorymanagement/update-inventory/${itemEdit._id}`,
+        `http://localhost:3001/inventorymanagement/update-inventory/${itemEdit._id}`,
         itemEdit
       )
       .then((res) => {
@@ -97,7 +108,7 @@ const InventoryManagement = () => {
   const handleDelete = async (id) => {
     axios
       .delete(
-        `https://enterprise-resource-planning.onrender.com/inventorymanagement/delete-inventory/${id}`
+        `http://localhost:3001/inventorymanagement/delete-inventory/${id}`
       )
       .then(() => {
   
@@ -118,7 +129,7 @@ const InventoryManagement = () => {
 
   const handleDownload = async () => {
     try {
-      const response = await axios.get('https://enterprise-resource-planning.onrender.com/inventorymanagement/generate-csv', {
+      const response = await axios.get('http://localhost:3001/inventorymanagement/generate-csv', {
         responseType: 'blob', // Important to handle binary data
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -140,17 +151,54 @@ const InventoryManagement = () => {
           <a class="navbar-brand">
             <b>INVENTORY MANAGEMENT</b>
           </a>
-          <form class="d-flex" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
+          <ul className="nav justify-content-end">
+              <li className="nav-item">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to="/InventoryManagement"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  Inventory Management
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/Procurement"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  Supplier's Information
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/LogisticsandShipping"
+                  type="button"
+                  class="btn btn-outline-primary"
+                >
+                  Logistics and Shipping 
+                </Link>
+              </li>
+              &nbsp;
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/"
+                  type="button"
+                  class="btn btn-outline-success"
+                >
+                  Log Out
+                </Link>
+              </li>
+           
+           
+            </ul>
         </div>
       </nav>
 
@@ -447,6 +495,10 @@ const InventoryManagement = () => {
           })}
         </tbody>
       </table>
+      <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
     </div>
   );
 };

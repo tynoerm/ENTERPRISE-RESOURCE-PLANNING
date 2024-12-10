@@ -1,13 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, {useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { AiFillSchedule } from "react-icons/ai";
 import { BsAwardFill } from "react-icons/bs";
 import { AiFillRedEnvelope } from "react-icons/ai";
 import { FcFactory } from "react-icons/fc";
 import { AiFillControl } from "react-icons/ai";
 import { AiFillLayout } from "react-icons/ai";
-import { MdDashboard } from "react-icons/md";
+import { AiFillHome } from 'react-icons/ai';
+import { BsFillPersonFill } from 'react-icons/bs';
+
 import nav from "../images/nav.jpeg";
+import fmclog from "../images/fmclog.PNG";
+
 
 const MainDashboard = () => {
   const navbarStyle = {
@@ -15,6 +19,19 @@ const MainDashboard = () => {
     backgroundSize: "cover", // Ensure the image covers the entire navbar
     backgroundPosition: "center", // Center the background image
     color: "black", // Set text color
+  };
+  const go=useLocation();
+  const [dep,setDep]=useState(go.state.dep);
+
+  const footerStyle = {
+    backgroundColor: "navy",
+    color: "white",
+    textAlign: "center",
+    padding: "10px 0",
+    position: "fixed",
+    left: "0",
+    bottom: "0",
+    width: "100%",
   };
 
   return (
@@ -24,25 +41,39 @@ const MainDashboard = () => {
         style={navbarStyle}
       >
         <a className="navbar-brand" style={{ color: "white" }}>
+        <img
+            src={fmclog}
+            alt="Logo"
+            style={{ width: "30px", height: "30px", marginRight: "10px" }}
+          />
           <b>
             {" "}
-            <MdDashboard /> &nbsp;MANAGER DASHBOARD{" "}
+            MANAGER DASHBOARD{" "}
           </b>
         </a>
+        <form className="d-flex" role="search">
+            <a className="btn btn-primary me-2" >
+              
+            </a>
+            <a className="btn btn-success" href="/" >
+              Log Out
+            </a>
+
+            </form>
       </nav>
+       
+
 
       <div>
         <div class="row row-cols-1 row-cols-md-3 shadow p-3 mb-5 bg-body rounded">
-          <div class="col mb-3 shadow-sm p-3 mb-5 bg-body rounded">
+          {dep==="supplychainmanagement" && <div class="col mb-3 shadow-sm p-3 mb-5 bg-body rounded">
             <div class="card shadow p-3 mb-5 bg-body rounded">
               <div class="card-body ">
                 <h5 class="card-title">
                   <AiFillSchedule /> &nbsp; SUPPLY CHAIN MANAGEMENT
                 </h5>
                 <p class="card-text">
-                  supply chain, encompassing procurement, inventory management,
-                  order fulfillment, demand planning, logistics, and supplier
-                  relationship management.{" "}
+                  
                 </p>
                 <Link
                   to="/SupplyChainManagementDashboardManager"
@@ -53,8 +84,11 @@ const MainDashboard = () => {
                   Next{" "}
                 </Link>
               </div>
-            </div>
+            </div> 
           </div>
+            }
+
+          { dep === "finianceandaccounting" &&
           <div class="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
             <div class="card shadow p-3 mb-5 bg-body rounded">
               <div class="card-body ">
@@ -64,9 +98,7 @@ const MainDashboard = () => {
                 </h5>
                 <p class="card-text">
                   {" "}
-                  general ledger, accounts payable, accounts receivable, expense
-                  account, fixed asset
-                  management.................................................. .
+                
                 </p>
                 <Link
                   to="/FinanceAccountingDashboardManager"
@@ -79,6 +111,12 @@ const MainDashboard = () => {
               </div>
             </div>
           </div>
+}
+
+
+
+
+         { dep ==="salesandcustomerrelation" &&
           <div class="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
             <div class="card shadow p-3 mb-5 bg-body rounded">
               <div class="card-body">
@@ -87,9 +125,7 @@ const MainDashboard = () => {
                 </h5>
                 <p class="card-text">
                   {" "}
-                  lead management, opportunity tracking, sales forecasting,
-                  contact management, customer service, marketing campaign
-                  management.
+           
                 </p>
                 <Link
                   to="/SalesCustomerRelationManager"
@@ -102,17 +138,18 @@ const MainDashboard = () => {
               </div>
             </div>
           </div>
+}
+
+        { dep ==="manufacturingproduction" &&
           <div class="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
             <div class="card shadow p-3 mb-5 bg-body rounded">
               <div class="card-body">
                 <h5 class="card-title">
                   {" "}
-                  <AiFillControl /> &nbsp; MANUFACTURING PRODUCTION
+                  <AiFillControl /> &nbsp; WAREHOUSE
                 </h5>
                 <p class="card-text">
-                  production planning, bill of materials (BOM), work order
-                  management, shop floor control, quality control, and product
-                  lifecycle management
+                  
                 </p>
                 <Link
                   to="/ManufacturingProductionDashboardManager"
@@ -125,7 +162,10 @@ const MainDashboard = () => {
               </div>
             </div>
           </div>
+}
 
+
+          { dep ==="humanresources" &&
           <div class="col mb-4 shadow-sm p-3 mb-5 bg-body rounded">
             <div class="card shadow p-3 mb-5 bg-body rounded">
               <div class="card-body">
@@ -150,6 +190,13 @@ const MainDashboard = () => {
               </div>
             </div>
           </div>
+}
+   
+
+          <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+     
+    </div>
         </div>
       </div>
     </div>

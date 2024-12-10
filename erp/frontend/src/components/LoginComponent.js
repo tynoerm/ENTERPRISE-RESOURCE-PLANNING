@@ -4,10 +4,26 @@ import { RiLoginBoxFill } from "react-icons/ri";
 import axios from "axios";
 import { TbLogin2 } from "react-icons/tb";
 import insuranceImage from "../images/insurance2.jpeg";
-import loginImage from "../images/insurance2.jpeg";
+import loginImage from "../images/newicon.jpeg";
 import nav from "../images/nav.jpeg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import fmclog from "../images/fmclog.PNG";
+
+
+const footerStyle = {
+  backgroundColor: "navy",
+  color: "white",
+  textAlign: "center",
+  padding: "10px 0",
+  position: "fixed",
+  left: "0",
+  bottom: "0",
+  width: "100%",
+};
+
+
+
 
 // Create AuthContext
 const AuthContext = createContext();
@@ -15,14 +31,17 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
+
   const login = (role) => {
     setUser({ role });
+  
     localStorage.setItem("userRole", role);
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("userRole");
+    localStorage.removeItem("userDepartment");
   };
 
   return (
@@ -32,6 +51,7 @@ const AuthProvider = ({ children }) => {
   );
 };
 
+
 const LoginComponent = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -39,12 +59,16 @@ const LoginComponent = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext); // Use login from context
 
+  const [refresh, setRefresh] = useState(false);
+ 
+
+
   const handleLogin = (event) => {
     event.preventDefault(); // Prevent default form submission
 
     if (username && password) {
       axios
-        .post("https://enterprise-resource-planning.onrender.com/api/login", {
+        .post("http://localhost:3001/api/login", {
           username,
           password,
         })
@@ -59,9 +83,9 @@ const LoginComponent = () => {
             if (data.role === "admin") {
               navigate("/AdminComponent");
             } else if (data.role === "manager") {
-              navigate("/ManagerComponent");
+              navigate("/ManagerComponent",{state:{dep:data.department}});
             } else if (data.role === "client") {
-              navigate("/UserComponent");
+              navigate("/UserComponent", {state: {dep:data.department}});
             } else {
               setError("Unknown role");
               toast.error("Unknown role");
@@ -80,6 +104,7 @@ const LoginComponent = () => {
       setError("Please enter username and password");
       toast.error("Please enter username and password");
     }
+    setRefresh(prev => !prev);
   };
 
   const navbarStyle = {
@@ -102,11 +127,17 @@ const LoginComponent = () => {
       }}
     >
       <ToastContainer />
+
       <nav
         className="navbar bg-body-tertiary bg-dark border-bottom border-body shadow-lg p-3 mb-5 bg-body rounded"
         style={navbarStyle}
       >
         <a className="navbar-brand" style={{ color: "white" }}>
+          <img
+            src={fmclog}
+            alt="Logo"
+            style={{ width: "30px", height: "30px", marginRight: "10px" }}
+          />
           <b>AUTHENTICATION SECTION</b>
         </a>
       </nav>
@@ -150,7 +181,17 @@ const LoginComponent = () => {
             <button type="submit" className="btn btn-primary btn-block">
               Login
             </button>
+            <div className="fw-bold">
+            
+            </div>
           </form>
+
+
+          <div style={footerStyle}>
+      <p>&copy; Freight Marks Logistics. All rights reserved.</p>
+      
+    </div>
+
         </div>
       </div>
     </div>
